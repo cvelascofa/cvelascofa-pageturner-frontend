@@ -1,0 +1,13 @@
+footer{
+    bottom: 0;
+    width: 100%;
+}
+
+.about-item {
+    margin: 0px;
+    margin-bottom: 8px;
+}
+
+footer h5 {
+    margin-top: 12px;
+}
