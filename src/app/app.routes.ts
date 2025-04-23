@@ -4,11 +4,11 @@ import { BookDetailComponent } from './components/book/book-detail/book-detail.c
 
 export const routes: Routes = [
     {
-        path: '',
+        path: 'books',
         component: BookListComponent
     },
     {
-        path: '/book/:id',
+        path: 'book/:id',
         component: BookDetailComponent
     }
 ];
