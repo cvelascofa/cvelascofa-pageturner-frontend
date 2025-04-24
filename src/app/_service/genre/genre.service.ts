@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Genre } from '../../models/genre/genre.model';
 import { AUTH_API } from '../../api-constants';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +13,11 @@ export class GenreService {
     private http: HttpClient
   ) { }
 
-  getAllBooks(): Observable<Genre[]> {
+  getAll(): Observable<Genre[]> {
         return this.http.get<Genre[]>(`${AUTH_API}genres`);
     }
   
-    getById(bookId: number): Observable<Genre> {
-        return this.http.get<Genre>(`${AUTH_API}genres/${bookId}`);
-    }
+  getById(genreId: number): Observable<Genre> {
+      return this.http.get<Genre>(`${AUTH_API}genres/${genreId}`);
+  }
 }

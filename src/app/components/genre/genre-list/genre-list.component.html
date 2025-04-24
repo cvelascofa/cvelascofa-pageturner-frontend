@@ -1,1 +1,31 @@
-genre-list
+<div class="container mt-4">
+    <h3>Genres List</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (genre of genres; track $index) {
+            <tr>
+                <td>{{ genre.id }}</td>
+                <td>{{ genre.name }}</td>
+                <td>
+                    <!---(click)="editGenre(genre)"
+                    (click)="deleteGenre(genre.id)"-->
+                    <button  class="btn btn-warning btn-sm mr-2">Edit</button>
+                    <button  class="btn btn-danger btn-sm">Delete</button>
+                </td>
+            </tr>
+        }
+      </tbody>
+    </table>
+  
+    <div *ngIf="genres.length === 0" class="text-center mt-5">
+      <p>No genres available.</p>
+    </div>
+  </div>
+  
