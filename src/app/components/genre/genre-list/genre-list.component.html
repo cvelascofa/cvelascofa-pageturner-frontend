@@ -14,9 +14,7 @@
                 <td>{{ genre.id }}</td>
                 <td>{{ genre.name }}</td>
                 <td>
-                    <!---(click)="editGenre(genre)"
-                    (click)="deleteGenre(genre.id)"-->
-                    <button  class="btn btn-warning btn-sm mr-2">Edit</button>
+                    <button (click)="openEditModal(genre)" class="btn btn-warning btn-sm mr-2">Edit</button>
                     <button (click)="prepareDeleteGenre(genre.id)" class="btn btn-danger btn-sm">Delete</button>
                 </td>
             </tr>
@@ -39,6 +37,12 @@
         [type]="confirmModal.type"
         (confirm)="onConfirmDelete()"
         (cancel)="confirmModal.close()">
-    </app-modal>    
-  </div>
-  
+    </app-modal>  
+    
+    <app-genre-update
+        *ngIf="showUpdateModal"
+        [genre]="genreToUpdate"
+        (update)="onGenreUpdated($event)"
+        (cancel)="closeEditModal()">
+    </app-genre-update>
+</div>

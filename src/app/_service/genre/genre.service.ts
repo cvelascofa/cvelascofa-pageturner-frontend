@@ -24,5 +24,8 @@ export class GenreService {
   delete(genreId: number): Observable<void> {
     return this.http.delete<void>(`${AUTH_API}genres/${genreId}`);
   }
-  
+
+  update(genre: Genre): Observable<Genre> {
+    return this.http.put<Genre>(`${AUTH_API}genres/${genre.id}`, genre);
+  }
 }

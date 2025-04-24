@@ -4,10 +4,11 @@ import { Genre } from '../../../models/genre/genre.model';
 import { GenreService } from '../../../_service/genre/genre.service';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { CommonModule } from '@angular/common';
+import { GenreUpdateComponent } from '../genre-update/genre-update.component';
 
 @Component({
   selector: 'app-genre-list',
-  imports: [RouterLink, ModalComponent, CommonModule],
+  imports: [RouterLink, ModalComponent, CommonModule, GenreUpdateComponent],
   templateUrl: './genre-list.component.html',
   styleUrl: './genre-list.component.css'
 })
@@ -18,6 +19,11 @@ export class GenreListComponent {
   isModalVisible: boolean = false;
   genreToDelete: number | null = null; 
   @ViewChild('confirmModal') confirmModal!: ModalComponent;
+
+  // Update mdoal
+  genreToUpdate:  Genre = { id: 0, name: '' };
+  showUpdateModal = false;
+  @ViewChild(GenreUpdateComponent) genreUpdateModal!: GenreUpdateComponent;
 
   constructor(
       private genreService: GenreService
@@ -90,9 +96,23 @@ export class GenreListComponent {
       }
     });
   }
-  
-    
-}
-  
-  
 
+  openEditModal(genre: Genre): void {
+    this.genreToUpdate = { ...genre };
+    this.showUpdateModal = true;
+    this.genreUpdateModal.openModal(this.genreToUpdate);
+  }
+  
+  closeEditModal(): void {
+    this.showUpdateModal = false;
+    this.genreToUpdate = { id: 0, name: '' };
+  }
+  
+  onGenreUpdated(updatedGenre: Genre): void {
+    const index = this.genres.findIndex(g => g.id === updatedGenre.id);
+    if (index !== -1) {
+      this.genres[index] = updatedGenre;
+    }
+    this.closeEditModal();
+  }
+} 
