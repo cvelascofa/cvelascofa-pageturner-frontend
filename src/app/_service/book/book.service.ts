@@ -14,7 +14,10 @@ export class BookService {
   ) { }
 
   getAllBooks(): Observable<Book[]> {
-    console.log(`${AUTH_API}books`);
       return this.http.get<Book[]>(`${AUTH_API}books`);
+  }
+
+  getById(bookId: number): Observable<Book> {
+      return this.http.get<Book>(`${AUTH_API}books/${bookId}`);
   }
 }

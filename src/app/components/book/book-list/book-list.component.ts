@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { BookService } from '../../../_service/book/book.service';
 import { Book } from '../../../models/book/book.model';
+import { RouterLink } from '@angular/router';
+
 
 @Component({
   selector: 'app-book-list',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './book-list.component.html',
   styleUrl: './book-list.component.css'
 })
@@ -18,7 +20,6 @@ export class BookListComponent implements OnInit {
   }
   
   ngOnInit(): void {
-    console.log("adeu")
     this.getAllBooks();
   }
   
