@@ -13,7 +13,7 @@ export class BookService {
     private http: HttpClient
   ) { }
 
-  getAllBooks(): Observable<Book[]> {
+  getAll(): Observable<Book[]> {
       return this.http.get<Book[]>(`${AUTH_API}books`);
   }
 

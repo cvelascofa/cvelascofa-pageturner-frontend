@@ -17,15 +17,28 @@
                     <!---(click)="editGenre(genre)"
                     (click)="deleteGenre(genre.id)"-->
                     <button  class="btn btn-warning btn-sm mr-2">Edit</button>
-                    <button  class="btn btn-danger btn-sm">Delete</button>
+                    <button (click)="prepareDeleteGenre(genre.id)" class="btn btn-danger btn-sm">Delete</button>
                 </td>
             </tr>
         }
       </tbody>
     </table>
   
-    <div *ngIf="genres.length === 0" class="text-center mt-5">
-      <p>No genres available.</p>
-    </div>
+    @if (genres.length === 0) {
+        <div class="text-center mt-5">
+            <p>No genres available.</p>
+        </div>
+    }
+
+    <app-modal
+        #confirmModal
+        [title]="confirmModal.title"
+        [message]="confirmModal.message"
+        [confirmButtonText]="confirmModal.confirmButtonText"
+        [cancelButtonText]="confirmModal.cancelButtonText"
+        [type]="confirmModal.type"
+        (confirm)="onConfirmDelete()"
+        (cancel)="confirmModal.close()">
+    </app-modal>    
   </div>
   

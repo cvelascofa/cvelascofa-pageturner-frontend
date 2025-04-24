@@ -20,4 +20,9 @@ export class GenreService {
   getById(genreId: number): Observable<Genre> {
       return this.http.get<Genre>(`${AUTH_API}genres/${genreId}`);
   }
+
+  delete(genreId: number): Observable<void> {
+    return this.http.delete<void>(`${AUTH_API}genres/${genreId}`);
+  }
+  
 }
