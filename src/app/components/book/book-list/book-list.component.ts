@@ -24,9 +24,8 @@ export class BookListComponent implements OnInit {
   }
   
   getAllBooks() {
-    this.bookService.getAllBooks().subscribe(books => {
+    this.bookService.getAll().subscribe(books => {
       this.books = books;
-      console.log(this.books);
     });
   }
 
