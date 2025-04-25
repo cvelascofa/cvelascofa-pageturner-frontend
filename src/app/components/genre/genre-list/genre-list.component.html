@@ -1,0 +1,48 @@
+<div class="container mt-4">
+    <h3>Genres List</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (genre of genres; track $index) {
+            <tr>
+                <td>{{ genre.id }}</td>
+                <td>{{ genre.name }}</td>
+                <td>
+                    <button (click)="openEditModal(genre)" class="btn btn-warning btn-sm mr-2">Edit</button>
+                    <button (click)="prepareDeleteGenre(genre.id)" class="btn btn-danger btn-sm">Delete</button>
+                </td>
+            </tr>
+        }
+      </tbody>
+    </table>
+  
+    @if (genres.length === 0) {
+        <div class="text-center mt-5">
+            <p>No genres available.</p>
+        </div>
+    }
+
+    <app-modal
+        #confirmModal
+        [title]="confirmModal.title"
+        [message]="confirmModal.message"
+        [confirmButtonText]="confirmModal.confirmButtonText"
+        [cancelButtonText]="confirmModal.cancelButtonText"
+        [type]="confirmModal.type"
+        (confirm)="onConfirmDelete()"
+        (cancel)="confirmModal.closeModal()">
+    </app-modal>  
+    
+    <app-genre-update
+        #genreUpdateModal
+        [genre]="genreToUpdate"
+        (update)="onGenreUpdated($event)"
+        (cancel)="closeEditModal()">
+    </app-genre-update>
+</div>
