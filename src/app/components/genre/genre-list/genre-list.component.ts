@@ -48,7 +48,7 @@ export class GenreListComponent {
     this.confirmModal.cancelButtonText = 'Cancel';
     this.confirmModal.type = 'danger';
 
-    this.confirmModal.open();
+    this.confirmModal.openModal();
   }
 
   onConfirmDelete(): void {
@@ -57,24 +57,20 @@ export class GenreListComponent {
     }
   }
 
-  closeModal(): void {
-    this.isModalVisible = false;
-  }
-
   deleteGenre(id: number): void {
     this.genreService.delete(id).subscribe({
       next: () => {
         this.genres = this.genres.filter(g => g.id !== id);
   
-        this.confirmModal.close();
+        this.confirmModal.closeModal();
   
         this.confirmModal.title = 'Genre Deleted';
         this.confirmModal.message = 'The genre has been successfully deleted.';
         this.confirmModal.type = 'info';
         this.confirmModal.confirmButtonText = '';
         this.confirmModal.cancelButtonText = 'Accept';
-        this.confirmModal.open();
-        
+
+        this.confirmModal.openModal();
       },
       error: (err) => {
 
@@ -92,7 +88,8 @@ export class GenreListComponent {
         this.confirmModal.type = 'info';
         this.confirmModal.confirmButtonText = '';
         this.confirmModal.cancelButtonText = 'Accept';
-        this.confirmModal.open();
+
+        this.confirmModal.openModal();
       }
     });
   }

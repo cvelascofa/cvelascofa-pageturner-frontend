@@ -36,11 +36,11 @@
         [cancelButtonText]="confirmModal.cancelButtonText"
         [type]="confirmModal.type"
         (confirm)="onConfirmDelete()"
-        (cancel)="confirmModal.close()">
+        (cancel)="confirmModal.closeModal()">
     </app-modal>  
     
     <app-genre-update
-        *ngIf="showUpdateModal"
+        #genreUpdateModal
         [genre]="genreToUpdate"
         (update)="onGenreUpdated($event)"
         (cancel)="closeEditModal()">

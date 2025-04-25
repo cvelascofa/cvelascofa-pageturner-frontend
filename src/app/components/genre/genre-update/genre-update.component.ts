@@ -23,13 +23,13 @@ export class GenreUpdateComponent {
     this.genre = { ...genre };
     this.isVisible = true;
   }
-
+  
   closeModal(): void {
     this.isVisible = false;
     this.close.emit();
   }
 
-  updateGenre(): void {
+  onUpdate(): void {
     this.genreService.update(this.genre).subscribe({
       next: (updatedGenre) => {
         this.update.emit(updatedGenre);

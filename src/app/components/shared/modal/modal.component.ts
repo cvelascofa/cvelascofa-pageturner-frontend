@@ -19,23 +19,23 @@ export class ModalComponent {
 
   isVisible = false;
 
-  open(): void {
+  openModal(): void {
     this.isVisible = true;
     document.body.classList.add('modal-open');
   }
 
-  close(): void {
+  closeModal(): void {
     this.isVisible = false;
     document.body.classList.remove('modal-open');
   }
 
   onConfirm(): void {
     this.confirm.emit();
-    this.close();
+    this.closeModal();
   }
 
   onCancel(): void {
     this.cancel.emit();
-    this.close();
+    this.closeModal();
   }
 }
