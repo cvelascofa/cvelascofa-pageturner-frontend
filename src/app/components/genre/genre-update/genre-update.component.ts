@@ -32,7 +32,6 @@ export class GenreUpdateComponent {
   }
 
   onUpdate(): void {
-    console.log("onUpdate")
     this.genreService.update(this.genre).subscribe({
       next: (updatedGenre) => {
         this.confirm.emit(updatedGenre);

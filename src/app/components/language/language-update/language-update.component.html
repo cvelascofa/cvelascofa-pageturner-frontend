@@ -1,0 +1,53 @@
+<div
+  class="modal fade"
+  tabindex="-1"
+  [ngClass]="{ 'show': isVisible }"
+  [ngStyle]="{ display: isVisible ? 'block' : 'none' }"
+  role="dialog"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Update Language</h5>
+        <button type="button" class="close" (click)="closeModal()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <form (ngSubmit)="onUpdate()">
+          <div class="form-group">
+            <label for="languageName">Language Name</label>
+            <input
+              type="text"
+              id="languageName"
+              [(ngModel)]="language.name"
+              name="name"
+              class="form-control"
+              required
+            />
+          </div>
+
+          <div class="form-group mt-3">
+            <label for="languageCode">Language Code</label>
+            <input
+              type="text"
+              id="languageCode"
+              [(ngModel)]="language.code"
+              name="code"
+              class="form-control"
+              required
+            />
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Update</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop fade show" *ngIf="isVisible"></div>
