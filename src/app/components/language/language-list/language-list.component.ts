@@ -4,10 +4,11 @@ import { Language } from '../../../models/language/language.model';
 import { CommonModule } from '@angular/common';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { PaginationComponent } from '../../shared/pagination/pagination.component';
 
 @Component({
   selector: 'app-language-list',
-  imports: [CommonModule, ModalComponent],
+  imports: [CommonModule, ModalComponent, PaginationComponent],
   templateUrl: './language-list.component.html',
   styleUrl: './language-list.component.css'
 })
@@ -28,6 +29,11 @@ export class LanguageListComponent {
 
   ngOnInit(): void {
     this.getAllLanguages();
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.getAllLanguages(page);
   }
 
   getAllLanguages(page: number = 0): void {
@@ -75,7 +81,7 @@ export class LanguageListComponent {
     this.deleteModal.confirmButtonText = '';
     this.deleteModal.cancelButtonText = 'Accept';
   }
-  
+
   openDeleteModal(id: number) {
     this.prepareDeleteConfirmation(id);
     this.deleteModal.openModal();
