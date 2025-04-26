@@ -6,23 +6,26 @@ import { ModalComponent } from '../../shared/modal/modal.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PaginationComponent } from '../../shared/pagination/pagination.component';
 import { LanguageUpdateComponent } from '../language-update/language-update.component';
+import { LanguageSearchComponent } from '../language-search/language-search.component';
 
 @Component({
   selector: 'app-language-list',
-  imports: [CommonModule, ModalComponent, PaginationComponent, LanguageUpdateComponent],
+  imports: [CommonModule, ModalComponent, PaginationComponent, LanguageUpdateComponent, LanguageSearchComponent],
   templateUrl: './language-list.component.html',
   styleUrl: './language-list.component.css'
 })
 export class LanguageListComponent {
-  languages: any[] = [];
-
-  // Pagination
+  
+  // Search
   searchQuery: string = '';
+  
+  // Pagination
   pageSize: number = 10;
   currentPage: number = 0;
   totalPages: number = 0;
+  languages: any[] = [];
 
-   // Delete modal
+  // Delete modal
   languageToDelete: number | null = null; 
   @ViewChild('deleteModal') deleteModal!: ModalComponent;
 
@@ -127,5 +130,16 @@ export class LanguageListComponent {
     }
     this.updateModal.closeModal();
   }
+
+  onSearch(query: { [key: string]: string }) {
+    this.searchQuery = query['name'] || '';
+    this.currentPage = 0;
+    this.getAllLanguages();
+  }
   
+  onClearSearch() {
+    this.searchQuery = '';
+    this.currentPage = 0;
+    this.getAllLanguages();
+  }
 }

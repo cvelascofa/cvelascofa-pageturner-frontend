@@ -1,6 +1,11 @@
 <div class="container mt-4">
     <h3>Languages List</h3>
 
+    <app-language-search
+        (search)="onSearch($event)"
+        (clearSearch)="onClearSearch()">
+    </app-language-search>
+
     <table class="table table-striped" style="table-layout: fixed; width: 100%;">
         <thead>
             <tr>
@@ -25,7 +30,6 @@
         <div *ngIf="languages.length === 0" class="text-center mt-5">
             <p>No languages available.</p>
         </div>
-</div>
 
     <app-modal
         #deleteModal
@@ -51,3 +55,5 @@
         [totalPages]="totalPages"
         (pageChange)="onPageChange($event)">
     </app-pagination>
+    
+</div>
