@@ -1,5 +1,12 @@
 <div class="container mt-4">
+
     <h3>Genres List</h3>
+
+    <app-genre-search
+        (search)="onSearch($event)"
+        (clearSearch)="onClearSearch()">
+    </app-genre-search>
+
     <table class="table table-striped" style="table-layout: fixed; width: 100%;">
       <thead>
         <tr>
