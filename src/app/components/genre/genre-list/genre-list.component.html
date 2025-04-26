@@ -15,7 +15,7 @@
                 <td>{{ genre.name }}</td>
                 <td>
                     <button (click)="openEditModal(genre)" class="btn btn-warning btn-sm mr-2">Edit</button>
-                    <button (click)="prepareDeleteGenre(genre.id)" class="btn btn-danger btn-sm">Delete</button>
+                    <button (click)="openDeleteModal(genre.id)" class="btn btn-danger btn-sm">Delete</button>
                 </td>
             </tr>
         }
@@ -29,20 +29,20 @@
     }
 
     <app-modal
-        #confirmModal
-        [title]="confirmModal.title"
-        [message]="confirmModal.message"
-        [confirmButtonText]="confirmModal.confirmButtonText"
-        [cancelButtonText]="confirmModal.cancelButtonText"
-        [type]="confirmModal.type"
+        #deleteModal
+        [title]="deleteModal.title"
+        [message]="deleteModal.message"
+        [confirmButtonText]="deleteModal.confirmButtonText"
+        [cancelButtonText]="deleteModal.cancelButtonText"
+        [type]="deleteModal.type"
         (confirm)="onConfirmDelete()"
-        (cancel)="confirmModal.closeModal()">
+        (cancel)="deleteModal.closeModal()">
     </app-modal>  
     
     <app-genre-update
-        #genreUpdateModal
+        #updateModal
         [genre]="genreToUpdate"
-        (update)="onGenreUpdated($event)"
-        (cancel)="closeEditModal()">
+        (confirm)="onConfirmUpdate($event)"
+        (cancel)="updateModal.closeModal()">
     </app-genre-update>
 </div>

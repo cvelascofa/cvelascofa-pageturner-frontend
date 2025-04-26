@@ -30,6 +30,7 @@ export class ModalComponent {
   }
 
   onConfirm(): void {
+    console.log("onConfirm")
     this.confirm.emit();
     this.closeModal();
   }

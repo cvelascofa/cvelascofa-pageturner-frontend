@@ -10,29 +10,32 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './genre-update.component.html',
   styleUrl: './genre-update.component.css'
 })
+
 export class GenreUpdateComponent {
   isVisible = false;
   @Input() genre: Genre = { id: 0, name: '' };
   
-  @Output() close = new EventEmitter<void>();
-  @Output() update = new EventEmitter<Genre>();
+  @Output() cancel = new EventEmitter<void>();
+  @Output() confirm = new EventEmitter<Genre>();
 
   constructor(private genreService: GenreService) { }
 
   openModal(genre: Genre): void {
     this.genre = { ...genre };
     this.isVisible = true;
+    document.body.classList.add('modal-open');
   }
   
   closeModal(): void {
     this.isVisible = false;
-    this.close.emit();
+    document.body.classList.remove('modal-open');
   }
 
   onUpdate(): void {
+    console.log("onUpdate")
     this.genreService.update(this.genre).subscribe({
       next: (updatedGenre) => {
-        this.update.emit(updatedGenre);
+        this.confirm.emit(updatedGenre);
         this.closeModal();
       },
       error: (err) => {

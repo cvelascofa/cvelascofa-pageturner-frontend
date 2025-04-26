@@ -15,7 +15,7 @@ export class GenreService {
 
   getAll(): Observable<Genre[]> {
         return this.http.get<Genre[]>(`${AUTH_API}genres`);
-    }
+  }
   
   getById(genreId: number): Observable<Genre> {
       return this.http.get<Genre>(`${AUTH_API}genres/${genreId}`);
