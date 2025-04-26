@@ -5,10 +5,11 @@ import { CommonModule } from '@angular/common';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PaginationComponent } from '../../shared/pagination/pagination.component';
+import { LanguageUpdateComponent } from '../language-update/language-update.component';
 
 @Component({
   selector: 'app-language-list',
-  imports: [CommonModule, ModalComponent, PaginationComponent],
+  imports: [CommonModule, ModalComponent, PaginationComponent, LanguageUpdateComponent],
   templateUrl: './language-list.component.html',
   styleUrl: './language-list.component.css'
 })
@@ -24,6 +25,11 @@ export class LanguageListComponent {
    // Delete modal
   languageToDelete: number | null = null; 
   @ViewChild('deleteModal') deleteModal!: ModalComponent;
+
+  // Update mdoal
+  showUpdateModal = false;
+  languageToUpdate:  Language = { id: 0, name: '', code: '' };
+  @ViewChild(LanguageUpdateComponent) updateModal!: LanguageUpdateComponent;
 
   constructor(private languageService: LanguageService) {}
 
@@ -107,4 +113,19 @@ export class LanguageListComponent {
       this.delete(this.languageToDelete);
     }
   }
+
+  openEditModal(language: Language): void {
+    this.languageToUpdate = { ...language };
+    this.showUpdateModal = true;
+    this.updateModal.openModal(this.languageToUpdate);
+  }
+
+  onConfirmUpdate(updatedLanguage: Language): void {
+    const index = this.languages.findIndex(g => g.id === updatedLanguage.id);
+    if (index !== -1) {
+      this.languages[index] = updatedLanguage;
+    }
+    this.updateModal.closeModal();
+  }
+  
 }

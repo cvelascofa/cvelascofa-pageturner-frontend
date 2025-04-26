@@ -16,7 +16,7 @@
                 <td>{{ language.name }}</td>
                 <td>{{ language.code }}</td>
                 <td>
-                <button class="btn btn-warning btn-sm mr-2">Edit</button>
+                <button (click)="openEditModal(language)" class="btn btn-warning btn-sm mr-2">Edit</button>
                 <button (click)="openDeleteModal(language.id)" class="btn btn-danger btn-sm">Delete</button>
                 </td>
             </tr>
@@ -37,6 +37,14 @@
         (confirm)="onConfirmDelete()"
         (cancel)="deleteModal.closeModal()">
     </app-modal>
+
+    <app-language-update
+        #updateModal
+        [language]="languageToUpdate"
+        (confirm)="onConfirmUpdate($event)"
+        (cancel)="updateModal.closeModal()">
+    </app-language-update>
+
 
     <app-pagination
         [currentPage]="currentPage"
