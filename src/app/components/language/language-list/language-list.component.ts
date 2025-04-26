@@ -5,12 +5,12 @@ import { CommonModule } from '@angular/common';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PaginationComponent } from '../../shared/pagination/pagination.component';
-import { LanguageUpdateComponent } from '../language-update/language-update.component';
+import { LanguageFormComponent } from '../language-form/language-form.component';
 import { LanguageSearchComponent } from '../language-search/language-search.component';
 
 @Component({
   selector: 'app-language-list',
-  imports: [CommonModule, ModalComponent, PaginationComponent, LanguageUpdateComponent, LanguageSearchComponent],
+  imports: [CommonModule, ModalComponent, PaginationComponent, LanguageFormComponent, LanguageSearchComponent],
   templateUrl: './language-list.component.html',
   styleUrl: './language-list.component.css'
 })
@@ -29,10 +29,10 @@ export class LanguageListComponent {
   languageToDelete: number | null = null; 
   @ViewChild('deleteModal') deleteModal!: ModalComponent;
 
-  // Update mdoal
-  showUpdateModal = false;
+  // Form modal
+  showFormModal = false;
   languageToUpdate:  Language = { id: 0, name: '', code: '' };
-  @ViewChild(LanguageUpdateComponent) updateModal!: LanguageUpdateComponent;
+  @ViewChild(LanguageFormComponent) formModal!: LanguageFormComponent;
 
   constructor(private languageService: LanguageService) {}
 
@@ -119,8 +119,8 @@ export class LanguageListComponent {
 
   openEditModal(language: Language): void {
     this.languageToUpdate = { ...language };
-    this.showUpdateModal = true;
-    this.updateModal.openModal(this.languageToUpdate);
+    this.showFormModal = true;
+    this.formModal.openModal(this.languageToUpdate);
   }
 
   onConfirmUpdate(updatedLanguage: Language): void {
@@ -128,7 +128,7 @@ export class LanguageListComponent {
     if (index !== -1) {
       this.languages[index] = updatedLanguage;
     }
-    this.updateModal.closeModal();
+    this.formModal.closeModal();
   }
 
   onSearch(query: { [key: string]: string }) {

@@ -42,12 +42,12 @@
         (cancel)="deleteModal.closeModal()">
     </app-modal>
 
-    <app-language-update
+    <app-language-form
         #updateModal
         [language]="languageToUpdate"
         (confirm)="onConfirmUpdate($event)"
         (cancel)="updateModal.closeModal()">
-    </app-language-update>
+    </app-language-form>
 
 
     <app-pagination

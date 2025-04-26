@@ -6,12 +6,12 @@ import { CommonModule } from '@angular/common';
 
 
 @Component({
-  selector: 'app-language-update',
+  selector: 'app-language-form',
   imports: [FormsModule, CommonModule],
-  templateUrl: './language-update.component.html',
-  styleUrl: './language-update.component.css'
+  templateUrl: './language-form.component.html',
+  styleUrl: './language-form.component.css'
 })
-export class LanguageUpdateComponent {
+export class LanguageFormComponent {
   isVisible = false;
   @Input() language: Language = { id: 0, name: '', code: '' };
   
