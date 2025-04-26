@@ -16,6 +16,15 @@ export class GenreService {
   getAll(): Observable<Genre[]> {
         return this.http.get<Genre[]>(`${AUTH_API}genres`);
   }
+
+  getAllSearchPaginated(name: string = '', page: number = 0, size: number = 10): Observable<any> {
+    const params = {
+      name,
+      page: page.toString(),
+      size: size.toString()
+    };
+    return this.http.get<any>(`${AUTH_API}genres/search`, { params });
+  }
   
   getById(genreId: number): Observable<Genre> {
       return this.http.get<Genre>(`${AUTH_API}genres/${genreId}`);

@@ -6,16 +6,22 @@ import { ModalComponent } from '../../shared/modal/modal.component';
 import { CommonModule } from '@angular/common';
 import { GenreUpdateComponent } from '../genre-update/genre-update.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { PaginationComponent } from '../../shared/pagination/pagination.component';
 
 
 @Component({
   selector: 'app-genre-list',
-  imports: [RouterLink, ModalComponent, CommonModule, GenreUpdateComponent],
+  imports: [RouterLink, ModalComponent, CommonModule, GenreUpdateComponent, PaginationComponent],
   templateUrl: './genre-list.component.html',
   styleUrl: './genre-list.component.css'
 })
 export class GenreListComponent {
-  genres: Genre[] = [];
+
+  // Pagination
+  pageSize: number = 10;
+  currentPage: number = 0;
+  totalPages: number = 0;
+  genres: any[] = [];
 
   // Delete modal
   genreToDelete: number | null = null; 
@@ -34,10 +40,25 @@ export class GenreListComponent {
   ngOnInit(): void {
     this.getAllGenres();
   }
+
+  onPageChange(page: number): void {
+    // Cambiar la página actual
+    this.currentPage = page;
+    // Obtener los géneros correspondientes a la nueva página
+    this.getAllGenres(page);
+  }
   
-  getAllGenres() {
-    this.genreService.getAll().subscribe(genre => {
-      this.genres = genre;
+  getAllGenres(page: number = 0) {
+    this.genreService.getAllSearchPaginated('', page, this.pageSize).subscribe({
+      next: (response) => {
+        if (response && response.content && response.totalPages !== undefined) {
+          this.genres = response.content;
+          this.totalPages = response.totalPages;
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching genres:', err);
+      },
     });
   }
 
