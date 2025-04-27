@@ -1,0 +1,12 @@
+<div class="search-container mb-4 d-flex align-items-center my-3">
+    <input
+        type="text"
+        class="form-control flex-fill mr-2"
+        [(ngModel)]="query.name"
+        [placeholder]="placeholder"
+    />
+    <div class="button-group d-flex">
+        <button type="button" class="btn btn-primary mr-2" (click)="onSearch()">Search</button>
+        <button type="button" class="btn btn-secondary" (click)="clear()">Clear</button>
+    </div>
+</div>

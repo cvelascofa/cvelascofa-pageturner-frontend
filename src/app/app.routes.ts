@@ -6,10 +6,11 @@ import { GenreListComponent } from './components/genre/genre-list/genre-list.com
 import { LanguageListComponent } from './components/language/language-list/language-list.component';
 import { EditionTypeListComponent } from './components/edition-type/edition-type-list/edition-type-list.component';
 import { PublisherListComponent } from './components/publisher/publisher-list/publisher-list.component';
+import { AuthorListComponent } from './components/author/author-list/author-list.component';
 
 export const routes: Routes = [
     {
-        path: 'books',
+        path: 'book',
         component: BookListComponent
     },
     {
@@ -21,11 +22,11 @@ export const routes: Routes = [
         component: EditorPanelComponent
     },
     {
-        path: 'genres',
+        path: 'genre',
         component: GenreListComponent
     },
     {
-        path: 'languages',
+        path: 'language',
         component: LanguageListComponent
     },
     {
@@ -35,5 +36,9 @@ export const routes: Routes = [
     {
         path: 'publisher',
         component: PublisherListComponent
+    },
+    {
+        path: 'author',
+        component: AuthorListComponent
     }
 ];
