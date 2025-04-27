@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LanguageUpdateComponent } from './language-update.component';
+import { LanguageFormComponent } from './language-form.component';
 
-describe('LanguageUpdateComponent', () => {
-  let component: LanguageUpdateComponent;
-  let fixture: ComponentFixture<LanguageUpdateComponent>;
+describe('LanguageFormComponent', () => {
+  let component: LanguageFormComponent;
+  let fixture: ComponentFixture<LanguageFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LanguageUpdateComponent]
+      imports: [LanguageFormComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(LanguageUpdateComponent);
+    fixture = TestBed.createComponent(LanguageFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

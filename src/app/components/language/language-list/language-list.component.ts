@@ -5,12 +5,12 @@ import { CommonModule } from '@angular/common';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PaginationComponent } from '../../shared/pagination/pagination.component';
-import { LanguageUpdateComponent } from '../language-update/language-update.component';
+import { LanguageFormComponent } from '../language-form/language-form.component';
 import { LanguageSearchComponent } from '../language-search/language-search.component';
 
 @Component({
   selector: 'app-language-list',
-  imports: [CommonModule, ModalComponent, PaginationComponent, LanguageUpdateComponent, LanguageSearchComponent],
+  imports: [CommonModule, ModalComponent, PaginationComponent, LanguageFormComponent, LanguageSearchComponent],
   templateUrl: './language-list.component.html',
   styleUrl: './language-list.component.css'
 })
@@ -29,10 +29,10 @@ export class LanguageListComponent {
   languageToDelete: number | null = null; 
   @ViewChild('deleteModal') deleteModal!: ModalComponent;
 
-  // Update mdoal
-  showUpdateModal = false;
+  // Form modal
+  showFormModal = false;
   languageToUpdate:  Language = { id: 0, name: '', code: '' };
-  @ViewChild(LanguageUpdateComponent) updateModal!: LanguageUpdateComponent;
+  @ViewChild(LanguageFormComponent) formModal!: LanguageFormComponent;
 
   constructor(private languageService: LanguageService) {}
 
@@ -99,10 +99,20 @@ export class LanguageListComponent {
   delete(id: number): void {
     this.languageService.delete(id).subscribe({
       next: () => {
-        this.languages = this.languages.filter(g => g.id !== id);
-        this.deleteModal.closeModal();
-        this.prepareDeleteSuccess();
-        this.deleteModal.openModal();
+      this.languages = this.languages.filter(language => language.id !== id);
+      if (this.languages.length < this.pageSize) {
+        if (this.currentPage < this.totalPages - 1) {
+          this.getAllLanguages(this.currentPage + 1);
+        } else {
+          if (this.currentPage > 0) {
+            this.currentPage--;
+            this.getAllLanguages(this.currentPage);
+          }
+        }
+      } else {
+        this.getAllLanguages(this.currentPage);
+      }
+      this.deleteModal.closeModal();
       },
       error: (err: HttpErrorResponse) => {
         this.prepareDeleteError(err);
@@ -117,19 +127,40 @@ export class LanguageListComponent {
     }
   }
 
+  openCreateModal(): void {
+    this.openFormModal({ id: 0, name: '', code: '' });
+  }
+  
   openEditModal(language: Language): void {
-    this.languageToUpdate = { ...language };
-    this.showUpdateModal = true;
-    this.updateModal.openModal(this.languageToUpdate);
+    this.openFormModal(language);
   }
 
-  onConfirmUpdate(updatedLanguage: Language): void {
+  openFormModal(language: Language): void {
+    this.languageToUpdate = { ...language };
+    this.showFormModal = true;
+    this.formModal.openModal(this.languageToUpdate);
+  }
+
+  onConfirmForm(updatedLanguage: Language): void {
+
+    if (updatedLanguage.id == 0) {
+      this.create(updatedLanguage);
+    } else {
+      this.udpate(updatedLanguage);
+    }
+  }
+  
+  udpate(updatedLanguage: Language): void {
     const index = this.languages.findIndex(g => g.id === updatedLanguage.id);
     if (index !== -1) {
       this.languages[index] = updatedLanguage;
     }
-    this.updateModal.closeModal();
   }
+
+  create(newLanguage: Language): void {
+    this.languages.push(newLanguage);
+  }
+
 
   onSearch(query: { [key: string]: string }) {
     this.searchQuery = query['name'] || '';
