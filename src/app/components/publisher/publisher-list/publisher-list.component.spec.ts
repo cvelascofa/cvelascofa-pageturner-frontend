@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GenreUpdateComponent } from './genre-update.component';
+import { PublisherListComponent } from './publisher-list.component';
 
-describe('GenreUpdateComponent', () => {
-  let component: GenreUpdateComponent;
-  let fixture: ComponentFixture<GenreUpdateComponent>;
+describe('PublisherListComponent', () => {
+  let component: PublisherListComponent;
+  let fixture: ComponentFixture<PublisherListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GenreUpdateComponent]
+      imports: [PublisherListComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(GenreUpdateComponent);
+    fixture = TestBed.createComponent(PublisherListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

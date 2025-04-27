@@ -1,0 +1,64 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="mb-0">Publishers List</h3>
+        <button class="btn btn-success" (click)="openCreateModal()">+ Create Publisher</button>
+    </div>
+
+    <app-publisher-search
+        (search)="onSearch($event)"
+        (clearSearch)="onClearSearch()">
+    </app-publisher-search>
+
+    <table class="table table-striped" style="table-layout: fixed; width: 100%;">
+        <thead>
+            <tr>
+                <th style="width: 10%;">ID</th>
+                <th style="width: 25%;">Name</th>
+                <th style="width: 25%;">Website</th>
+                <th style="width: 20%;">Country</th>
+                <th style="width: 20%;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let publisher of publishers">
+                <td>{{ publisher.id }}</td>
+                <td>{{ publisher.name }}</td>
+                <td>{{ publisher.website }}</td>
+                <td>{{ publisher.country }}</td>
+                <td>
+                    <button (click)="openEditModal(publisher)" class="btn btn-warning btn-sm mr-2">Edit</button>
+                    <button (click)="openDeleteModal(publisher.id)" class="btn btn-danger btn-sm">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="publishers.length === 0" class="text-center mt-5">
+        <p>No publishers available.</p>
+    </div>
+
+    <app-modal
+        #deleteModal
+        [title]="deleteModal.title"
+        [message]="deleteModal.message"
+        [confirmButtonText]="deleteModal.confirmButtonText"
+        [cancelButtonText]="deleteModal.cancelButtonText"
+        [type]="deleteModal.type"
+        (confirm)="onConfirmDelete()"
+        (cancel)="deleteModal.closeModal()">
+    </app-modal>
+
+    <app-publisher-form
+        #updateModal
+        [publisher]="publisherToUpdate"
+        (confirm)="onConfirmForm($event)"
+        (cancel)="updateModal.closeModal()">
+    </app-publisher-form>
+
+    <app-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChange($event)">
+    </app-pagination>
+
+</div>

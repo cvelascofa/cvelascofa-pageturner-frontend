@@ -1,11 +1,20 @@
 <div class="container mt-4">
-    <h3>Genres List</h3>
-    <table class="table table-striped">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="mb-0">Genres List</h3>
+        <button class="btn btn-success" (click)="openCreateModal()">+ Create Genre</button>
+    </div>
+    
+    <app-genre-search
+        (search)="onSearch($event)"
+        (clearSearch)="onClearSearch()">
+    </app-genre-search>
+
+    <table class="table table-striped" style="table-layout: fixed; width: 100%;">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Actions</th>
+          <th style="width: 10%;">ID</th>
+          <th style="width: 60%;">Name</th>
+          <th style="width: 30%;">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -15,7 +24,7 @@
                 <td>{{ genre.name }}</td>
                 <td>
                     <button (click)="openEditModal(genre)" class="btn btn-warning btn-sm mr-2">Edit</button>
-                    <button (click)="prepareDeleteGenre(genre.id)" class="btn btn-danger btn-sm">Delete</button>
+                    <button (click)="openDeleteModal(genre.id)" class="btn btn-danger btn-sm">Delete</button>
                 </td>
             </tr>
         }
@@ -29,20 +38,26 @@
     }
 
     <app-modal
-        #confirmModal
-        [title]="confirmModal.title"
-        [message]="confirmModal.message"
-        [confirmButtonText]="confirmModal.confirmButtonText"
-        [cancelButtonText]="confirmModal.cancelButtonText"
-        [type]="confirmModal.type"
+        #deleteModal
+        [title]="deleteModal.title"
+        [message]="deleteModal.message"
+        [confirmButtonText]="deleteModal.confirmButtonText"
+        [cancelButtonText]="deleteModal.cancelButtonText"
+        [type]="deleteModal.type"
         (confirm)="onConfirmDelete()"
-        (cancel)="confirmModal.closeModal()">
+        (cancel)="deleteModal.closeModal()">
     </app-modal>  
     
-    <app-genre-update
-        #genreUpdateModal
+    <app-genre-form
+        #updateModal
         [genre]="genreToUpdate"
-        (update)="onGenreUpdated($event)"
-        (cancel)="closeEditModal()">
-    </app-genre-update>
+        (confirm)="onConfirmForm($event)"
+        (cancel)="updateModal.closeModal()">
+    </app-genre-form>
+
+    <app-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChange($event)">
+    </app-pagination>
 </div>

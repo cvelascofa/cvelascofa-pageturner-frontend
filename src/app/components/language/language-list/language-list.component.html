@@ -1,0 +1,63 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="mb-0">Languages List</h3>
+        <button class="btn btn-success" (click)="openCreateModal()">+ Create Language</button>
+    </div>
+      
+
+    <app-language-search
+        (search)="onSearch($event)"
+        (clearSearch)="onClearSearch()">
+    </app-language-search>
+
+    <table class="table table-striped" style="table-layout: fixed; width: 100%;">
+        <thead>
+            <tr>
+                <th style="width: 15%;">ID</th>
+                <th style="width: 35%;">Name</th>
+                <th style="width: 30%;">Code</th>
+                <th style="width: 20%;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let language of languages">
+                <td>{{ language.id }}</td>
+                <td>{{ language.name }}</td>
+                <td>{{ language.code }}</td>
+                <td>
+                <button (click)="openEditModal(language)" class="btn btn-warning btn-sm mr-2">Edit</button>
+                <button (click)="openDeleteModal(language.id)" class="btn btn-danger btn-sm">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+        <div *ngIf="languages.length === 0" class="text-center mt-5">
+            <p>No languages available.</p>
+        </div>
+
+    <app-modal
+        #deleteModal
+        [title]="deleteModal.title"
+        [message]="deleteModal.message"
+        [confirmButtonText]="deleteModal.confirmButtonText"
+        [cancelButtonText]="deleteModal.cancelButtonText"
+        [type]="deleteModal.type"
+        (confirm)="onConfirmDelete()"
+        (cancel)="deleteModal.closeModal()">
+    </app-modal>
+
+    <app-language-form
+        #updateModal
+        [language]="languageToUpdate"
+        (confirm)="onConfirmForm($event)"
+        (cancel)="updateModal.closeModal()">
+    </app-language-form>
+
+
+    <app-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChange($event)">
+    </app-pagination>
+    
+</div>

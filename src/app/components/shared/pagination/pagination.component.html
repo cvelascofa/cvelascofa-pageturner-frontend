@@ -1,0 +1,31 @@
+<div class="d-flex justify-content-center align-items-center mt-3 mb-5">
+  <button 
+    type="button" 
+    class="btn me-2" 
+    (click)="goToPreviousPage()" 
+    [disabled]="currentPage === 0">
+    <i class="bi bi-arrow-left"></i> Previous
+  </button>
+
+  <ng-container *ngFor="let page of getPageNumbers()">
+    <button
+      *ngIf="page !== '...'; else dots"
+      type="button"
+      class="btn btn-outline-dark mr-2"
+      (click)="goToPage(page)"
+      [class.active]="currentPage === page">
+      {{ getPageLabel(page) }}
+    </button>
+    <ng-template #dots>
+      <span class="mx-2">...</span>
+    </ng-template>
+  </ng-container>
+
+  <button 
+    type="button" 
+    class="btn ms-2" 
+    (click)="goToNextPage()" 
+    [disabled]="currentPage === totalPages - 1">
+    Next <i class="bi bi-arrow-right"></i>
+  </button>
+</div>
