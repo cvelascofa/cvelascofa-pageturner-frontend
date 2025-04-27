@@ -99,10 +99,20 @@ export class LanguageListComponent {
   delete(id: number): void {
     this.languageService.delete(id).subscribe({
       next: () => {
-        this.languages = this.languages.filter(g => g.id !== id);
-        this.deleteModal.closeModal();
-        this.prepareDeleteSuccess();
-        this.deleteModal.openModal();
+      this.languages = this.languages.filter(language => language.id !== id);
+      if (this.languages.length < this.pageSize) {
+        if (this.currentPage < this.totalPages - 1) {
+          this.getAllLanguages(this.currentPage + 1);
+        } else {
+          if (this.currentPage > 0) {
+            this.currentPage--;
+            this.getAllLanguages(this.currentPage);
+          }
+        }
+      } else {
+        this.getAllLanguages(this.currentPage);
+      }
+      this.deleteModal.closeModal();
       },
       error: (err: HttpErrorResponse) => {
         this.prepareDeleteError(err);
