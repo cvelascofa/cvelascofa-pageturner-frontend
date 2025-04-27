@@ -7,10 +7,11 @@ import { EditionTypeService } from '../../../_service/edition-type/edition-type.
 import { HttpErrorResponse } from '@angular/common/http';
 import { EditionTypeSearchComponent } from '../edition-type-search/edition-type-search.component';
 import { FormsModule } from '@angular/forms';
+import { EditionTypeFormComponent } from '../edition-type-form/edition-type-form.component';
 
 @Component({
   selector: 'app-edition-type-list',
-  imports: [CommonModule, PaginationComponent, ModalComponent, EditionTypeSearchComponent, FormsModule],
+  imports: [CommonModule, PaginationComponent, ModalComponent, EditionTypeSearchComponent, FormsModule, EditionTypeFormComponent],
   templateUrl: './edition-type-list.component.html',
   styleUrl: './edition-type-list.component.css'
 })
@@ -32,7 +33,7 @@ export class EditionTypeListComponent {
   // Update modal
   showFormModal = false;
   editionTypeToUpdate: EditionType = { id: 0, name: '' };
-  //@ViewChild(EditionTypeFormComponent) formModal!: EditionTypeFormComponent;
+  @ViewChild(EditionTypeFormComponent) formModal!: EditionTypeFormComponent;
 
   constructor(
     private editionTypeService: EditionTypeService
@@ -141,4 +142,25 @@ export class EditionTypeListComponent {
     this.getAllEditionTypes();
   }
 
+  openEditModal(editionType: EditionType): void {
+    this.openFormModal(editionType);
+  }
+
+  openCreateModal(): void {
+    this.openFormModal({ id: 0, name: ''});
+  }
+
+  openFormModal(editionType: EditionType): void {
+    this.editionTypeToUpdate = { ...editionType };
+    this.showFormModal = true;
+    this.formModal.openModal(this.editionTypeToUpdate);
+  }
+
+  onConfirmForm(updatedEditionType: EditionType): void {
+    const index = this.editionTypes.findIndex(et => et.id === updatedEditionType.id);
+    if (index !== -1) {
+      this.editionTypes[index] = updatedEditionType;
+    }
+    this.formModal.closeModal();
+  }
 }

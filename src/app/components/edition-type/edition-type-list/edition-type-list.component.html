@@ -1,10 +1,7 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h3 class="mb-0">Edition Types List</h3>
-      <button class="btn btn-success">+ Create Edition Type</button>
-       <!--
       <button class="btn btn-success" (click)="openCreateModal()">+ Create Edition Type</button>
-          --> 
     </div>
 
     <app-edition-type-search
@@ -25,10 +22,7 @@
           <td>{{ editionType.id }}</td>
           <td>{{ editionType.name }}</td>
           <td>
-                         <!--
-
             <button (click)="openEditModal(editionType)" class="btn btn-warning btn-sm mr-2">Edit</button>
-                --> 
             <button (click)="openDeleteModal(editionType.id)" class="btn btn-danger btn-sm">Delete</button>
           </td>
         </tr>
@@ -50,15 +44,13 @@
         (cancel)="deleteModal.closeModal()">
     </app-modal>
 
-    <!--
     <app-edition-type-form
-      #updateModal
+      #formModal
       [editionType]="editionTypeToUpdate"
       (confirm)="onConfirmForm($event)"
-      (cancel)="updateModal.closeModal()">
+      (cancel)="formModal.closeModal()">
     </app-edition-type-form>
-    --> 
-  
+
     <app-pagination
       [currentPage]="currentPage"
       [totalPages]="totalPages"
