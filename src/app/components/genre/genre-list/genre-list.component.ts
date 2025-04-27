@@ -104,10 +104,20 @@ export class GenreListComponent {
   delete(id: number): void {
     this.genreService.delete(id).subscribe({
       next: () => {
-        this.genres = this.genres.filter(g => g.id !== id);
-        this.deleteModal.closeModal();
-        this.prepareDeleteSuccess();
-        this.deleteModal.openModal();
+          this.genres = this.genres.filter(language => language.id !== id);
+          if (this.genres.length < this.pageSize) {
+            if (this.currentPage < this.totalPages - 1) {
+              this.getAllGenres(this.currentPage + 1);
+            } else {
+              if (this.currentPage > 0) {
+                this.currentPage--;
+                this.getAllGenres(this.currentPage);
+              }
+            }
+          } else {
+            this.getAllGenres(this.currentPage);
+          }
+          this.deleteModal.closeModal();
       },
       error: (err: HttpErrorResponse) => {
         this.prepareDeleteError(err);
