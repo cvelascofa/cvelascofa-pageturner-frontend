@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './language-form.component.html',
   styleUrl: './language-form.component.css'
 })
+
 export class LanguageFormComponent {
   isVisible: boolean = false;
   isEditMode: boolean = false;
