@@ -5,6 +5,7 @@ import { EditorPanelComponent } from './components/editor-panel/editor-panel.com
 import { GenreListComponent } from './components/genre/genre-list/genre-list.component';
 import { LanguageListComponent } from './components/language/language-list/language-list.component';
 import { EditionTypeListComponent } from './components/edition-type/edition-type-list/edition-type-list.component';
+import { PublisherListComponent } from './components/publisher/publisher-list/publisher-list.component';
 
 export const routes: Routes = [
     {
@@ -30,5 +31,9 @@ export const routes: Routes = [
     {
         path: 'edition-type',
         component: EditionTypeListComponent
+    },
+    {
+        path: 'publisher',
+        component: PublisherListComponent
     }
 ];
