@@ -5,14 +5,17 @@ import { ModalComponent } from '../../shared/modal/modal.component';
 import { EditionType } from '../../../models/edition-type/edition-type.model';
 import { EditionTypeService } from '../../../_service/edition-type/edition-type.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { EditionTypeSearchComponent } from '../edition-type-search/edition-type-search.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-edition-type-list',
-  imports: [CommonModule, PaginationComponent, ModalComponent],
+  imports: [CommonModule, PaginationComponent, ModalComponent, EditionTypeSearchComponent, FormsModule],
   templateUrl: './edition-type-list.component.html',
   styleUrl: './edition-type-list.component.css'
 })
 export class EditionTypeListComponent {
+
   // Search
   searchQuery: string = '';
 
@@ -124,6 +127,18 @@ export class EditionTypeListComponent {
   openDeleteModal(id: number) {
     this.prepareDeleteConfirmation(id);
     this.deleteModal.openModal();
+  }
+
+  onSearch(query: { name: string }) {
+    this.searchQuery = query.name || '';
+    this.currentPage = 0;
+    this.getAllEditionTypes();
+  }
+
+  onClearSearch() {
+    this.searchQuery = '';
+    this.currentPage = 0;
+    this.getAllEditionTypes();
   }
 
 }

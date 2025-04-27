@@ -6,6 +6,11 @@
       <button class="btn btn-success" (click)="openCreateModal()">+ Create Edition Type</button>
           --> 
     </div>
+
+    <app-edition-type-search
+        (search)="onSearch($event)"
+        (clearSearch)="onClearSearch()">
+    </app-edition-type-search>
   
     <table class="table table-striped" style="table-layout: fixed; width: 100%;">
       <thead>
@@ -20,11 +25,11 @@
           <td>{{ editionType.id }}</td>
           <td>{{ editionType.name }}</td>
           <td>
-            <button class="btn btn-warning btn-sm mr-2">Edit</button>
-            <button (click)="openDeleteModal(editionType.id)" class="btn btn-danger btn-sm">Delete</button>
-             <!--
+                         <!--
+
             <button (click)="openEditModal(editionType)" class="btn btn-warning btn-sm mr-2">Edit</button>
                 --> 
+            <button (click)="openDeleteModal(editionType.id)" class="btn btn-danger btn-sm">Delete</button>
           </td>
         </tr>
       </tbody>
