@@ -4,10 +4,11 @@ import { PaginationComponent } from '../../shared/pagination/pagination.componen
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { EditionType } from '../../../models/edition-type/edition-type.model';
 import { EditionTypeService } from '../../../_service/edition-type/edition-type.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-edition-type-list',
-  imports: [CommonModule, PaginationComponent],
+  imports: [CommonModule, PaginationComponent, ModalComponent],
   templateUrl: './edition-type-list.component.html',
   styleUrl: './edition-type-list.component.css'
 })
@@ -55,6 +56,74 @@ export class EditionTypeListComponent {
         console.error('Error fetching edition types:', err);
       },
     });
+  }
+
+  onConfirmDelete(): void {
+    if (this.editionTypeToDelete !== null) {
+      this.delete(this.editionTypeToDelete);
+    }
+  }
+
+  delete(id: number): void {
+    this.editionTypeService.delete(id).subscribe({
+      next: () => {
+        this.editionTypes = this.editionTypes.filter(editionType => editionType.id !== id);
+        if (this.editionTypes.length < this.pageSize) {
+          if (this.currentPage < this.totalPages - 1) {
+            this.getAllEditionTypes(this.currentPage + 1);
+          } else {
+            if (this.currentPage > 0) {
+              this.currentPage--;
+              this.getAllEditionTypes(this.currentPage);
+            }
+          }
+        } else {
+          this.getAllEditionTypes(this.currentPage);
+        }
+        this.deleteModal.closeModal();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.prepareDeleteError(err);
+        this.deleteModal.openModal();
+      }
+    });
+  }
+
+  prepareDeleteConfirmation(id: number): void {
+    this.editionTypeToDelete = id;
+    this.deleteModal.title = 'Delete Edition Type';
+    this.deleteModal.message = 'Are you sure you want to delete this edition type?';
+    this.deleteModal.confirmButtonText = 'Delete';
+    this.deleteModal.cancelButtonText = 'Cancel';
+    this.deleteModal.type = 'danger';
+  }
+
+  prepareDeleteSuccess() {
+    this.deleteModal.title = 'Edition Type Deleted';
+    this.deleteModal.message = 'The edition type has been successfully deleted.';
+    this.deleteModal.type = 'info';
+    this.deleteModal.confirmButtonText = '';
+    this.deleteModal.cancelButtonText = 'Accept';
+  }
+
+  prepareDeleteError(err: HttpErrorResponse): void {
+    if (err.status === 409) {
+      this.deleteModal.message = 'This edition type cannot be deleted because it is still referenced by books.';
+    } else if (err.status === 404) {
+      this.deleteModal.message = 'Edition type not found.';
+    } else {
+      this.deleteModal.message = 'Something went wrong. Please try again.';
+    }
+
+    this.deleteModal.title = 'Error';
+    this.deleteModal.type = 'info';
+    this.deleteModal.confirmButtonText = '';
+    this.deleteModal.cancelButtonText = 'Accept';
+  }
+
+  openDeleteModal(id: number) {
+    this.prepareDeleteConfirmation(id);
+    this.deleteModal.openModal();
   }
 
 }

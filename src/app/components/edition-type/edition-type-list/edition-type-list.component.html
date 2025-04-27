@@ -21,10 +21,9 @@
           <td>{{ editionType.name }}</td>
           <td>
             <button class="btn btn-warning btn-sm mr-2">Edit</button>
-            <button class="btn btn-danger btn-sm">Delete</button>
+            <button (click)="openDeleteModal(editionType.id)" class="btn btn-danger btn-sm">Delete</button>
              <!--
             <button (click)="openEditModal(editionType)" class="btn btn-warning btn-sm mr-2">Edit</button>
-            <button (click)="openDeleteModal(editionType.id)" class="btn btn-danger btn-sm">Delete</button>
                 --> 
           </td>
         </tr>
@@ -34,18 +33,19 @@
     <div *ngIf="editionTypes.length === 0" class="text-center mt-5">
       <p>No edition types available.</p>
     </div>
- <!--
+
     <app-modal
-      #deleteModal
-      [title]="deleteModal.title"
-      [message]="deleteModal.message"
-      [confirmButtonText]="deleteModal.confirmButtonText"
-      [cancelButtonText]="deleteModal.cancelButtonText"
-      [type]="deleteModal.type"
-      (confirm)="onConfirmDelete()"
-      (cancel)="deleteModal.closeModal()">
+        #deleteModal
+        [title]="deleteModal.title"
+        [message]="deleteModal.message"
+        [confirmButtonText]="deleteModal.confirmButtonText"
+        [cancelButtonText]="deleteModal.cancelButtonText"
+        [type]="deleteModal.type"
+        (confirm)="onConfirmDelete()"
+        (cancel)="deleteModal.closeModal()">
     </app-modal>
-  
+
+    <!--
     <app-edition-type-form
       #updateModal
       [editionType]="editionTypeToUpdate"
