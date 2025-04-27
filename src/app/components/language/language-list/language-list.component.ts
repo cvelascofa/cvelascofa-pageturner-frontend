@@ -142,7 +142,6 @@ export class LanguageListComponent {
   }
 
   onConfirmForm(updatedLanguage: Language): void {
-
     if (updatedLanguage.id == 0) {
       this.create(updatedLanguage);
     } else {

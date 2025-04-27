@@ -37,4 +37,8 @@ export class GenreService {
   update(genre: Genre): Observable<Genre> {
     return this.http.put<Genre>(`${AUTH_API}genres/${genre.id}`, genre);
   }
+
+  create(genre: Genre): Observable<Genre> {
+    return this.http.post<Genre>(`${AUTH_API}genres`, genre);
+  }
 }

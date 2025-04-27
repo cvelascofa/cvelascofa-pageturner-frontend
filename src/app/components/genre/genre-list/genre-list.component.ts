@@ -3,7 +3,7 @@ import { Genre } from '../../../models/genre/genre.model';
 import { GenreService } from '../../../_service/genre/genre.service';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { CommonModule } from '@angular/common';
-import { GenreUpdateComponent } from '../genre-update/genre-update.component';
+import { GenreFormComponent } from '../genre-form/genre-form.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { PaginationComponent } from '../../shared/pagination/pagination.component';
@@ -12,7 +12,7 @@ import { GenreSearchComponent } from '../genre-search/genre-search.component';
 
 @Component({
   selector: 'app-genre-list',
-  imports: [ModalComponent, CommonModule, GenreUpdateComponent, FormsModule, PaginationComponent, GenreSearchComponent],
+  imports: [ModalComponent, CommonModule, GenreFormComponent, FormsModule, PaginationComponent, GenreSearchComponent],
   templateUrl: './genre-list.component.html',
   styleUrl: './genre-list.component.css'
 })
@@ -32,9 +32,9 @@ export class GenreListComponent {
   @ViewChild('deleteModal') deleteModal!: ModalComponent;
 
   // Update mdoal
-  showUpdateModal = false;
+  showFormModal = false;
   genreToUpdate:  Genre = { id: 0, name: '' };
-  @ViewChild(GenreUpdateComponent) updateModal!: GenreUpdateComponent;
+  @ViewChild(GenreFormComponent) formModal!: GenreFormComponent;
 
   constructor(
       private genreService: GenreService
@@ -101,12 +101,6 @@ export class GenreListComponent {
     this.deleteModal.openModal();
   }
 
-  openEditModal(genre: Genre): void {
-    this.genreToUpdate = { ...genre };
-    this.showUpdateModal = true;
-    this.updateModal.openModal(this.genreToUpdate);
-  }
-
   delete(id: number): void {
     this.genreService.delete(id).subscribe({
       next: () => {
@@ -127,7 +121,7 @@ export class GenreListComponent {
     if (index !== -1) {
       this.genres[index] = updatedGenre;
     }
-    this.updateModal.closeModal();
+    this.formModal.closeModal();
   }
 
   onConfirmDelete(): void {
@@ -147,4 +141,19 @@ export class GenreListComponent {
     this.currentPage = 0;
     this.getAllGenres();
   }
+
+  openCreateModal(): void {
+    this.openFormModal({ id: 0, name: ''});
+  }
+  
+  openEditModal(genre: Genre): void {
+    this.openFormModal(genre);
+  }
+
+  openFormModal(genre: Genre): void {
+    this.genreToUpdate = { ...genre };
+    this.showFormModal = true;
+    this.formModal.openModal(this.genreToUpdate);
+  }
+
 } 

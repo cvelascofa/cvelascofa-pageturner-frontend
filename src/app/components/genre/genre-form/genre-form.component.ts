@@ -5,14 +5,16 @@ import { GenreService } from '../../../_service/genre/genre.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-genre-update',
+  selector: 'app-genre-form',
   imports: [CommonModule, FormsModule],
-  templateUrl: './genre-update.component.html',
-  styleUrl: './genre-update.component.css'
+  templateUrl: './genre-form.component.html',
+  styleUrl: './genre-form.component.css'
 })
 
-export class GenreUpdateComponent {
-  isVisible = false;
+export class GenreFormComponent {
+  isVisible: boolean  = false;
+  isEditMode: boolean = false;
+  
   @Input() genre: Genre = { id: 0, name: '' };
   
   @Output() cancel = new EventEmitter<void>();
@@ -22,6 +24,7 @@ export class GenreUpdateComponent {
 
   openModal(genre: Genre): void {
     this.genre = { ...genre };
+    this.isEditMode = genre.id !== 0;
     this.isVisible = true;
     document.body.classList.add('modal-open');
   }
@@ -31,7 +34,12 @@ export class GenreUpdateComponent {
     document.body.classList.remove('modal-open');
   }
 
-  onUpdate(): void {
+  onSubmit(): void {
+    this.isEditMode ? this.update() : this.create();
+  }
+
+
+  update(): void {
     this.genreService.update(this.genre).subscribe({
       next: (updatedGenre) => {
         this.confirm.emit(updatedGenre);
@@ -41,5 +49,17 @@ export class GenreUpdateComponent {
         console.error('Error updating genre:', err);
       }
     });
+  }
+
+  create() {
+    this.genreService.create(this.genre).subscribe({
+      next: (newLanguage) => {
+        this.confirm.emit(newLanguage);
+        this.closeModal();
+      },
+      error: (err) => {
+        console.error('Error creating language: ', err);
+      }
+    })
   }
 }
