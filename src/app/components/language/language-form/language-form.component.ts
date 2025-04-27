@@ -12,7 +12,9 @@ import { CommonModule } from '@angular/common';
   styleUrl: './language-form.component.css'
 })
 export class LanguageFormComponent {
-  isVisible = false;
+  isVisible: boolean = false;
+  isEditMode: boolean = false;
+
   @Input() language: Language = { id: 0, name: '', code: '' };
   
   @Output() cancel = new EventEmitter<void>();
@@ -22,6 +24,7 @@ export class LanguageFormComponent {
 
   openModal(language: Language): void {
     this.language = { ...language };
+    this.isEditMode = language.id !== 0;
     this.isVisible = true;
     document.body.classList.add('modal-open');
   }
@@ -31,14 +34,30 @@ export class LanguageFormComponent {
     document.body.classList.remove('modal-open');
   }
 
-  onUpdate(): void {
+  onSubmit(): void {
+    this.isEditMode ? this.update() : this.create();
+  }
+
+  update() {
     this.languageService.update(this.language).subscribe({
-      next: (updatedlanguage) => {
-        this.confirm.emit(updatedlanguage);
+      next: (updatedLanguage) => {
+        this.confirm.emit(updatedLanguage);
         this.closeModal();
       },
       error: (err) => {
-        console.error('Error updating language:', err);
+        console.error('Error updating language: ', err);
+      }
+    })
+  }
+
+  create() {
+    this.languageService.create(this.language).subscribe({
+      next: (newLanguage) => {
+        this.confirm.emit(newLanguage);
+        this.closeModal();
+      },
+      error: (err) => {
+        console.error('Error creating language: ', err);
       }
     });
   }

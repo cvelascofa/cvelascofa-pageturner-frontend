@@ -117,19 +117,40 @@ export class LanguageListComponent {
     }
   }
 
+  openCreateModal(): void {
+    this.openFormModal({ id: 0, name: '', code: '' });
+  }
+  
   openEditModal(language: Language): void {
+    this.openFormModal(language);
+  }
+
+  openFormModal(language: Language): void {
     this.languageToUpdate = { ...language };
     this.showFormModal = true;
     this.formModal.openModal(this.languageToUpdate);
   }
 
-  onConfirmUpdate(updatedLanguage: Language): void {
+  onConfirmForm(updatedLanguage: Language): void {
+
+    if (updatedLanguage.id == 0) {
+      this.create(updatedLanguage);
+    } else {
+      this.udpate(updatedLanguage);
+    }
+  }
+  
+  udpate(updatedLanguage: Language): void {
     const index = this.languages.findIndex(g => g.id === updatedLanguage.id);
     if (index !== -1) {
       this.languages[index] = updatedLanguage;
     }
-    this.formModal.closeModal();
   }
+
+  create(newLanguage: Language): void {
+    this.languages.push(newLanguage);
+  }
+
 
   onSearch(query: { [key: string]: string }) {
     this.searchQuery = query['name'] || '';

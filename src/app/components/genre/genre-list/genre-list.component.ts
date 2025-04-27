@@ -122,7 +122,7 @@ export class GenreListComponent {
     });
   }
 
-  onConfirmUpdate(updatedGenre: Genre): void {
+  onConfirmForm(updatedGenre: Genre): void {
     const index = this.genres.findIndex(g => g.id === updatedGenre.id);
     if (index !== -1) {
       this.genres[index] = updatedGenre;
