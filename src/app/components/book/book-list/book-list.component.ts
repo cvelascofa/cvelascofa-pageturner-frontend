@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { BookService } from '../../../_service/book/book.service';
 import { Book } from '../../../models/book/book.model';
-import { RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +12,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-book-list',
-  imports: [RouterLink, ModalComponent, FormsModule, PaginationComponent, BookSearchComponent, CommonModule, BookFormComponent],
+  imports: [ModalComponent, FormsModule, PaginationComponent, BookSearchComponent, CommonModule, BookFormComponent],
   templateUrl: './book-list.component.html',
   styleUrl: './book-list.component.css'
 })
