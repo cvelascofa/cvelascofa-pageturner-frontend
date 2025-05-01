@@ -19,7 +19,7 @@ export const routes: Routes = [
     },
     {
         path: '',
-        component: EditorPanelComponent
+        component: BookListComponent
     },
     {
         path: 'genre',
