@@ -46,6 +46,7 @@ export class BookFormComponent {
 
     this.loadGenres();
     this.loadAuthors();
+
   }
   
   closeModal(): void {
@@ -89,24 +90,38 @@ export class BookFormComponent {
   
   loadGenres(): void {
     this.genreService.getAll().subscribe({
-      next: (data) => {
-        this.genres = data;
+      next: (genres: Genre[]) => {
+        this.genres = genres;
+  
+        const matchingGenre = this.genres.find(g => g.id === this.book.genre?.id);
+        if (matchingGenre) {
+          this.book.genre = matchingGenre;
+        } else {
+          this.book.genre = { id: 0, name: '' };
+        }
       },
       error: (err) => {
         console.error('Error loading genres:', err);
       }
     });
   }
+  
 
-  loadAuthors(): void {
-    this.authorService.getAll().subscribe({
-      next: (data) => {
-        this.authors = data;
-      },
-      error: (err) => {
-        console.error('Error loading authors:', err);
-      }
-    });
+  loadAuthors(selectedAuthors: Author[] = []): void {
+      this.authorService.getAll().subscribe({
+        next: (authors: Author[]) => {
+          this.authors = authors;
+          if (selectedAuthors.length > 0) {
+            const firstAuthorId = selectedAuthors[0].id;
+            this.selectedAuthor = this.authors.find(a => a.id === firstAuthorId) ?? null;
+          } else {
+            this.selectedAuthor = null;
+          }
+        },
+        error : (err: any) => {
+          console.error('Error loading authors:' , err);
+        }
+      });
   }
 
   isAuthorSelected(authorId: number): boolean {
