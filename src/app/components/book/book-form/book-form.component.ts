@@ -19,7 +19,7 @@ export class BookFormComponent {
   isVisible: boolean  = false;
   isEditMode: boolean = false;
   
-  @Input() book: Book = { id: 0, title: '', description: '', publicationYear: 0, genre: { id: 0, name: '' }, authors: [] };
+  @Input() book: Book = { id: 0, title: '', description: '', publicationDate: new Date(), genre: { id: 0, name: '' }, author: { id: 0, name: '', bio: '', website: '', followersCount: 0 }  };
   
   @Output() cancel = new EventEmitter<void>();
   @Output() confirm = new EventEmitter<Book>();
@@ -27,7 +27,6 @@ export class BookFormComponent {
   authors: Author[] = [];
   genres: Genre[] = [];
 
-  selectedAuthorId: number | null = null;
   selectedAuthor: Author | null = null;
 
 
@@ -46,7 +45,6 @@ export class BookFormComponent {
 
     this.loadGenres();
     this.loadAuthors();
-
   }
   
   closeModal(): void {
@@ -59,6 +57,10 @@ export class BookFormComponent {
   }
 
   update(): void {
+    if (this.book.publicationDate && typeof this.book.publicationDate === 'string') {
+      this.book.publicationDate = new Date(this.book.publicationDate);
+    }
+  
     this.bookService.update(this.book).subscribe({
       next: (updatedBook) => {
         this.confirm.emit(updatedBook);
@@ -69,13 +71,11 @@ export class BookFormComponent {
       }
     });
   }
-
-  create() {
-    if (this.book.publicationYear) {
-      this.book.publicationYear = new Date(this.book.publicationYear).getFullYear();
+  
+  create(): void {
+    if (this.book.publicationDate && typeof this.book.publicationDate === 'string') {
+      this.book.publicationDate = new Date(this.book.publicationDate);
     }
-
-    this.book.authors = this.selectedAuthor ? [this.selectedAuthor] : [];
   
     this.bookService.create(this.book).subscribe({
       next: (newBook) => {
@@ -83,10 +83,11 @@ export class BookFormComponent {
         this.closeModal();
       },
       error: (err) => {
-        console.error('Error creating book: ', err);
+        console.error('Error creating book:', err);
       }
     });
   }
+  
   
   loadGenres(): void {
     this.genreService.getAll().subscribe({
@@ -107,34 +108,22 @@ export class BookFormComponent {
   }
   
 
-  loadAuthors(selectedAuthors: Author[] = []): void {
-      this.authorService.getAll().subscribe({
-        next: (authors: Author[]) => {
-          this.authors = authors;
-          if (selectedAuthors.length > 0) {
-            const firstAuthorId = selectedAuthors[0].id;
-            this.selectedAuthor = this.authors.find(a => a.id === firstAuthorId) ?? null;
-          } else {
-            this.selectedAuthor = null;
-          }
-        },
-        error : (err: any) => {
-          console.error('Error loading authors:' , err);
+  loadAuthors(): void {
+    this.authorService.getAll().subscribe({
+      next: (authors: Author[]) => {
+        this.authors = authors;
+        
+        const matchingAuthor = this.authors.find(a => a.id === this.book.author?.id);
+        if (matchingAuthor) {
+          this.book.author = matchingAuthor;  // Asignamos el autor completo, no solo el id
+        } else {
+          this.book.author = { id: 0, name: '', bio: '', website: '', followersCount: 0 };
         }
-      });
-  }
-
-  isAuthorSelected(authorId: number): boolean {
-    return this.book.authors?.some(a => a.id === authorId) ?? false;
-  }
-
-  addAuthor(): void {
-    if (this.selectedAuthorId !== null) {
-      const selectedAuthor = this.authors.find(a => a.id === this.selectedAuthorId);
-      if (selectedAuthor && !this.book.authors.some(a => a.id === selectedAuthor.id)) {
-        this.book.authors.push(selectedAuthor);
+      },
+      error: (err: any) => {
+        console.error('Error loading authors:', err);
       }
-    }
+    });
   }
-  
+ 
 }
