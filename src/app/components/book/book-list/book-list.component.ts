@@ -33,7 +33,7 @@ export class BookListComponent implements OnInit {
 
   // Update modal
   showFormModal = false;
-  bookToUpdate: Book = { id: 0, title: '', description: '', publicationYear: 0, genre: { id: 0, name: '' }, authors: [] };
+  bookToUpdate: Book = { id: 0, title: '', description: '', publicationDate: new Date(), genre: { id: 0, name: '' }, author: { id: 0, name: '', bio: '', website: '', followersCount: 0 } };
   @ViewChild(BookFormComponent) formModal!: BookFormComponent;
 
   constructor(private bookService: BookService) {}
@@ -180,9 +180,9 @@ export class BookListComponent implements OnInit {
       id: 0,
       title: '',
       description: '',
-      publicationYear: new Date().getFullYear(),
+      publicationDate: new Date(),
       genre: { id: 0, name: '' },
-      authors: []
+      author: { id: 0, name: '', bio: '', website: '', followersCount: 0 }
     });
   }
 

@@ -6,8 +6,8 @@ export class Book {
     id!: number;
     title!: string;
     description!: string;
-    publicationYear!: number;
+    publicationDate!: Date;
     genre!: Genre;
-    authors!: Author[];
+    author!: Author;
     
 }
