@@ -15,9 +15,9 @@
         <th style="width: 8%;">ID</th>
         <th style="width: 25%;">Title</th>
         <th style="width: 15%;">Genre</th>
-        <th style="width: 10%;">Publication Date</th>
-        <th style="width: 30%;">Author</th>
-        <th style="width: 12%;">Actions</th>
+        <th style="width: 10%;">Publised</th>
+        <th style="width: 15%;">Author</th>
+        <th style="width: 20%;">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -28,6 +28,7 @@
         <td>{{ book.publicationDate }}</td>
         <td>{{ book.author?.name }}</td>
         <td>
+          <button (click)="openEditModal(book)" class="btn btn-primary btn-sm mr-2">Editions</button>
           <button (click)="openEditModal(book)" class="btn btn-warning btn-sm mr-2">Edit</button>
           <button (click)="openDeleteModal(book.id)" class="btn btn-danger btn-sm">Delete</button>
         </td>

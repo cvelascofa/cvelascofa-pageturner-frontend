@@ -139,13 +139,11 @@ export class BookListComponent implements OnInit {
   }
   
   handleUpdate(updatedBook: Book, index: number): void {
-    console.log('Editando libro:', updatedBook);
     this.books[index] = updatedBook;
   }
   
   handleCreate(newBook: Book): void {
     const isLastPage = this.currentPage === this.totalPages - 1;
-    console.log('Editando libro:', newBook);
   
     if (isLastPage) {
       if (this.books.length < this.pageSize) {

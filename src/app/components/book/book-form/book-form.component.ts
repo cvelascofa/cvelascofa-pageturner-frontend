@@ -53,20 +53,16 @@ export class BookFormComponent {
   }
 
   onSubmit(): void {
-    console.log(this.book.publicationDate)
     this.isEditMode ? this.update() : this.create();
   }
 
   update(): void {
-    console.log('Editando libro:', this.book);
-  
     if (this.book.publicationDate && typeof this.book.publicationDate === 'string') {
       this.book.publicationDate = new Date(this.book.publicationDate);
     }
   
     this.bookService.update(this.book).subscribe({
       next: (updatedBook) => {
-        console.log('Book updated:', JSON.stringify(updatedBook));
         this.confirm.emit(updatedBook);
         this.closeModal();
       },
@@ -77,15 +73,12 @@ export class BookFormComponent {
   }
   
   create(): void {
-    console.log('Creando libro:', this.book);
-  
     if (this.book.publicationDate && typeof this.book.publicationDate === 'string') {
       this.book.publicationDate = new Date(this.book.publicationDate);
     }
   
     this.bookService.create(this.book).subscribe({
       next: (newBook) => {
-        console.log('New book created:', JSON.stringify(this.book));
         this.confirm.emit(newBook);
         this.closeModal();
       },
