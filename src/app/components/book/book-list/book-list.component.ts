@@ -22,7 +22,7 @@ export class BookListComponent implements OnInit {
   searchQuery: string = '';
 
   // Pagination
-  pageSize: number = 10;
+  pageSize: number = 3;
   currentPage: number = 0;
   totalPages: number = 0;
   books: Book[] = [];
@@ -101,7 +101,22 @@ export class BookListComponent implements OnInit {
     this.bookService.delete(id).subscribe({
       next: () => {
         this.books = this.books.filter(book => book.id !== id);
-        this.getAllBooks(this.books.length === 0 && this.currentPage > 0 ? this.currentPage - 1 : this.currentPage);
+  
+        if (this.books.length < this.pageSize) {
+          if (this.currentPage < this.totalPages - 1) {
+            this.getAllBooks(this.currentPage + 1);
+          } else {
+            if (this.currentPage > 0) {
+              this.currentPage--;
+              this.getAllBooks(this.currentPage);
+            } else {
+              this.getAllBooks(this.currentPage);
+            }
+          }
+        } else {
+          this.getAllBooks(this.currentPage);
+        }
+  
         this.deleteModal.closeModal();
       },
       error: (err: HttpErrorResponse) => {
@@ -110,6 +125,7 @@ export class BookListComponent implements OnInit {
       }
     });
   }
+  
 
   onConfirmForm(updatedBook: Book): void {
     const index = this.books.findIndex(b => b.id === updatedBook.id);
