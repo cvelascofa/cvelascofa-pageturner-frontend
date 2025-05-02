@@ -128,11 +128,27 @@ export class GenreListComponent {
 
   onConfirmForm(updatedGenre: Genre): void {
     const index = this.genres.findIndex(g => g.id === updatedGenre.id);
+  
     if (index !== -1) {
       this.genres[index] = updatedGenre;
+    } else {
+      const isLastPage = this.currentPage === this.totalPages - 1;
+  
+      if (isLastPage) {
+        if (this.genres.length < this.pageSize) {
+          this.genres.push(updatedGenre);
+        } else {
+          this.totalPages++;
+        }
+      } else {
+        this.currentPage = 0;
+        this.getAllGenres(0);
+      }
     }
+  
     this.formModal.closeModal();
   }
+  
 
   onConfirmDelete(): void {
     if (this.genreToDelete !== null) {
