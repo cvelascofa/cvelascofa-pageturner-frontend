@@ -27,7 +27,6 @@ export class BookFormComponent {
   authors: Author[] = [];
   genres: Genre[] = [];
 
-  selectedAuthorId: number | null = null;
   selectedAuthor: Author | null = null;
 
 
@@ -59,12 +58,10 @@ export class BookFormComponent {
   }
 
   update(): void {
+    console.log('Editando libro:', this.book);
+  
     if (this.book.publicationDate && typeof this.book.publicationDate === 'string') {
       this.book.publicationDate = new Date(this.book.publicationDate);
-    }
-  
-    if (this.selectedAuthorId !== null) {
-      this.book.author = this.authors.find(a => a.id === this.selectedAuthorId) || { id: 0, name: '', bio: '', website: '', followersCount: 0 };
     }
   
     this.bookService.update(this.book).subscribe({
@@ -79,26 +76,25 @@ export class BookFormComponent {
     });
   }
   
-  create() {
+  create(): void {
+    console.log('Creando libro:', this.book);
+  
     if (this.book.publicationDate && typeof this.book.publicationDate === 'string') {
       this.book.publicationDate = new Date(this.book.publicationDate);
     }
   
-    if (this.selectedAuthorId !== null) {
-      this.book.author = this.authors.find(a => a.id === this.selectedAuthorId) || { id: 0, name: '', bio: '', website: '', followersCount: 0 };
-    }
-  
     this.bookService.create(this.book).subscribe({
       next: (newBook) => {
-        console.log(JSON.stringify(this.book));
+        console.log('New book created:', JSON.stringify(this.book));
         this.confirm.emit(newBook);
         this.closeModal();
       },
       error: (err) => {
-        console.error('Error creating book: ', err);
+        console.error('Error creating book:', err);
       }
     });
   }
+  
   
   loadGenres(): void {
     this.genreService.getAll().subscribe({
@@ -123,11 +119,12 @@ export class BookFormComponent {
     this.authorService.getAll().subscribe({
       next: (authors: Author[]) => {
         this.authors = authors;
-
-        if (this.book.author) {
-          this.selectedAuthorId = this.book.author.id;
+        
+        const matchingAuthor = this.authors.find(a => a.id === this.book.author?.id);
+        if (matchingAuthor) {
+          this.book.author = matchingAuthor;  // Asignamos el autor completo, no solo el id
         } else {
-          this.selectedAuthorId = null;
+          this.book.author = { id: 0, name: '', bio: '', website: '', followersCount: 0 };
         }
       },
       error: (err: any) => {
