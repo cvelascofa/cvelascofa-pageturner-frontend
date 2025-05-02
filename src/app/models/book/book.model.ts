@@ -1,3 +1,4 @@
+import { Author } from "../author/author.model";
 import { Genre } from "../genre/genre.model";
 
 export class Book {
@@ -6,6 +7,7 @@ export class Book {
     title!: string;
     description!: string;
     publicationYear!: number;
-    genreId!: Genre;
-
+    genre!: Genre;
+    authors!: Author[];
+    
 }
