@@ -142,24 +142,35 @@ export class LanguageListComponent {
   }
 
   onConfirmForm(updatedLanguage: Language): void {
-    if (updatedLanguage.id == 0) {
-      this.create(updatedLanguage);
+    const index = this.languages.findIndex(l => l.id === updatedLanguage.id);
+  
+    if (index !== -1) {
+      this.handleUpdate(updatedLanguage, index);
     } else {
-      this.udpate(updatedLanguage);
+      this.handleCreate(updatedLanguage);
     }
+  
+    this.formModal.closeModal();
   }
   
-  udpate(updatedLanguage: Language): void {
-    const index = this.languages.findIndex(g => g.id === updatedLanguage.id);
-    if (index !== -1) {
-      this.languages[index] = updatedLanguage;
+  handleUpdate(updatedLanguage: Language, index: number): void {
+    this.languages[index] = updatedLanguage;
+  }
+  
+  handleCreate(newLanguage: Language): void {
+    const isLastPage = this.currentPage === this.totalPages - 1;
+  
+    if (isLastPage) {
+      if (this.languages.length < this.pageSize) {
+        this.languages.push(newLanguage);
+      } else {
+        this.totalPages++;
+      }
+    } else {
+      this.currentPage = 0;
+      this.getAllLanguages(0);
     }
   }
-
-  create(newLanguage: Language): void {
-    this.languages.push(newLanguage);
-  }
-
 
   onSearch(query: { [key: string]: string }) {
     this.searchQuery = query['name'] || '';

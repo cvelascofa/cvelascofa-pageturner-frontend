@@ -125,32 +125,38 @@ export class BookListComponent implements OnInit {
       }
     });
   }
-  
 
   onConfirmForm(updatedBook: Book): void {
     const index = this.books.findIndex(b => b.id === updatedBook.id);
   
     if (index !== -1) {
-      this.books[index] = updatedBook;
+      this.handleUpdate(updatedBook, index);
     } else {
-      const isLastPage = this.currentPage === this.totalPages - 1;
-  
-      if (isLastPage) {
-        if (this.books.length < this.pageSize) {
-          this.books.push(updatedBook);
-        } else {
-          this.totalPages++;
-        }
-      } else {
-        this.currentPage = 0;
-        this.getAllBooks(0);
-      }
+      this.handleCreate(updatedBook);
     }
   
     this.formModal.closeModal();
   }
   
-
+  handleUpdate(updatedBook: Book, index: number): void {
+    this.books[index] = updatedBook;
+  }
+  
+  handleCreate(newBook: Book): void {
+    const isLastPage = this.currentPage === this.totalPages - 1;
+  
+    if (isLastPage) {
+      if (this.books.length < this.pageSize) {
+        this.books.push(newBook);
+      } else {
+        this.totalPages++;
+      }
+    } else {
+      this.currentPage = 0;
+      this.getAllBooks(0);
+    }
+  }
+  
   onConfirmDelete(): void {
     if (this.bookToDelete !== null) {
       this.delete(this.bookToDelete);
