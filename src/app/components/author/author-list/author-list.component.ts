@@ -129,12 +129,36 @@ export class AuthorListComponent {
    }
  
    onConfirmForm(updatedAuthor: Author): void {
-     const index = this.authors.findIndex((a) => a.id === updatedAuthor.id);
-     if (index !== -1) {
-       this.authors[index] = updatedAuthor;
-     }
-     this.formModal.closeModal();
-   }
+    const index = this.authors.findIndex((a) => a.id === updatedAuthor.id);
+  
+    if (index !== -1) {
+      this.handleUpdate(updatedAuthor, index);
+    } else {
+      this.handleCreate(updatedAuthor);
+    }
+  
+    this.formModal.closeModal();
+  }
+
+  handleUpdate(updatedAuthor: Author, index: number): void {
+    this.authors[index] = updatedAuthor;
+  }
+  
+  handleCreate(newAuthor: Author): void {
+    const isLastPage = this.currentPage === this.totalPages - 1;
+  
+    if (isLastPage) {
+      if (this.authors.length < this.pageSize) {
+        this.authors.push(newAuthor);
+      } else {
+        this.totalPages++;
+      }
+    } else {
+      this.currentPage = 0;
+      this.getAllAuthors(0);
+    }
+  }
+  
  
    onConfirmDelete(): void {
      if (this.authorToDelete !== null) {

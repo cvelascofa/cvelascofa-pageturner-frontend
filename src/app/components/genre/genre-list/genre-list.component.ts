@@ -128,10 +128,33 @@ export class GenreListComponent {
 
   onConfirmForm(updatedGenre: Genre): void {
     const index = this.genres.findIndex(g => g.id === updatedGenre.id);
+  
     if (index !== -1) {
-      this.genres[index] = updatedGenre;
+      this.handleUpdate(updatedGenre, index);
+    } else {
+      this.handleCreate(updatedGenre);
     }
+  
     this.formModal.closeModal();
+  }
+  
+  handleUpdate(updatedGenre: Genre, index: number): void {
+    this.genres[index] = updatedGenre;
+  }
+  
+  handleCreate(newGenre: Genre): void {
+    const isLastPage = this.currentPage === this.totalPages - 1;
+  
+    if (isLastPage) {
+      if (this.genres.length < this.pageSize) {
+        this.genres.push(newGenre);
+      } else {
+        this.totalPages++;
+      }
+    } else {
+      this.currentPage = 0;
+      this.getAllGenres(0);
+    }
   }
 
   onConfirmDelete(): void {

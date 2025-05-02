@@ -142,24 +142,36 @@ export class PublisherListComponent {
   }
 
   onConfirmForm(updatedPublisher: Publisher): void {
-    if (updatedPublisher.id === 0) {
-      this.create(updatedPublisher);
+    const index = this.publishers.findIndex(p => p.id === updatedPublisher.id);
+  
+    if (index !== -1) {
+      this.handleUpdate(updatedPublisher, index);
     } else {
-      this.update(updatedPublisher);
+      this.handleCreate(updatedPublisher);
+    }
+  
+    this.formModal.closeModal();
+  }
+  
+  handleUpdate(updatedPublisher: Publisher, index: number): void {
+    this.publishers[index] = updatedPublisher;
+  }
+  
+  handleCreate(newPublisher: Publisher): void {
+    const isLastPage = this.currentPage === this.totalPages - 1;
+  
+    if (isLastPage) {
+      if (this.publishers.length < this.pageSize) {
+        this.publishers.push(newPublisher);
+      } else {
+        this.totalPages++;
+      }
+    } else {
+      this.currentPage = 0;
+      this.getAllPublishers(0);
     }
   }
   
-  update(updatedPublisher: Publisher): void {
-    const index = this.publishers.findIndex(p => p.id === updatedPublisher.id);
-    if (index !== -1) {
-      this.publishers[index] = updatedPublisher;
-    }
-  }
-
-  create(newPublisher: Publisher): void {
-    this.publishers.push(newPublisher);
-  }
-
   onSearch(query: { [key: string]: string }) {
     this.searchQuery = query['name'] || '';
     this.currentPage = 0;

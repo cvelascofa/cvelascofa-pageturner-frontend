@@ -158,9 +158,33 @@ export class EditionTypeListComponent {
 
   onConfirmForm(updatedEditionType: EditionType): void {
     const index = this.editionTypes.findIndex(et => et.id === updatedEditionType.id);
+  
     if (index !== -1) {
-      this.editionTypes[index] = updatedEditionType;
+      this.handleUpdate(updatedEditionType, index);
+    } else {
+      this.handleCreate(updatedEditionType);
     }
+  
     this.formModal.closeModal();
   }
+  
+  handleUpdate(updatedEditionType: EditionType, index: number): void {
+    this.editionTypes[index] = updatedEditionType;
+  }  
+
+  handleCreate(newEditionType: EditionType): void {
+    const isLastPage = this.currentPage === this.totalPages - 1;
+  
+    if (isLastPage) {
+      if (this.editionTypes.length < this.pageSize) {
+        this.editionTypes.push(newEditionType);
+      } else {
+        this.totalPages++;
+      }
+    } else {
+      this.currentPage = 0;
+      this.getAllEditionTypes(0);
+    }
+  }
+  
 }
