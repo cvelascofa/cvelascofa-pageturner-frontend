@@ -22,7 +22,7 @@ export class BookListComponent implements OnInit {
   searchQuery: string = '';
 
   // Pagination
-  pageSize: number = 3;
+  pageSize: number = 10;
   currentPage: number = 0;
   totalPages: number = 0;
   books: Book[] = [];
@@ -129,11 +129,27 @@ export class BookListComponent implements OnInit {
 
   onConfirmForm(updatedBook: Book): void {
     const index = this.books.findIndex(b => b.id === updatedBook.id);
+  
     if (index !== -1) {
       this.books[index] = updatedBook;
+    } else {
+      const isLastPage = this.currentPage === this.totalPages - 1;
+  
+      if (isLastPage) {
+        if (this.books.length < this.pageSize) {
+          this.books.push(updatedBook);
+        } else {
+          this.totalPages++;
+        }
+      } else {
+        this.currentPage = 0;
+        this.getAllBooks(0);
+      }
     }
+  
     this.formModal.closeModal();
   }
+  
 
   onConfirmDelete(): void {
     if (this.bookToDelete !== null) {
