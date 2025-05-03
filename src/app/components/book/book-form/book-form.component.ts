@@ -116,7 +116,6 @@ export class BookFormComponent {
     });
   }
   
-  
   loadGenres(): void {
     this.genreService.getAll().subscribe({
       next: (genres: Genre[]) => {
@@ -207,6 +206,5 @@ export class BookFormComponent {
       }
     });
   }
-  
   
 }

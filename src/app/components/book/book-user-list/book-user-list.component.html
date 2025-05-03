@@ -1,1 +1,45 @@
-<p>book-user-list works!</p>
+<div class="container">
+    <form class="mb-3 search-form mt-3" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search your book here" formControlName="searchTerm" id="searchTerm" />
+            <button type="submit" class="btn btn-primary">
+                <img src="../../../assets/images/search.gif" alt="searchIcon" height="30px" width="30px">
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-4 justify-content-center">
+        @if (books.length === 0) {
+            <p class="lead mb-0 text-muted w-100 text-center mb-3">There are no results for this book.</p>
+        }
+        @for (book of books; track $index) {
+            <div class="col mb-4 d-flex justify-content-center">
+                <div class="card h-100">
+                    <img [src]="book.coverImage" class="card-img-top custom-card-img" alt="Book Image" />
+                    <div class="card-body text-center d-flex flex-column">
+                        <h5 class="card-title flex-grow-1">{{ book.title }}</h5>
+                        <button [routerLink]="['/details', book.id]" type="button" class="btn btn-primary mt-2">
+                            More
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="d-flex justify-content-center mt-3 mb-5">
+        <div class="pageButtons">
+            <button type="button" class="btn btn-primary me-2" (click)="previousPage()">
+                <i class="bi bi-arrow-left"></i>
+            </button>
+        </div>
+        <span class="align-self-center">{{ currentPage }}</span>
+        <div class="pageButtons">
+            <button type="button" class="btn btn-primary ms-2" (click)="nextPage()">
+                <i class="bi bi-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+</div>

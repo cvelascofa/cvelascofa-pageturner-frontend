@@ -7,10 +7,11 @@ import { LanguageListComponent } from './components/language/language-list/langu
 import { EditionTypeListComponent } from './components/edition-type/edition-type-list/edition-type-list.component';
 import { PublisherListComponent } from './components/publisher/publisher-list/publisher-list.component';
 import { AuthorListComponent } from './components/author/author-list/author-list.component';
+import { BookUserListComponent } from './components/book/book-user-list/book-user-list.component';
 
 export const routes: Routes = [
     {
-        path: 'book',
+        path: 'admin/books',
         component: BookListComponent
     },
     {
@@ -19,26 +20,30 @@ export const routes: Routes = [
     },
     {
         path: '',
-        component: BookListComponent
+        component: BookUserListComponent
     },
     {
-        path: 'genre',
+        path: 'admin/genres',
         component: GenreListComponent
     },
     {
-        path: 'language',
+        path: 'admin/languages',
         component: LanguageListComponent
     },
     {
-        path: 'edition-type',
+        path: 'admin/edition-types',
         component: EditionTypeListComponent
     },
     {
-        path: 'publisher',
+        path: 'admin/publishers',
         component: PublisherListComponent
     },
     {
-        path: 'author',
+        path: 'admin/authors',
         component: AuthorListComponent
+    },
+    {
+        path: 'books',
+        component: BookUserListComponent
     }
 ];
