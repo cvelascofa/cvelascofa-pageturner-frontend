@@ -28,7 +28,6 @@
         <td>{{ book.publicationDate }}</td>
         <td>{{ book.author?.name }}</td>
         <td>
-          <button (click)="openEditModal(book)" class="btn btn-primary btn-sm mr-2">Editions</button>
           <button (click)="openEditModal(book)" class="btn btn-warning btn-sm mr-2">Edit</button>
           <button (click)="openDeleteModal(book.id)" class="btn btn-danger btn-sm">Delete</button>
         </td>

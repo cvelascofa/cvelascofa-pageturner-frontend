@@ -8,11 +8,12 @@ import { PaginationComponent } from '../../shared/pagination/pagination.componen
 import { BookFormComponent } from '../book-form/book-form.component';
 import { BookSearchComponent } from '../book-search/book-search.component';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'app-book-list',
-  imports: [ModalComponent, FormsModule, PaginationComponent, BookSearchComponent, CommonModule, BookFormComponent],
+  imports: [ModalComponent, FormsModule, PaginationComponent, BookSearchComponent, CommonModule, BookFormComponent, RouterLink],
   templateUrl: './book-list.component.html',
   styleUrl: './book-list.component.css'
 })
@@ -33,7 +34,8 @@ export class BookListComponent implements OnInit {
 
   // Update modal
   showFormModal = false;
-  bookToUpdate: Book = { id: 0, title: '', description: '', publicationDate: new Date(), genre: { id: 0, name: '' }, author: { id: 0, name: '', bio: '', website: '', followersCount: 0 } };
+  bookToUpdate: Book = this.getEmptyBook();
+  
   @ViewChild(BookFormComponent) formModal!: BookFormComponent;
 
   constructor(private bookService: BookService) {}
@@ -96,6 +98,24 @@ export class BookListComponent implements OnInit {
     this.prepareDeleteConfirmation(id);
     this.deleteModal.openModal();
   }
+
+  getEmptyBook(): Book {
+    return {
+      id: 0,
+      title: '',
+      description: '',
+      coverImage: '',
+      isbn: '',
+      publicationDate: new Date(),
+      pages: 0,
+      genre: { id: 0, name: '' },
+      language: { id: 0, name: '', code: '' },
+      author: { id: 0, name: '', bio: '', website: '', followersCount: 0 },
+      publisher: { id: 0, name: '', website: '', country: '' },
+      editionType: { id: 0, name: '' }
+    };
+  }
+  
 
   delete(id: number): void {
     this.bookService.delete(id).subscribe({
@@ -176,14 +196,7 @@ export class BookListComponent implements OnInit {
   }
 
   openCreateModal(): void {
-    this.openFormModal({
-      id: 0,
-      title: '',
-      description: '',
-      publicationDate: new Date(),
-      genre: { id: 0, name: '' },
-      author: { id: 0, name: '', bio: '', website: '', followersCount: 0 }
-    });
+    this.openFormModal(this.getEmptyBook())
   }
 
   openEditModal(book: Book): void {
