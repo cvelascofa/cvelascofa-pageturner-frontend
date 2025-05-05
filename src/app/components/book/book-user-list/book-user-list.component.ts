@@ -1,52 +1,38 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import {  RouterLink, RouterModule } from '@angular/router';
+import { BookService } from '../../../_service/book/book.service';
+import { Book } from '../../../models/book/book.model';
+import { PaginationComponent } from '../../shared/pagination/pagination.component';
+import { BookSearchComponent } from '../book-search/book-search.component';
 
 @Component({
   selector: 'app-book-user-list',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [FormsModule, RouterModule, CommonModule, ReactiveFormsModule, RouterModule, RouterLink, PaginationComponent, BookSearchComponent],
   templateUrl: './book-user-list.component.html',
   styleUrl: './book-user-list.component.css'
 })
 export class BookUserListComponent implements OnInit {
+   // Search
+    searchQuery: string = '';
+  
+    // Pagination
+    pageSize: number = 10;
+    currentPage: number = 0;
+    totalPages: number = 0;
+    books: Book[] = [];
+  
   form!: FormGroup;
 
-  // Aquí declaramos la lista de libros
-  books: any[] = []; // o puedes usar tu modelo Book[] si lo tienes
-
-  currentPage = 1;
-
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private bookService: BookService) {}
 
   ngOnInit(): void {
-    this.form = this.fb.group({
-      searchTerm: ['']
-    });
-
-    // Por ahora, unos libros de ejemplo
-    this.books = [
-      {
-        id: 1,
-        title: 'The Great Gatsby',
-        coverImage: 'https://example.com/gatsby.jpg'
-      },
-      {
-        id: 2,
-        title: '1984',
-        coverImage: 'https://example.com/1984.jpg'
-      },
-      {
-        id: 3,
-        title: 'To Kill a Mockingbird',
-        coverImage: 'https://example.com/mockingbird.jpg'
-      }
-    ];
+    this.getAllBooks();
   }
 
   onSubmit() {
     const term = this.form.value.searchTerm.toLowerCase();
-    // Aquí filtras según el título (esto es opcional, pero útil)
-    // Esto debería reemplazarse por una llamada al backend si es necesario
     this.books = this.books.filter(book =>
       book.title.toLowerCase().includes(term)
     );
@@ -55,12 +41,42 @@ export class BookUserListComponent implements OnInit {
   previousPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
-      // lógica para cargar libros de la página anterior si aplica
     }
   }
 
   nextPage() {
     this.currentPage++;
-    // lógica para cargar libros de la siguiente página si aplica
   }
+
+  getAllBooks(page: number = 0) {
+    this.bookService.getAllSearchPaginated(this.searchQuery, page, this.pageSize).subscribe({
+      next: (response) => {
+        if (response && response.content && response.totalPages !== undefined) {
+          this.books = response.content;
+          this.totalPages = response.totalPages;
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching books:', err);
+      },
+    });
+  }
+  
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.getAllBooks(page);
+  }
+
+  onSearch(query: { [key: string]: string }) {
+    this.searchQuery = query['title'] || '';
+    this.currentPage = 0;
+    this.getAllBooks();
+  }
+
+  onClearSearch() {
+    this.searchQuery = '';
+    this.currentPage = 0;
+    this.getAllBooks();
+  }
+  
 }
