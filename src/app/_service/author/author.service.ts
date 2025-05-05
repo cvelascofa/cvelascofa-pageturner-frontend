@@ -41,4 +41,18 @@ export class AuthorService {
   create(author: Author): Observable<Author> {
     return this.http.post<Author>(`${AUTH_API}authors`, author);
   }
+
+  getAllByBookIdSearchPaginated(
+    bookId: number,
+    description: string = '',
+    page: number = 0,
+    size: number = 10
+  ): Observable<any> {
+    const params = {
+      description,
+      page: page.toString(),
+      size: size.toString()
+    };
+    return this.http.get<any>(`${AUTH_API}book-editions/book/${bookId}/search`, { params });
+  }
 }

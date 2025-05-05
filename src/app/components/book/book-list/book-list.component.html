@@ -28,7 +28,6 @@
         <td>{{ book.publicationDate }}</td>
         <td>{{ book.author?.name }}</td>
         <td>
-          <button (click)="openEditModal(book)" class="btn btn-primary btn-sm mr-2">Editions</button>
           <button (click)="openEditModal(book)" class="btn btn-warning btn-sm mr-2">Edit</button>
           <button (click)="openDeleteModal(book.id)" class="btn btn-danger btn-sm">Delete</button>
         </td>
@@ -38,7 +37,7 @@
 
   @if (books.length === 0) {
     <div class="text-center mt-5">
-      <p>No books available.</p>
+      <p class="lead mb-0 text-muted w-100 text-center mb-3">No books available.</p>
     </div>
   }
 
