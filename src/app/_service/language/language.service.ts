@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AUTH_API } from '../../api-constants';
 import { Language } from '../../models/language/language.model';
+import { TokenStorageService } from '../token-storage/token-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,35 +11,40 @@ import { Language } from '../../models/language/language.model';
 export class LanguageService {
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private tokenService: TokenStorageService
   ) { }
 
   getAll(): Observable<Language[]> {
-    return this.http.get<Language[]>(`${AUTH_API}languages`);
+    const headers = this.tokenService.getAuthHeaders();
+    return this.http.get<Language[]>(`${AUTH_API}languages`, { headers });
   }
 
   getAllSearchPaginated(name: string = '', page: number = 0, size: number = 10): Observable<any> {
-    const params = {
-      name,
-      page: page.toString(),
-      size: size.toString()
-    };
-    return this.http.get<any>(`${AUTH_API}languages/search`, { params });
+    const params = new HttpParams()
+      .set('name', name)
+      .set('page', page.toString())
+      .set('size', size.toString());
+    const headers = this.tokenService.getAuthHeaders();
+    return this.http.get<any>(`${AUTH_API}languages/search`, { params, headers });
   }
 
   getById(languageId: number): Observable<Language> {
-    return this.http.get<Language>(`${AUTH_API}languages/${languageId}`);
+    const headers = this.tokenService.getAuthHeaders();
+    return this.http.get<Language>(`${AUTH_API}languages/${languageId}`, { headers });
   }
-
   delete(languageId: number): Observable<void> {
-    return this.http.delete<void>(`${AUTH_API}languages/${languageId}`);
+    const headers = this.tokenService.getAuthHeaders();
+    return this.http.delete<void>(`${AUTH_API}languages/${languageId}`, { headers });
   }
 
   update(language: Language): Observable<Language> {
-    return this.http.put<Language>(`${AUTH_API}languages/${language.id}`, language);
+    const headers = this.tokenService.getAuthHeaders();
+    return this.http.put<Language>(`${AUTH_API}languages/${language.id}`, language, { headers });
   }
 
   create(language: Language): Observable<Language> {
-    return this.http.post<Language>(`${AUTH_API}languages`, language);
+    const headers = this.tokenService.getAuthHeaders();
+    return this.http.post<Language>(`${AUTH_API}languages`, language, { headers });
   }
 }
