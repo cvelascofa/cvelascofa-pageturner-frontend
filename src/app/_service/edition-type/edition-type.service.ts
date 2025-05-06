@@ -16,7 +16,8 @@ export class EditionTypeService {
   ) { }
 
   getAll(): Observable<EditionType[]> {
-    return this.http.get<EditionType[]>(`${AUTH_API}edition-types`);
+    const headers = this.tokenService.getAuthHeaders();
+    return this.http.get<EditionType[]>(`${AUTH_API}edition-types`, { headers });
   }
 
   getAllSearchPaginated(name: string = '', page: number = 0, size: number = 10): Observable<any> {
@@ -24,30 +25,27 @@ export class EditionTypeService {
       .set('name', name)
       .set('page', page.toString())
       .set('size', size.toString());
-
     const headers = this.tokenService.getAuthHeaders();
-    // Aquí extraes los roles desde el TokenStorageService
-  const rolesString = this.tokenService.getRoles();
-  const roles = rolesString ? JSON.parse(rolesString) : [];
-
-  console.log('Roles del usuario:', roles);
-
     return this.http.get<any>(`${AUTH_API}edition-types/search`, { params, headers });
   }
 
   getById(id: number): Observable<EditionType> {
-    return this.http.get<EditionType>(`${AUTH_API}edition-types/${id}`);
+    const headers = this.tokenService.getAuthHeaders();
+    return this.http.get<EditionType>(`${AUTH_API}edition-types/${id}`, { headers });
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${AUTH_API}edition-types/${id}`);
+    const headers = this.tokenService.getAuthHeaders();
+    return this.http.delete<void>(`${AUTH_API}edition-types/${id}`, { headers });
   }
 
   update(editionType: EditionType): Observable<EditionType> {
-    return this.http.put<EditionType>(`${AUTH_API}edition-types/${editionType.id}`, editionType);
+    const headers = this.tokenService.getAuthHeaders();
+    return this.http.put<EditionType>(`${AUTH_API}edition-types/${editionType.id}`, editionType, { headers });
   }
 
   create(editionType: EditionType): Observable<EditionType> {
-    return this.http.post<EditionType>(`${AUTH_API}edition-types`, editionType);
+    const headers = this.tokenService.getAuthHeaders();
+    return this.http.post<EditionType>(`${AUTH_API}edition-types`, editionType, { headers });
   }
 }
