@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { EditionType } from '../../models/edition-type/edition-type.model';
 import { AUTH_API } from '../../api-constants';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpFeatureKind, HttpParams } from '@angular/common/http';
+import { TokenStorageService } from '../token-storage/token-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ import { HttpClient } from '@angular/common/http';
 export class EditionTypeService {
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+     private tokenService: TokenStorageService 
   ) { }
 
   getAll(): Observable<EditionType[]> {
@@ -18,12 +20,19 @@ export class EditionTypeService {
   }
 
   getAllSearchPaginated(name: string = '', page: number = 0, size: number = 10): Observable<any> {
-    const params = {
-      name,
-      page: page.toString(),
-      size: size.toString()
-    };
-    return this.http.get<any>(`${AUTH_API}edition-types/search`, { params });
+    const params = new HttpParams()
+      .set('name', name)
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    const headers = this.tokenService.getAuthHeaders();
+    // Aquí extraes los roles desde el TokenStorageService
+  const rolesString = this.tokenService.getRoles();
+  const roles = rolesString ? JSON.parse(rolesString) : [];
+
+  console.log('Roles del usuario:', roles);
+
+    return this.http.get<any>(`${AUTH_API}edition-types/search`, { params, headers });
   }
 
   getById(id: number): Observable<EditionType> {

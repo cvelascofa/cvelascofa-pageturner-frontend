@@ -3,12 +3,13 @@ import { Observable } from 'rxjs';
 import { AUTH_API } from '../../api-constants';
 import { Publisher } from '../../models/publisher/publisher.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { TokenStorageService } from '../token-storage/token-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PublisherService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private tokenService: TokenStorageService) { }
 
   getAll(): Observable<Publisher[]> {
     return this.http.get<Publisher[]>(`${AUTH_API}publishers`);
@@ -20,7 +21,9 @@ export class PublisherService {
       .set('page', page.toString())
       .set('size', size.toString());
 
-    return this.http.get<any>(`${AUTH_API}publishers/search`, { params });
+    const headers = this.tokenService.getAuthHeaders();
+
+    return this.http.get<any>(`${AUTH_API}publishers/search`, { params, headers });
   }
 
   getById(publisherId: number): Observable<Publisher> {
