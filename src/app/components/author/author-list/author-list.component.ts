@@ -50,21 +50,23 @@ export class AuthorListComponent {
      this.getAllAuthors(page);
    }
  
-   getAllAuthors(page: number = 0) {
-     this.authorService
-       .getAllSearchPaginated(this.searchQuery, page, this.pageSize)
-       .subscribe({
-         next: (response) => {
-           if (response?.content && response.totalPages !== undefined) {
-             this.authors = response.content;
-             this.totalPages = response.totalPages;
-           }
-         },
-         error: (err) => {
-           console.error('Error fetching authors:', err);
-         },
-       });
-   }
+   getAllAuthors(page: number = 0, callback?: (authors: Author[]) => void): void {
+    this.authorService.getAllSearchPaginated(this.searchQuery, page, this.pageSize)
+      .subscribe({
+        next: (response) => {
+          if (response?.content && response.totalPages !== undefined) {
+            this.authors = response.content;
+            this.totalPages = response.totalPages;
+  
+            if (callback) callback(this.authors);
+          }
+        },
+        error: (err) => {
+          console.error('Error fetching authors:', err);
+        }
+      });
+  }
+  
  
    prepareDeleteConfirmation(id: number): void {
      this.authorToDelete = id;
@@ -104,29 +106,24 @@ export class AuthorListComponent {
    }
  
    delete(id: number): void {
-     this.authorService.delete(id).subscribe({
-       next: () => {
-         this.authors = this.authors.filter((a) => a.id !== id);
-         if (this.authors.length < this.pageSize) {
-           if (this.currentPage < this.totalPages - 1) {
-             this.getAllAuthors(this.currentPage + 1);
-           } else {
-             if (this.currentPage > 0) {
-               this.currentPage--;
-               this.getAllAuthors(this.currentPage);
-             }
-           }
-         } else {
-           this.getAllAuthors(this.currentPage);
-         }
-         this.deleteModal.closeModal();
-       },
-       error: (err: HttpErrorResponse) => {
-         this.prepareDeleteError(err);
-         this.deleteModal.openModal();
-       },
-     });
-   }
+    this.authorService.delete(id).subscribe({
+      next: () => {
+        this.getAllAuthors(this.currentPage, (authors: Author[]) => {
+          if (authors.length === 0 && this.currentPage > 0) {
+            this.currentPage--;
+            this.getAllAuthors(this.currentPage);
+          }
+        });
+  
+        this.deleteModal.closeModal();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.prepareDeleteError(err);
+        this.deleteModal.openModal();
+      }
+    });
+  }
+  
  
    onConfirmForm(updatedAuthor: Author): void {
     const index = this.authors.findIndex((a) => a.id === updatedAuthor.id);

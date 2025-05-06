@@ -48,12 +48,13 @@ export class EditionTypeListComponent {
     this.getAllEditionTypes(page);
   }
 
-  getAllEditionTypes(page: number = 0) {
+  getAllEditionTypes(page: number = 0, callback?: (editionTypes: any[]) => void): void {
     this.editionTypeService.getAllSearchPaginated(this.searchQuery, page, this.pageSize).subscribe({
       next: (response) => {
         if (response && response.content && response.totalPages !== undefined) {
           this.editionTypes = response.content;
           this.totalPages = response.totalPages;
+          callback?.(this.editionTypes);
         }
       },
       error: (err) => {
@@ -71,19 +72,13 @@ export class EditionTypeListComponent {
   delete(id: number): void {
     this.editionTypeService.delete(id).subscribe({
       next: () => {
-        this.editionTypes = this.editionTypes.filter(editionType => editionType.id !== id);
-        if (this.editionTypes.length < this.pageSize) {
-          if (this.currentPage < this.totalPages - 1) {
-            this.getAllEditionTypes(this.currentPage + 1);
-          } else {
-            if (this.currentPage > 0) {
-              this.currentPage--;
-              this.getAllEditionTypes(this.currentPage);
-            }
+        this.getAllEditionTypes(this.currentPage, (editionTypes: any[]) => {
+          if (editionTypes.length === 0 && this.currentPage > 0) {
+            this.currentPage--;
+            this.getAllEditionTypes(this.currentPage);
           }
-        } else {
-          this.getAllEditionTypes(this.currentPage);
-        }
+        });
+  
         this.deleteModal.closeModal();
       },
       error: (err: HttpErrorResponse) => {

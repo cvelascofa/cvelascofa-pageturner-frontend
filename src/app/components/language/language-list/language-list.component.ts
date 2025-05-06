@@ -45,12 +45,16 @@ export class LanguageListComponent {
     this.getAllLanguages(page);
   }
 
-  getAllLanguages(page: number = 0): void {
+  getAllLanguages(page: number = 0, callback?: (languages: any[]) => void): void {
     this.languageService.getAllSearchPaginated(this.searchQuery, page, this.pageSize).subscribe({
       next: (response) => {
         if (response && response.content && response.totalPages !== undefined) {
           this.languages = response.content;
           this.totalPages = response.totalPages;
+  
+          if (callback) {
+            callback(this.languages);
+          }
         }
       },
       error: (err) => {
@@ -99,20 +103,14 @@ export class LanguageListComponent {
   delete(id: number): void {
     this.languageService.delete(id).subscribe({
       next: () => {
-      this.languages = this.languages.filter(language => language.id !== id);
-      if (this.languages.length < this.pageSize) {
-        if (this.currentPage < this.totalPages - 1) {
-          this.getAllLanguages(this.currentPage + 1);
-        } else {
-          if (this.currentPage > 0) {
+        this.getAllLanguages(this.currentPage, (languages: any[]) => {
+          if (languages.length === 0 && this.currentPage > 0) {
             this.currentPage--;
             this.getAllLanguages(this.currentPage);
           }
-        }
-      } else {
-        this.getAllLanguages(this.currentPage);
-      }
-      this.deleteModal.closeModal();
+        });
+  
+        this.deleteModal.closeModal();
       },
       error: (err: HttpErrorResponse) => {
         this.prepareDeleteError(err);
