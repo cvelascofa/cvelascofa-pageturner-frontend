@@ -1,6 +1,6 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="mb-0">Languages List</h3>
+        <h3 class="mb-0">Languages</h3>
         <button class="btn btn-success" (click)="openCreateModal()">+ Create Language</button>
     </div>
       
@@ -32,7 +32,7 @@
         </tbody>
     </table>
         <div *ngIf="languages.length === 0" class="text-center mt-5">
-            <p>No languages available.</p>
+            <p class="lead mb-0 text-muted w-100 text-center mb-3">No languages available.</p>
         </div>
 
     <app-modal

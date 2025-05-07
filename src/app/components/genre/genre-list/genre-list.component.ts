@@ -50,12 +50,16 @@ export class GenreListComponent {
     this.getAllGenres(page);
   }
   
-  getAllGenres(page: number = 0) {
+  getAllGenres(page: number = 0, callback?: (genres: any[]) => void): void {
     this.genreService.getAllSearchPaginated(this.searchQuery, page, this.pageSize).subscribe({
       next: (response) => {
         if (response && response.content && response.totalPages !== undefined) {
           this.genres = response.content;
           this.totalPages = response.totalPages;
+          this.currentPage = response.number;
+          if (callback) {
+            callback(this.genres);
+          }
         }
       },
       error: (err) => {
@@ -104,20 +108,14 @@ export class GenreListComponent {
   delete(id: number): void {
     this.genreService.delete(id).subscribe({
       next: () => {
-          this.genres = this.genres.filter(language => language.id !== id);
-          if (this.genres.length < this.pageSize) {
-            if (this.currentPage < this.totalPages - 1) {
-              this.getAllGenres(this.currentPage + 1);
-            } else {
-              if (this.currentPage > 0) {
-                this.currentPage--;
-                this.getAllGenres(this.currentPage);
-              }
-            }
-          } else {
+        this.getAllGenres(this.currentPage, (genres: any[]) => {
+          if (genres.length === 0 && this.currentPage > 0) {
+            this.currentPage--;
             this.getAllGenres(this.currentPage);
           }
-          this.deleteModal.closeModal();
+        });
+  
+        this.deleteModal.closeModal();
       },
       error: (err: HttpErrorResponse) => {
         this.prepareDeleteError(err);
@@ -128,10 +126,33 @@ export class GenreListComponent {
 
   onConfirmForm(updatedGenre: Genre): void {
     const index = this.genres.findIndex(g => g.id === updatedGenre.id);
+  
     if (index !== -1) {
-      this.genres[index] = updatedGenre;
+      this.handleUpdate(updatedGenre, index);
+    } else {
+      this.handleCreate(updatedGenre);
     }
+  
     this.formModal.closeModal();
+  }
+  
+  handleUpdate(updatedGenre: Genre, index: number): void {
+    this.genres[index] = updatedGenre;
+  }
+  
+  handleCreate(newGenre: Genre): void {
+    const isLastPage = this.currentPage === this.totalPages - 1;
+  
+    if (isLastPage) {
+      if (this.genres.length < this.pageSize) {
+        this.genres.push(newGenre);
+      } else {
+        this.totalPages++;
+      }
+    } else {
+      this.currentPage = 0;
+      this.getAllGenres(0);
+    }
   }
 
   onConfirmDelete(): void {

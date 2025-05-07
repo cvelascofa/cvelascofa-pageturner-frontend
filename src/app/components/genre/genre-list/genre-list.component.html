@@ -1,6 +1,6 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="mb-0">Genres List</h3>
+        <h3 class="mb-0">Genres</h3>
         <button class="btn btn-success" (click)="openCreateModal()">+ Create Genre</button>
     </div>
     
@@ -33,7 +33,7 @@
   
     @if (genres.length === 0) {
         <div class="text-center mt-5">
-            <p>No genres available.</p>
+            <p class="lead mb-0 text-muted w-100 text-center mb-3">No genres available.</p>
         </div>
     }
 

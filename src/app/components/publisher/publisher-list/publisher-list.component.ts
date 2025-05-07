@@ -45,12 +45,13 @@ export class PublisherListComponent {
     this.getAllPublishers(page);
   }
 
-  getAllPublishers(page: number = 0): void {
+  getAllPublishers(page: number = 0, callback?: (publishers: Publisher[]) => void): void {
     this.publisherService.getAllSearchPaginated(this.searchQuery, page, this.pageSize).subscribe({
       next: (response) => {
         if (response && response.content && response.totalPages !== undefined) {
           this.publishers = response.content;
           this.totalPages = response.totalPages;
+          if (callback) callback(this.publishers);
         }
       },
       error: (err) => {
@@ -99,19 +100,13 @@ export class PublisherListComponent {
   delete(id: number): void {
     this.publisherService.delete(id).subscribe({
       next: () => {
-        this.publishers = this.publishers.filter(publisher => publisher.id !== id);
-        if (this.publishers.length < this.pageSize) {
-          if (this.currentPage < this.totalPages - 1) {
-            this.getAllPublishers(this.currentPage + 1);
-          } else {
-            if (this.currentPage > 0) {
-              this.currentPage--;
-              this.getAllPublishers(this.currentPage);
-            }
+        this.getAllPublishers(this.currentPage, (publishers: Publisher[]) => {
+          if (publishers.length === 0 && this.currentPage > 0) {
+            this.currentPage--;
+            this.getAllPublishers(this.currentPage);
           }
-        } else {
-          this.getAllPublishers(this.currentPage);
-        }
+        });
+  
         this.deleteModal.closeModal();
       },
       error: (err: HttpErrorResponse) => {
@@ -142,24 +137,36 @@ export class PublisherListComponent {
   }
 
   onConfirmForm(updatedPublisher: Publisher): void {
-    if (updatedPublisher.id === 0) {
-      this.create(updatedPublisher);
+    const index = this.publishers.findIndex(p => p.id === updatedPublisher.id);
+  
+    if (index !== -1) {
+      this.handleUpdate(updatedPublisher, index);
     } else {
-      this.update(updatedPublisher);
+      this.handleCreate(updatedPublisher);
+    }
+  
+    this.formModal.closeModal();
+  }
+  
+  handleUpdate(updatedPublisher: Publisher, index: number): void {
+    this.publishers[index] = updatedPublisher;
+  }
+  
+  handleCreate(newPublisher: Publisher): void {
+    const isLastPage = this.currentPage === this.totalPages - 1;
+  
+    if (isLastPage) {
+      if (this.publishers.length < this.pageSize) {
+        this.publishers.push(newPublisher);
+      } else {
+        this.totalPages++;
+      }
+    } else {
+      this.currentPage = 0;
+      this.getAllPublishers(0);
     }
   }
   
-  update(updatedPublisher: Publisher): void {
-    const index = this.publishers.findIndex(p => p.id === updatedPublisher.id);
-    if (index !== -1) {
-      this.publishers[index] = updatedPublisher;
-    }
-  }
-
-  create(newPublisher: Publisher): void {
-    this.publishers.push(newPublisher);
-  }
-
   onSearch(query: { [key: string]: string }) {
     this.searchQuery = query['name'] || '';
     this.currentPage = 0;

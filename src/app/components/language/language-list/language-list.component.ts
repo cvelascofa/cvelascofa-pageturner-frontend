@@ -45,12 +45,16 @@ export class LanguageListComponent {
     this.getAllLanguages(page);
   }
 
-  getAllLanguages(page: number = 0): void {
+  getAllLanguages(page: number = 0, callback?: (languages: any[]) => void): void {
     this.languageService.getAllSearchPaginated(this.searchQuery, page, this.pageSize).subscribe({
       next: (response) => {
         if (response && response.content && response.totalPages !== undefined) {
           this.languages = response.content;
           this.totalPages = response.totalPages;
+  
+          if (callback) {
+            callback(this.languages);
+          }
         }
       },
       error: (err) => {
@@ -99,20 +103,14 @@ export class LanguageListComponent {
   delete(id: number): void {
     this.languageService.delete(id).subscribe({
       next: () => {
-      this.languages = this.languages.filter(language => language.id !== id);
-      if (this.languages.length < this.pageSize) {
-        if (this.currentPage < this.totalPages - 1) {
-          this.getAllLanguages(this.currentPage + 1);
-        } else {
-          if (this.currentPage > 0) {
+        this.getAllLanguages(this.currentPage, (languages: any[]) => {
+          if (languages.length === 0 && this.currentPage > 0) {
             this.currentPage--;
             this.getAllLanguages(this.currentPage);
           }
-        }
-      } else {
-        this.getAllLanguages(this.currentPage);
-      }
-      this.deleteModal.closeModal();
+        });
+  
+        this.deleteModal.closeModal();
       },
       error: (err: HttpErrorResponse) => {
         this.prepareDeleteError(err);
@@ -142,24 +140,35 @@ export class LanguageListComponent {
   }
 
   onConfirmForm(updatedLanguage: Language): void {
-    if (updatedLanguage.id == 0) {
-      this.create(updatedLanguage);
+    const index = this.languages.findIndex(l => l.id === updatedLanguage.id);
+  
+    if (index !== -1) {
+      this.handleUpdate(updatedLanguage, index);
     } else {
-      this.udpate(updatedLanguage);
+      this.handleCreate(updatedLanguage);
     }
+  
+    this.formModal.closeModal();
   }
   
-  udpate(updatedLanguage: Language): void {
-    const index = this.languages.findIndex(g => g.id === updatedLanguage.id);
-    if (index !== -1) {
-      this.languages[index] = updatedLanguage;
+  handleUpdate(updatedLanguage: Language, index: number): void {
+    this.languages[index] = updatedLanguage;
+  }
+  
+  handleCreate(newLanguage: Language): void {
+    const isLastPage = this.currentPage === this.totalPages - 1;
+  
+    if (isLastPage) {
+      if (this.languages.length < this.pageSize) {
+        this.languages.push(newLanguage);
+      } else {
+        this.totalPages++;
+      }
+    } else {
+      this.currentPage = 0;
+      this.getAllLanguages(0);
     }
   }
-
-  create(newLanguage: Language): void {
-    this.languages.push(newLanguage);
-  }
-
 
   onSearch(query: { [key: string]: string }) {
     this.searchQuery = query['name'] || '';

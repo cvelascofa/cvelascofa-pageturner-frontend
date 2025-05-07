@@ -50,21 +50,23 @@ export class AuthorListComponent {
      this.getAllAuthors(page);
    }
  
-   getAllAuthors(page: number = 0) {
-     this.authorService
-       .getAllSearchPaginated(this.searchQuery, page, this.pageSize)
-       .subscribe({
-         next: (response) => {
-           if (response?.content && response.totalPages !== undefined) {
-             this.authors = response.content;
-             this.totalPages = response.totalPages;
-           }
-         },
-         error: (err) => {
-           console.error('Error fetching authors:', err);
-         },
-       });
-   }
+   getAllAuthors(page: number = 0, callback?: (authors: Author[]) => void): void {
+    this.authorService.getAllSearchPaginated(this.searchQuery, page, this.pageSize)
+      .subscribe({
+        next: (response) => {
+          if (response?.content && response.totalPages !== undefined) {
+            this.authors = response.content;
+            this.totalPages = response.totalPages;
+  
+            if (callback) callback(this.authors);
+          }
+        },
+        error: (err) => {
+          console.error('Error fetching authors:', err);
+        }
+      });
+  }
+  
  
    prepareDeleteConfirmation(id: number): void {
      this.authorToDelete = id;
@@ -104,37 +106,56 @@ export class AuthorListComponent {
    }
  
    delete(id: number): void {
-     this.authorService.delete(id).subscribe({
-       next: () => {
-         this.authors = this.authors.filter((a) => a.id !== id);
-         if (this.authors.length < this.pageSize) {
-           if (this.currentPage < this.totalPages - 1) {
-             this.getAllAuthors(this.currentPage + 1);
-           } else {
-             if (this.currentPage > 0) {
-               this.currentPage--;
-               this.getAllAuthors(this.currentPage);
-             }
-           }
-         } else {
-           this.getAllAuthors(this.currentPage);
-         }
-         this.deleteModal.closeModal();
-       },
-       error: (err: HttpErrorResponse) => {
-         this.prepareDeleteError(err);
-         this.deleteModal.openModal();
-       },
-     });
-   }
+    this.authorService.delete(id).subscribe({
+      next: () => {
+        this.getAllAuthors(this.currentPage, (authors: Author[]) => {
+          if (authors.length === 0 && this.currentPage > 0) {
+            this.currentPage--;
+            this.getAllAuthors(this.currentPage);
+          }
+        });
+  
+        this.deleteModal.closeModal();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.prepareDeleteError(err);
+        this.deleteModal.openModal();
+      }
+    });
+  }
+  
  
    onConfirmForm(updatedAuthor: Author): void {
-     const index = this.authors.findIndex((a) => a.id === updatedAuthor.id);
-     if (index !== -1) {
-       this.authors[index] = updatedAuthor;
-     }
-     this.formModal.closeModal();
-   }
+    const index = this.authors.findIndex((a) => a.id === updatedAuthor.id);
+  
+    if (index !== -1) {
+      this.handleUpdate(updatedAuthor, index);
+    } else {
+      this.handleCreate(updatedAuthor);
+    }
+  
+    this.formModal.closeModal();
+  }
+
+  handleUpdate(updatedAuthor: Author, index: number): void {
+    this.authors[index] = updatedAuthor;
+  }
+  
+  handleCreate(newAuthor: Author): void {
+    const isLastPage = this.currentPage === this.totalPages - 1;
+  
+    if (isLastPage) {
+      if (this.authors.length < this.pageSize) {
+        this.authors.push(newAuthor);
+      } else {
+        this.totalPages++;
+      }
+    } else {
+      this.currentPage = 0;
+      this.getAllAuthors(0);
+    }
+  }
+  
  
    onConfirmDelete(): void {
      if (this.authorToDelete !== null) {
