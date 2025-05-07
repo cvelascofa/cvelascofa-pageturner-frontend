@@ -50,12 +50,16 @@ export class GenreListComponent {
     this.getAllGenres(page);
   }
   
-  getAllGenres(page: number = 0) {
+  getAllGenres(page: number = 0, callback?: (genres: any[]) => void): void {
     this.genreService.getAllSearchPaginated(this.searchQuery, page, this.pageSize).subscribe({
       next: (response) => {
         if (response && response.content && response.totalPages !== undefined) {
           this.genres = response.content;
           this.totalPages = response.totalPages;
+          this.currentPage = response.number;
+          if (callback) {
+            callback(this.genres);
+          }
         }
       },
       error: (err) => {
@@ -104,20 +108,14 @@ export class GenreListComponent {
   delete(id: number): void {
     this.genreService.delete(id).subscribe({
       next: () => {
-          this.genres = this.genres.filter(language => language.id !== id);
-          if (this.genres.length < this.pageSize) {
-            if (this.currentPage < this.totalPages - 1) {
-              this.getAllGenres(this.currentPage + 1);
-            } else {
-              if (this.currentPage > 0) {
-                this.currentPage--;
-                this.getAllGenres(this.currentPage);
-              }
-            }
-          } else {
+        this.getAllGenres(this.currentPage, (genres: any[]) => {
+          if (genres.length === 0 && this.currentPage > 0) {
+            this.currentPage--;
             this.getAllGenres(this.currentPage);
           }
-          this.deleteModal.closeModal();
+        });
+  
+        this.deleteModal.closeModal();
       },
       error: (err: HttpErrorResponse) => {
         this.prepareDeleteError(err);

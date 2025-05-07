@@ -7,6 +7,7 @@ import { PublisherListComponent } from './components/publisher/publisher-list/pu
 import { AuthorListComponent } from './components/author/author-list/author-list.component';
 import { BookUserListComponent } from './components/book/book-user-list/book-user-list.component';
 import { BookUserDetailComponent } from './components/book/book-user-detail/book-user-detail.component';
+import { LoginComponent } from './components/login/login.component';
 
 export const routes: Routes = [
     {
@@ -44,5 +45,9 @@ export const routes: Routes = [
     {
         path: 'book/detail/:idBook',
         component: BookUserDetailComponent
+    },
+    {
+        path: 'login',
+        component: LoginComponent
     }
 ];

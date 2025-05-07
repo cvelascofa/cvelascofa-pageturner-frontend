@@ -49,12 +49,13 @@ export class BookListComponent implements OnInit {
     this.getAllBooks(page);
   }
 
-  getAllBooks(page: number = 0) {
+  getAllBooks(page: number = 0, callback?: (books: Book[]) => void): void {
     this.bookService.getAllSearchPaginated(this.searchQuery, page, this.pageSize).subscribe({
       next: (response) => {
         if (response && response.content && response.totalPages !== undefined) {
           this.books = response.content;
           this.totalPages = response.totalPages;
+          if (callback) callback(this.books);
         }
       },
       error: (err) => {
@@ -120,24 +121,15 @@ export class BookListComponent implements OnInit {
   delete(id: number): void {
     this.bookService.delete(id).subscribe({
       next: () => {
-        this.books = this.books.filter(book => book.id !== id);
-  
-        if (this.books.length < this.pageSize) {
-          if (this.currentPage < this.totalPages - 1) {
-            this.getAllBooks(this.currentPage + 1);
-          } else {
-            if (this.currentPage > 0) {
-              this.currentPage--;
-              this.getAllBooks(this.currentPage);
-            } else {
-              this.getAllBooks(this.currentPage);
-            }
+        this.getAllBooks(this.currentPage, (books: any[]) => {
+          if (books.length === 0 && this.currentPage > 0) {
+            this.currentPage--;
+            this.getAllBooks(this.currentPage);
           }
-        } else {
-          this.getAllBooks(this.currentPage);
-        }
+        });
   
-        this.deleteModal.closeModal();
+        this.prepareDeleteSuccess();
+        this.deleteModal.openModal();
       },
       error: (err: HttpErrorResponse) => {
         this.prepareDeleteError(err);
