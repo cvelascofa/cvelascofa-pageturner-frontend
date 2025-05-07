@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Author } from '../../models/author/author.model';
 import { Observable } from 'rxjs';
 import { AUTH_API } from '../../api-constants';
-import { TokenStorageService } from '../token-storage/token-storage.service';
+import { AuthHeaderService } from '../auth-header/auth-header.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +12,12 @@ export class AuthorService {
 
   constructor(
     private http: HttpClient,
-    private tokenService: TokenStorageService
+    private authHeaderService: AuthHeaderService
   ) { }
 
   getAll(): Observable<Author[]> {
-    const headers = this.tokenService.getAuthHeaders();
-    return this.http.get<Author[]>(`${AUTH_API}authors`, { headers });
+    const options = this.authHeaderService.getAuthHeaders();
+    return this.http.get<Author[]>(`${AUTH_API}authors`, options);
   }
 
   getAllSearchPaginated(name: string = '', page: number = 0, size: number = 10): Observable<any> {
@@ -25,28 +25,28 @@ export class AuthorService {
       .set('name', name)
       .set('page', page.toString())
       .set('size', size.toString());
-    const headers = this.tokenService.getAuthHeaders();
-    return this.http.get<any>(`${AUTH_API}authors/search`, { params, headers });
+      const options = this.authHeaderService.getAuthHeadersWithParams(params);
+      return this.http.get<any>(`${AUTH_API}authors/search`, options);
   }
 
   getById(authorId: number): Observable<Author> {
-    const headers = this.tokenService.getAuthHeaders();
-    return this.http.get<Author>(`${AUTH_API}authors/${authorId}`, { headers });
+    const options = this.authHeaderService.getAuthHeaders();
+    return this.http.get<Author>(`${AUTH_API}authors/${authorId}`, options);
   }
 
   delete(authorId: number): Observable<void> {
-    const headers = this.tokenService.getAuthHeaders();
-    return this.http.delete<void>(`${AUTH_API}authors/${authorId}`, { headers });
+    const options = this.authHeaderService.getAuthHeaders();
+    return this.http.delete<void>(`${AUTH_API}authors/${authorId}`, options);
   }
 
   update(author: Author): Observable<Author> {
-    const headers = this.tokenService.getAuthHeaders();
-    return this.http.put<Author>(`${AUTH_API}authors/${author.id}`, author, { headers });
+    const options = this.authHeaderService.getAuthHeaders();
+    return this.http.put<Author>(`${AUTH_API}authors/${author.id}`, author, options);
   }
 
   create(author: Author): Observable<Author> {
-    const headers = this.tokenService.getAuthHeaders();
-    return this.http.post<Author>(`${AUTH_API}authors`, author, { headers });
+    const options = this.authHeaderService.getAuthHeaders();
+    return this.http.post<Author>(`${AUTH_API}authors`, author, options);
   }
 
   getAllByBookIdSearchPaginated(
@@ -59,7 +59,7 @@ export class AuthorService {
       .set('description', description)
       .set('page', page.toString())
       .set('size', size.toString());
-    const headers = this.tokenService.getAuthHeaders();
-    return this.http.get<any>(`${AUTH_API}book-editions/book/${bookId}/search`, { params, headers });
-  }
+      const options = this.authHeaderService.getAuthHeadersWithParams(params);
+      return this.http.get<any>(`${AUTH_API}book-editions/book/${bookId}/search`, options);
+    }
 }

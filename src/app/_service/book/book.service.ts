@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Book } from '../../models/book/book.model';
 import { AUTH_API } from '../../api-constants';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { TokenStorageService } from '../token-storage/token-storage.service';
+import { AuthHeaderService } from '../auth-header/auth-header.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +13,12 @@ export class BookService {
 
   constructor(
     private http: HttpClient,
-    private tokenService: TokenStorageService
+    private authHeaderService: AuthHeaderService
   ) { }
 
   getAll(): Observable<Book[]> {
-    const headers = this.tokenService.getAuthHeaders();
-    return this.http.get<Book[]>(`${AUTH_API}books`, { headers });
+    const options = this.authHeaderService.getAuthHeaders();
+    return this.http.get<Book[]>(`${AUTH_API}books`, options);
   }
 
   getAllSearchPaginated(title: string = '', page: number = 0, size: number = 10): Observable<any> {
@@ -26,27 +26,27 @@ export class BookService {
       .set('title', title)
       .set('page', page.toString())
       .set('size', size.toString());
-    const headers = this.tokenService.getAuthHeaders();
-    return this.http.get<any>(`${AUTH_API}books/search`, { params, headers });
+      const options = this.authHeaderService.getAuthHeadersWithParams(params);
+      return this.http.get<any>(`${AUTH_API}books/search`, options);
   }
 
   getById(bookId: number): Observable<Book> {
-    const headers = this.tokenService.getAuthHeaders();
-    return this.http.get<Book>(`${AUTH_API}books/${bookId}`, { headers });
+    const options = this.authHeaderService.getAuthHeaders();
+    return this.http.get<Book>(`${AUTH_API}books/${bookId}`, options);
   }
 
   delete(bookId: number): Observable<void> {
-    const headers = this.tokenService.getAuthHeaders();
-    return this.http.delete<void>(`${AUTH_API}books/${bookId}`, { headers });
+    const options = this.authHeaderService.getAuthHeaders();
+    return this.http.delete<void>(`${AUTH_API}books/${bookId}`, options);
   }
 
   update(book: Book): Observable<Book> {
-    const headers = this.tokenService.getAuthHeaders();
-    return this.http.put<Book>(`${AUTH_API}books/${book.id}`, book, { headers });
+    const options = this.authHeaderService.getAuthHeaders();
+    return this.http.put<Book>(`${AUTH_API}books/${book.id}`, book, options);
   }
 
   create(book: Book): Observable<Book> {
-    const headers = this.tokenService.getAuthHeaders();
-    return this.http.post<Book>(`${AUTH_API}books`, book, { headers });
+    const options = this.authHeaderService.getAuthHeaders();
+    return this.http.post<Book>(`${AUTH_API}books`, book, options);
   }
 }
