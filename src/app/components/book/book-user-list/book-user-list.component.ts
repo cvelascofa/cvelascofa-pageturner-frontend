@@ -49,8 +49,8 @@ export class BookUserListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getAllBooks();
-    this.loadFavourites();
+    
+    this.loadFavouritesAndBooks();
   }
 
   onSubmit() {
@@ -115,7 +115,7 @@ export class BookUserListComponent implements OnInit {
   
     this.favouriteService.create(favourite).subscribe({
       next: () => {
-        this.loadFavourites();
+        this.loadFavouritesAndBooks();
         const book = this.books.find(b => b.id === bookId);
         if (book) {
           book.isFavourite = true;
@@ -156,12 +156,17 @@ export class BookUserListComponent implements OnInit {
     }
   }
 
-  loadFavourites(): void {
+  loadFavouritesAndBooks(): void {
     this.favouriteService.getAllByUserId(this.currentUser.id).subscribe({
       next: (favourites) => {
         this.favourites = favourites;
+        this.getAllBooks();
       },
-      error: (err) => console.error('Error loading favourites', err)
+      error: (err) =>
+        {
+          console.error('Error loading favourites', err)
+          this.getAllBooks();
+        } 
     });
   }
 
