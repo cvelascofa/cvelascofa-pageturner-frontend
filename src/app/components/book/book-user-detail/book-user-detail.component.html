@@ -18,44 +18,59 @@
         <h3 class="mb-4">Book Details</h3>
         <table class="table">
           <tbody>
-            <tr>
-              <td>Title:</td>
-              <td>{{ book?.title }}</td>
-            </tr>
-            <tr>
-              <td>Author:</td>
-              <td>{{ book?.author?.name || 'N/A' }}</td>
-            </tr>
-            <tr>
-              <td>Publisher:</td>
-              <td>{{ book?.publisher?.name || 'N/A' }}</td>
-            </tr>
-            <tr>
-              <td>Genre:</td>
-              <td>{{ book?.genre?.name || 'N/A' }}</td>
-            </tr>
-            <tr>
-              <td>Language:</td>
-              <td>{{ book?.language?.name || 'N/A' }}</td>
-            </tr>
-            <tr>
-              <td>ISBN:</td>
-              <td>{{ book?.isbn || 'N/A' }}</td>
-            </tr>
-            <tr>
-              <td>Pages:</td>
-              <td>{{ book?.pages || 'N/A' }}</td>
-            </tr>
-            <tr>
-              <td>Edition:</td>
-              <td>{{ book?.editionType?.name || 'N/A' }}</td>
-            </tr>
+            <tr><td>Title:</td><td>{{ book?.title }}</td></tr>
+            <tr><td>Author:</td><td>{{ book?.author?.name || 'N/A' }}</td></tr>
+            <tr><td>Publisher:</td><td>{{ book?.publisher?.name || 'N/A' }}</td></tr>
+            <tr><td>Genre:</td><td>{{ book?.genre?.name || 'N/A' }}</td></tr>
+            <tr><td>Language:</td><td>{{ book?.language?.name || 'N/A' }}</td></tr>
+            <tr><td>ISBN:</td><td>{{ book?.isbn || 'N/A' }}</td></tr>
+            <tr><td>Pages:</td><td>{{ book?.pages || 'N/A' }}</td></tr>
+            <tr><td>Edition:</td><td>{{ book?.editionType?.name || 'N/A' }}</td></tr>
           </tbody>
         </table>
-        <div class="text-center">
+  
+        <div class="text-center mb-4">
           <button class="btn btn-secondary" [routerLink]="['/books']">Back to List</button>
+        </div>
+  
+        <div class="mt-5">
+          <h4>Leave a Review</h4>
+  
+          <div *ngIf="canComment && showReviewForm && !userHasReviewed">
+            <form [formGroup]="form" (ngSubmit)="addRating()">
+              <div class="form-group">
+                <label for="rating">Rating:</label>
+                <select formControlName="rating" class="form-control">
+                  <option *ngFor="let r of [1,2,3,4,5]" [value]="r">{{ r }}</option>
+                </select>
+              </div>
+              <div class="form-group mt-2">
+                <label for="comment">Comment:</label>
+                <textarea class="form-control" formControlName="comment" rows="3"></textarea>
+              </div>
+              <button class="btn btn-primary mr-2" type="submit" [disabled]="form.invalid">Submit Review</button>
+              <button class="btn btn-outline-secondary mt-3 ms-2" type="button" (click)="showReviewForm = false">Cancel</button>
+            </form>
+          </div>
+  
+          <div *ngIf="canComment && !showReviewForm && !userHasReviewed" class="text-center mt-4">
+            <button class="btn btn-success" (click)="showReviewForm = true">
+              Add Review
+            </button>
+          </div>
+        </div>
+  
+        <div class="mt-5">
+          <h4>Reviews</h4>
+  
+          <div *ngFor="let review of reviews" class="card mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Rating: {{ review.rating }}/5</h5>
+              <p class="card-text">{{ review.comment }}</p>
+              <p class="card-subtitle text-muted">User ID: {{ review.userId }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  
