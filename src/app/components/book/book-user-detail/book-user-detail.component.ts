@@ -38,7 +38,6 @@ export class BookUserDetailComponent {
     comment: ''
   };
 
-
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -67,14 +66,14 @@ export class BookUserDetailComponent {
     if (bookId) {
       this.bookService.getById(Number(bookId)).subscribe(book => {
         this.book = book;
+        this.totalPages = this.book.totalPages;
   
         if (this.book && this.book.publishDate) {
           const publishDate = new Date(this.book.publishDate);
           this.formattedPublishDate = publishDate.toLocaleDateString('es-ES');
         }
-  
-  
         this.loadReviews(this.book.id);
+        this.loadReadingProgress();
       });
     }
   }
@@ -131,9 +130,6 @@ export class BookUserDetailComponent {
         pagesRead: pagesRead,
         //readingStatus: this.book.readingStatus,
       };
-
-    console.log(JSON.stringify(readingProgress))
-    console.log("crated1")
       if (this.progressData) {
         this.readingProgressService.update(this.userId, this.book.id, readingProgress).subscribe(updatedProgress => {
           this.progressData = updatedProgress;
@@ -141,7 +137,6 @@ export class BookUserDetailComponent {
         });
       } else {
         this.readingProgressService.create(readingProgress).subscribe(newProgress => {
-          console.log("crated")
           this.progressData = newProgress;
           this.calculateProgressPercentage(newProgress.pagesRead);
         });
