@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AUTH_API } from '../../api-constants';
+import { User } from '../../models/user/user.model';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -39,5 +40,28 @@ export class AuthService {
       userPayload,
       httpOptions
     );
+  }
+
+  registerAdmin(username: string, email: string, password: string): Observable<any> {
+    const userPayload = {
+      username,
+      email,
+      password,
+      role: {
+        id: 0,
+        name: 'ADMIN',
+        description: ''
+      }
+    };
+  
+    return this.http.post(
+      AUTH_API + 'users',
+      userPayload,
+      httpOptions
+    );
+  }
+
+  update(user: User): Observable<User> {
+    return this.http.put<User>(AUTH_API + 'users/' + user.id, user, httpOptions);
   }
 }

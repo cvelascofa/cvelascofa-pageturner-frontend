@@ -1,0 +1,60 @@
+<div *ngIf="isLoading">Cargando usuarios...</div>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="mb-0">Users</h3>
+      <button class="btn btn-success" (click)="openCreateModal()">+ Create User</button>
+    </div>
+  
+    <app-user-search
+      (search)="onSearch($event)"
+      (clearSearch)="onClearSearch()">
+    </app-user-search>
+  
+    <table class="table table-striped" style="table-layout: fixed; width: 100%;">
+      <thead>
+        <tr>
+          <th style="width: 10%;">ID</th>
+          <th style="width: 60%;">Username</th>
+          <th style="width: 30%;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of users; track $index) {
+          <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>
+              <button (click)="openEditModal(user)" class="btn btn-warning btn-sm me-2">Edit</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  
+    @if (users.length === 0) {
+      <div class="text-center mt-5">
+        <p class="lead mb-0 text-muted w-100 text-center mb-3">No users available.</p>
+      </div>
+    }
+  
+    <app-user-admin-form
+        #updateModal
+        [user]="userToUpdate"
+        (confirm)="onConfirmForm($event)"
+        (cancel)="updateModal.closeModal()">
+    </app-user-admin-form>
+  
+    <app-pagination
+      [currentPage]="currentPage"
+      [totalPages]="totalPages"
+      (pageChange)="onPageChange($event)">
+    </app-pagination>
+
+    <div *ngIf="isLoading" class="text-center my-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    
+  </div>  

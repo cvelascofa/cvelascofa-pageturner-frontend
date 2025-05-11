@@ -1,14 +1,20 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
-import { HttpBackend, HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpBackend, HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { AUTH_API, TOKEN_KEY, USER_KEY, USER_ROLES_KEY } from '../../api-constants';
 import { Observable } from 'rxjs';
+import { User } from '../../models/user/user.model';
+import { AuthHeaderService } from '../auth-header/auth-header.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenStorageService {
-  constructor(private authService: AuthService, private http: HttpClient) {  }
+  constructor(
+    private authService: AuthService, 
+    private http: HttpClient,
+    private authHeaderService: AuthHeaderService
+  ) {  }
 
   signOut(): void {
     window.sessionStorage.clear();
@@ -39,7 +45,7 @@ export class TokenStorageService {
       window.sessionStorage.removeItem(USER_KEY);
       window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
     } catch (error) {
-      console.error('Error obteniendo el usuario por correo electrónico:', error);
+      console.error('Error fetching user by email: ', error);
       throw error;
     }
   }
@@ -53,17 +59,32 @@ export class TokenStorageService {
   }
 
   getUserByEmail(email: string): Observable<any> {
-    const token = this.getToken();
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
+    const headers = this.getAuthHeaders();
     return this.http.get(`${AUTH_API}users/email/${email}`, { headers });
   }
 
   getAuthHeaders(): HttpHeaders {
     const token = this.getToken();
-    return new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
+    if (token) {
+      return new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+    }
+    return new HttpHeaders();
   }
+
+  getAllUsers(): Observable<any[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<any[]>(`${AUTH_API}users`, { headers });
+  }
+
+  getAllSearchPaginated(username: string = '', page: number = 0, size: number = 10): Observable<any> {
+    const params = new HttpParams()
+      .set('username', username)
+      .set('page', page.toString())
+      .set('size', size.toString());
+    const options = this.authHeaderService.getAuthHeadersWithParams(params);
+    return this.http.get<any>(`${AUTH_API}users/search`, options);
+  }
+  
 }
