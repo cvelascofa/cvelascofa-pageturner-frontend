@@ -16,7 +16,6 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   invisLogin: boolean = false;
-  loading: boolean = false;
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
@@ -39,7 +38,6 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
-      rememberMe: [false]
     });
   }
 
@@ -57,8 +55,6 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.loading = true;
-
     const { email, password } = this.loginForm.value;
 
     try {
@@ -74,8 +70,6 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/']);
     } catch (error) {
       this.isLoginFailed = true;
-    } finally {
-      this.loading = false;
     }
   }
 
