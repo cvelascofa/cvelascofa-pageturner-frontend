@@ -8,6 +8,7 @@ import { AuthorListComponent } from './components/author/author-list/author-list
 import { BookUserListComponent } from './components/book/book-user-list/book-user-list.component';
 import { BookUserDetailComponent } from './components/book/book-user-detail/book-user-detail.component';
 import { LoginComponent } from './components/login/login.component';
+import { SignUpComponent } from './components/sign-up/sign-up.component';
 
 export const routes: Routes = [
     {
@@ -49,5 +50,9 @@ export const routes: Routes = [
     {
         path: 'login',
         component: LoginComponent
+    },
+    {
+        path: 'sign-up',
+        component: SignUpComponent
     }
 ];

@@ -1,4 +1,4 @@
-import { Book } from './book.model';  // Asegúrate de que la ruta sea correcta
+import { Book } from './book.model';
 
 export class BookWithFavourite extends Book {
 

@@ -1,11 +1,19 @@
 <div class="container d-flex justify-content-center align-items-center vh-100">
     <div class="card p-4 shadow" style="width: 100%; max-width: 400px;">
-      <h3 class="text-center mb-4">Login</h3>
+      <h3 class="text-center mb-4">Sign Up</h3>
   
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmitLogin()">
-        
+      <form [formGroup]="signUpForm" (ngSubmit)="onSubmitSignUp()">
+  
         <div class="form-group">
-          <label for="email">Email address:</label>
+          <label for="username">Username:</label>
+          <input formControlName="username" type="text" class="form-control" id="username" placeholder="Enter your username" />
+          <div *ngIf="username.invalid && username.touched" class="text-danger">
+            <small *ngIf="username.errors?.['required']">Username is required.</small>
+          </div>
+        </div>
+  
+        <div class="form-group">
+          <label for="email">Email:</label>
           <input formControlName="email" type="email" class="form-control" id="email" placeholder="Enter your email" />
           <div *ngIf="email.invalid && email.touched" class="text-danger">
             <small *ngIf="email.errors?.['required']">Email is required.</small>
@@ -21,13 +29,17 @@
           </div>
         </div>
   
-        <button type="submit" class="btn btn-primary w-100 mt-3" [disabled]="loginForm.invalid">
-          Submit
+        <button type="submit" class="btn btn-primary w-100 mt-3" [disabled]="signUpForm.invalid">
+          Register
         </button>
       </form>
   
       <div *ngIf="errorMessage" class="alert alert-danger mt-3">
         {{ errorMessage }}
+      </div>
+  
+      <div *ngIf="successMessage" class="alert alert-success mt-3">
+        {{ successMessage }}
       </div>
     </div>
   </div>

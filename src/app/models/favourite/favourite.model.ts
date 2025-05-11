@@ -1,4 +1,4 @@
-export interface Favourite {
+export class Favourite {
  
     id?: number;
     userId: number;
