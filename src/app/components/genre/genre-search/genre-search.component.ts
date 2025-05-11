@@ -1,9 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-genre-search',
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './genre-search.component.html',
   styleUrl: './genre-search.component.css'
 })

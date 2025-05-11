@@ -7,6 +7,7 @@ import { AdminUserFormComponent } from '../admin-user-form/admin-user-form.compo
 import { AdminUserSearchComponent } from '../admin-user-search/admin-user-search.component';
 import { PaginationComponent } from '../../shared/pagination/pagination.component';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../../../_service/user/user.service';
 
 @Component({
   selector: 'app-admin-user-list',
@@ -40,7 +41,7 @@ export class AdminUserListComponent {
   };
   @ViewChild(AdminUserFormComponent) formModal!: AdminUserFormComponent;
 
-  constructor(private userService: TokenStorageService) {}
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
     this.getAllUsers();

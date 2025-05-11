@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { TokenStorageService } from '../../_service/token-storage/token-storage.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UserService } from '../../_service/user/user.service';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +25,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private tokenStorage: TokenStorageService,
+    private userService: UserService,
     private router: Router,
     private fb: FormBuilder
   ) {}
@@ -60,7 +62,7 @@ export class LoginComponent implements OnInit {
     try {
       const data: any = await this.authService.login(email, password).toPromise();
       this.tokenStorage.saveToken(data);
-      await this.tokenStorage.saveUser(email);
+      await this.userService.saveUser(email);
 
       this.roles = this.tokenStorage.getUser().role;
       this.tokenStorage.saveRoles(this.roles);
