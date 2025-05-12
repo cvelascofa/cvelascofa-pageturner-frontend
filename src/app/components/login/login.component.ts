@@ -8,7 +8,7 @@ import { UserService } from '../../_service/user/user.service';
 
 @Component({
   selector: 'app-login',
-  imports: [RouterLink,CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [RouterLink, CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
     try {
       const data: any = await this.authService.login(email, password).toPromise();
       this.tokenStorage.saveToken(data);
-      await this.userService.saveUser(email);
+      await this.userService.save(email);
 
       this.roles = this.tokenStorage.getUser().role;
       this.tokenStorage.saveRoles(this.roles);

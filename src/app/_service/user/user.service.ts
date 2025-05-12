@@ -34,7 +34,7 @@ export class UserService {
     return this.http.get<any>(`${AUTH_API}users/search`, options);
   }
 
-  public async saveUser(email:string): Promise<void>  {
+  public async save(email:string): Promise<void>  {
     try {
       const user = await this.getUserByEmail(email).toPromise();
       window.sessionStorage.removeItem(USER_KEY);

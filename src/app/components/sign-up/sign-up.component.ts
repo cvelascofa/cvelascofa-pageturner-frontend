@@ -63,7 +63,7 @@ export class SignUpComponent {
       try {
         const data: any = await this.authService.login(email, password).toPromise();
         this.tokenStorage.saveToken(data);
-        await this.userService.saveUser(email);
+        await this.userService.save(email);
 
         this.roles = this.tokenStorage.getUser().roles || [];
         this.tokenStorage.saveRoles(this.roles);
