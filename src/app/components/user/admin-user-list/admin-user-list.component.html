@@ -1,0 +1,49 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="mb-0">Users</h3>
+    <button class="btn btn-success" (click)="openCreateModal()">+ Create User</button>
+  </div>
+
+  <app-admin-user-search
+    (search)="onSearch($event)"
+    (clearSearch)="onClearSearch()">
+  </app-admin-user-search>
+
+  <table class="table table-striped" style="table-layout: fixed; width: 100%;">
+    <thead>
+      <tr>
+        <th style="width: 25%;">Username</th>
+        <th style="width: 35%;">Email</th>
+        <th style="width: 20%;">Role</th>
+        <th style="width: 20%;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.role.name }}</td>
+        <td>
+          <button (click)="openEditModal(user)" class="btn btn-warning btn-sm me-2">Edit</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="users.length === 0" class="text-center mt-5">
+    <p class="lead mb-0 text-muted w-100 text-center mb-3">No users available.</p>
+  </div>
+
+  <app-admin-user-form
+    #updateModal
+    [user]="userToUpdate"
+    (confirm)="onConfirmForm($event)"
+    (cancel)="updateModal.closeModal()">
+  </app-admin-user-form>
+
+  <app-pagination
+    [currentPage]="currentPage"
+    [totalPages]="totalPages"
+    (pageChange)="onPageChange($event)">
+  </app-pagination>
+</div>

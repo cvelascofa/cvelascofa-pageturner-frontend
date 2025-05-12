@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class GenreFormComponent {
+  
   isVisible: boolean  = false;
   isEditMode: boolean = false;
   

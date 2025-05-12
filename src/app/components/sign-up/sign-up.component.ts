@@ -4,6 +4,7 @@ import { AuthService } from '../../_service/auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { TokenStorageService } from '../../_service/token-storage/token-storage.service';
+import { UserService } from '../../_service/user/user.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -23,6 +24,7 @@ export class SignUpComponent {
     private fb: FormBuilder, 
     private authService: AuthService,
     private tokenStorage: TokenStorageService,
+    private userService: UserService,
     private router: Router
   ) {}
 
@@ -61,7 +63,7 @@ export class SignUpComponent {
       try {
         const data: any = await this.authService.login(email, password).toPromise();
         this.tokenStorage.saveToken(data);
-        await this.tokenStorage.saveUser(email);
+        await this.userService.save(email);
 
         this.roles = this.tokenStorage.getUser().roles || [];
         this.tokenStorage.saveRoles(this.roles);
