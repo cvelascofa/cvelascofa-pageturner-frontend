@@ -3,6 +3,8 @@ import { User } from '../../../models/user/user.model';
 import { AuthService } from '../../../_service/auth/auth.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Role } from '../../../models/role/role.model';
+import { RoleService } from '../../../_service/role/role.service';
 
 @Component({
   selector: 'app-admin-user-form',
@@ -15,6 +17,8 @@ export class AdminUserFormComponent {
 
   isVisible: boolean = false;
   isEditMode: boolean = false;
+
+  roles: Role[] = [];
 
   @Input() user: User = {
     id: 0,
@@ -30,13 +34,17 @@ export class AdminUserFormComponent {
   @Output() cancel = new EventEmitter<void>();
   @Output() confirm = new EventEmitter<User>();
 
-  constructor(private userService: AuthService) { }
+  constructor(
+    private userService: AuthService,
+    private roleService: RoleService
+  ) { }
 
   openModal(user: User): void {
     this.user = { ...user };
     this.isEditMode = user.id !== 0;
     this.isVisible = true;
     document.body.classList.add('modal-open');
+    this.loadRoles();
   }
 
   closeModal(): void {
@@ -72,4 +80,23 @@ export class AdminUserFormComponent {
       }
     });
   }
+
+  loadRoles(): void {
+    this.roleService.getAll().subscribe({
+      next: (roles: Role[]) => {
+        this.roles = roles;
+  
+        const matchingRole = this.roles.find(r => r.id === this.user.role?.id);
+        if (matchingRole) {
+          this.user.role = matchingRole;
+        } else {
+          this.user.role = { id: 0, name: '', description: '' };
+        }
+      },
+      error: (err) => {
+        console.error('Error loading roles:', err);
+      }
+    });
+  }
+  
 }

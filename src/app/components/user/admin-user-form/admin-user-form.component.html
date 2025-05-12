@@ -34,13 +34,14 @@
   
             <div class="form-group">
               <label for="role">Role</label>
-              <input 
-                type="text" 
+              <select 
                 [(ngModel)]="user.role.name" 
                 name="role" 
                 class="form-control" 
                 required 
-                placeholder="Enter role">
+                id="role">
+                <option *ngFor="let role of roles" [value]="role.name">{{ role.name }}</option>
+              </select>
             </div>
   
             <div class="modal-footer">
