@@ -1,0 +1,100 @@
+import { Component, ViewChild } from '@angular/core';
+import { UserService } from '../../../_service/user/user.service';
+import { CommonModule } from '@angular/common';
+import { AdminUserSearchComponent } from '../admin-user-search/admin-user-search.component';
+import { Friend } from '../../../models/friend/friend.model';
+import { TokenStorageService } from '../../../_service/token-storage/token-storage.service';
+import { FriendService } from '../../../_service/friend/friend.service';
+import { ModalComponent } from '../../shared/modal/modal.component';
+
+@Component({
+  selector: 'app-add-friend-list',
+  imports: [CommonModule, AdminUserSearchComponent, ModalComponent],
+  templateUrl: './add-friend-list.component.html',
+  styleUrl: './add-friend-list.component.css'
+})
+export class AddFriendListComponent {
+
+  users: any[] = [];
+  recipientUser: any = null;
+
+  @ViewChild('confirmModal') confirmModal!: ModalComponent;
+
+  friendRequestToSend: Friend | null = null;
+
+  constructor(
+    private userService: UserService,
+    private tokenService: TokenStorageService,
+    private friendService: FriendService
+  ) {}
+
+  onSearch(query: { username: string }) {
+    this.userService.getSearchCandidates(query.username).subscribe({
+      next: (res) => {
+        this.users = res;
+      },
+      error: (err) => {
+        console.error('Error fetching users:', err);
+      }
+    });
+  }
+
+  openSendFriendRequestModal(recipientId: number): void {
+    const currentUser = this.tokenService.getUser();
+  
+    this.userService.getUserById(recipientId).subscribe({
+      next: (recipient) => {
+        this.recipientUser = recipient;
+  
+        const friend: Friend = {
+
+          senderId: currentUser.id,
+          recipientId: recipient.id,
+          senderEmail: currentUser.email,
+          senderUsername: currentUser.username,
+          recipientEmail: recipient.email,
+          recipientUsername: recipient.username,
+          friendStatus: 'PENDING'
+
+        };
+  
+        this.friendRequestToSend = friend;
+        this.prepareSendFriendRequestConfirmation(friend);
+        this.confirmModal.openModal();
+      },
+      error: (err) => {
+        console.error('Error fetching recipient user:', err);
+      }
+    });
+  }
+
+  prepareSendFriendRequestConfirmation(friend: Friend): void {
+    this.confirmModal.title = 'Send Friend Request';
+    this.confirmModal.message = `Are you sure you want to send a friend request to ${friend.recipientUsername}?`;
+    this.confirmModal.confirmButtonText = 'Send Request';
+    this.confirmModal.cancelButtonText = 'Cancel';
+    this.confirmModal.type = 'info';
+  }
+
+  onConfirmSendFriendRequest(): void {
+    console.log(JSON.stringify(this.friendRequestToSend, null, 2))
+    if (this.friendRequestToSend) {
+      this.friendService.sendFriendRequest(this.friendRequestToSend).subscribe({
+        next: () => {
+          console.log('Friend request sent successfully.');
+          this.confirmModal.closeModal();
+        },
+        error: (err) => {
+          console.error('Error sending friend request:', err);
+          this.confirmModal.closeModal();
+        }
+      });
+    }
+  }
+
+  onCancelSendFriendRequest(): void {
+    console.log('Friend request canceled');
+    this.confirmModal.closeModal();
+  }
+
+}

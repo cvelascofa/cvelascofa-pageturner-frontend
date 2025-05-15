@@ -10,6 +10,7 @@ import { BookUserDetailComponent } from './components/book/book-user-detail/book
 import { LoginComponent } from './components/login/login.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { AdminUserListComponent } from './components/user/admin-user-list/admin-user-list.component';
+import { ConnectionsListComponent } from './components/connections/connections-list/connections-list.component';
 
 export const routes: Routes = [
     {
@@ -59,5 +60,9 @@ export const routes: Routes = [
     {
         path: 'admin/users',
         component: AdminUserListComponent
+    },
+    {
+        path: 'connections',
+        component: ConnectionsListComponent
     }
 ];

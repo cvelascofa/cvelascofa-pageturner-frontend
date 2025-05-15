@@ -34,6 +34,12 @@ export class UserService {
     return this.http.get<any>(`${AUTH_API}users/search`, options);
   }
 
+  getSearchCandidates(username: string): Observable<any[]> {
+    const params = new HttpParams().set('username', username);
+    const options = this.authHeaderService.getAuthHeadersWithParams(params);
+    return this.http.get<any[]>(`${AUTH_API}users/search/friends/candidates`, options);
+  }
+
   public async save(email:string): Promise<void>  {
     try {
       const user = await this.getUserByEmail(email).toPromise();
@@ -43,5 +49,10 @@ export class UserService {
       console.error('Error fetching user by email: ', error);
       throw error;
     }
+  }
+
+  getUserById(id: number): Observable<any> {
+    const headers = this.authHeaderService.getAuthHeaders().headers;
+    return this.http.get(`${AUTH_API}users/${id}`, { headers });
   }
 }

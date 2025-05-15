@@ -8,6 +8,7 @@ import { AuthHeaderService } from '../auth-header/auth-header.service';
 @Injectable({
   providedIn: 'root'
 })
+
 export class EditionTypeService {
 
   constructor(
