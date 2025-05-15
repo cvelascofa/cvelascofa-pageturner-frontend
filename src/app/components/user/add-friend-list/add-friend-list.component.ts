@@ -17,6 +17,8 @@ export class AddFriendListComponent {
 
   users: any[] = [];
   recipientUser: any = null;
+  friends: Friend[] = [];
+  currentUserId!: number;
 
   @ViewChild('confirmModal') confirmModal!: ModalComponent;
 
@@ -27,6 +29,32 @@ export class AddFriendListComponent {
     private tokenService: TokenStorageService,
     private friendService: FriendService
   ) {}
+
+
+ngOnInit() {
+  const currentUser = this.tokenService.getUser();
+  this.currentUserId = currentUser.id;
+
+  this.loadFriends();
+}
+
+  loadFriends(): void {
+    this.friendService.getAllRelationsByUserId(this.currentUserId).subscribe({
+      next: (friends) => {
+        this.friends = friends;
+      },
+      error: (err) => {
+        console.error('Error loading friends:', err);
+      }
+    });
+  }
+
+  hasRelationWithUser(userId: number): boolean {
+    return this.friends.some(f =>
+      (f.senderId === this.currentUserId && f.recipientId === userId) ||
+      (f.recipientId === this.currentUserId && f.senderId === userId)
+    );
+  }
 
   onSearch(query: { username: string }) {
     this.userService.getSearchCandidates(query.username).subscribe({
@@ -95,6 +123,11 @@ export class AddFriendListComponent {
   onCancelSendFriendRequest(): void {
     console.log('Friend request canceled');
     this.confirmModal.closeModal();
+  }
+
+  public refresh(): void {
+    this.loadFriends();
+    this.users = [];
   }
 
 }

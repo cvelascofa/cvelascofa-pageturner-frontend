@@ -22,11 +22,7 @@
     color: #030303a2;
 }
 
-.scroll-sm {
-    max-height: 300px;
-    overflow-y: auto;
-}
-
+/* TODO */
 .scroll-lg {    
     max-height: 550px;
     overflow-y: auto;

@@ -1,7 +1,6 @@
-<!-- Friends Accepted -->
 <div class="mb-4">
     <h6 class="text-muted mb-3">Friends</h6>
-    <div class="scroll-sm">
+    <div class="scroll-lg">
       <table class="table" *ngIf="acceptedLoaded; else loadingAccepted">
         <thead>
           <tr>
@@ -36,7 +35,7 @@
       </ng-template>
     </div>
   
-    <div *ngIf="errorMessage" class="alert alert-danger mt-3">
-      {{ errorMessage }}
-    </div>
-  </div>  
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+    {{ errorMessage }}
+  </div>
+</div>  

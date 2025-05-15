@@ -3,15 +3,29 @@
   (search)="onSearch($event)">
 </app-admin-user-search>
 
-<div *ngIf="users.length > 0; else noResults">
-  <ul class="list-group mt-3">
-    <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let user of users">
-      <div>
-        <strong>{{ user.username }}</strong> - {{ user.email }}
-      </div>
-      <button (click)="openSendFriendRequestModal(user.id)" class="btn btn-success btn-sm">Send Friend Request</button>
-    </li>
-  </ul>
+<div *ngIf="users.length > 0; else noResults" class="mt-4 scroll-lg">
+  <table class="table ">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>
+          <button *ngIf="!hasRelationWithUser(user.id)" 
+                  (click)="openSendFriendRequestModal(user.id)" 
+                  class="btn btn-success btn-sm">
+            Send Friend Request
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 <ng-template #noResults>
@@ -19,12 +33,12 @@
 </ng-template>
 
 <app-modal
-    #confirmModal
-    [title]="confirmModal.title"
-    [message]="confirmModal.message"
-    [confirmButtonText]="confirmModal.confirmButtonText"
-    [cancelButtonText]="confirmModal.cancelButtonText"
-    [type]="confirmModal.type"
-    (confirm)="onConfirmSendFriendRequest()"
-    (cancel)="onCancelSendFriendRequest()">
+  #confirmModal
+  [title]="confirmModal.title"
+  [message]="confirmModal.message"
+  [confirmButtonText]="confirmModal.confirmButtonText"
+  [cancelButtonText]="confirmModal.cancelButtonText"
+  [type]="confirmModal.type"
+  (confirm)="onConfirmSendFriendRequest()"
+  (cancel)="onCancelSendFriendRequest()">
 </app-modal>

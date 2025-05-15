@@ -49,5 +49,10 @@ export class FriendService {
     const options = this.authHeaderService.getAuthHeaders();
     return this.http.get<Friend[]>(`${AUTH_API}friends/requests/sent`, options);
   }
+
+  getAllRelationsByUserId(userId: number): Observable<Friend[]> {
+    const options = this.authHeaderService.getAuthHeaders();
+    return this.http.get<Friend[]>(`${AUTH_API}friends/all/${userId}`, options);
+  }
   
 }
