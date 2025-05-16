@@ -16,12 +16,12 @@
             <td>
                 <button
                     class="btn btn-success btn-sm mr-2"
-                    (click)="acceptRequest(request.senderId, request.recipientId)">
+                    (click)="openAcceptModal(request)">
                     Accept
                 </button>
                 <button 
                     class="btn btn-danger btn-sm" 
-                    (click)="removeRequest(request.senderId, request.recipientId, true)">
+                    (click)="confirmRemove(request, true)">
                     Reject
                 </button>
             </td>
@@ -55,7 +55,7 @@
             <td>
                 <button 
                     class="btn btn-danger btn-sm" 
-                    (click)="removeRequest(request.senderId, request.recipientId, false)">
+                    (click)="confirmRemove(request, false)">
                     Delete
                 </button>
             </td>
@@ -70,3 +70,25 @@
       </ng-template>
     </div>
   </div>
+
+  <app-modal
+    #deleteModal
+    [title]="deleteModal.title"
+    [message]="deleteModal.message"
+    [confirmButtonText]="deleteModal.confirmButtonText"
+    [cancelButtonText]="deleteModal.cancelButtonText"
+    [type]="deleteModal.type"
+    (confirm)="onConfirmRemove()"
+    (cancel)="onCancelRemove()"
+></app-modal>
+
+<app-modal
+  #acceptModal
+  [title]="acceptModal.title"
+  [message]="acceptModal.message"
+  [confirmButtonText]="acceptModal.confirmButtonText"
+  [cancelButtonText]="acceptModal.cancelButtonText"
+  [type]="acceptModal.type"
+  (confirm)="onConfirmAccept()"
+  (cancel)="onCancelAccept()"
+></app-modal>

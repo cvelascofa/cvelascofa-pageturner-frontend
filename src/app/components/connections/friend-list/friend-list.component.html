@@ -20,7 +20,7 @@
             <td>
               <button 
                 class="btn btn-danger btn-sm"
-                (click)="removeRequest(friend.senderId, friend.recipientId, false)">
+                (click)="confirmRemove(friend)">
                 Delete
               </button>
             </td>
@@ -38,4 +38,15 @@
   <div *ngIf="errorMessage" class="alert alert-danger mt-3">
     {{ errorMessage }}
   </div>
-</div>  
+</div>
+
+<app-modal
+  #deleteModal
+  [title]="deleteModal.title"
+  [message]="deleteModal.message"
+  [confirmButtonText]="deleteModal.confirmButtonText"
+  [cancelButtonText]="deleteModal.cancelButtonText"
+  [type]="deleteModal.type"
+  (confirm)="onConfirmRemove()"
+  (cancel)="onCancelRemove()"
+></app-modal>

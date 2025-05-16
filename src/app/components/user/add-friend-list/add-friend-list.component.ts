@@ -68,6 +68,13 @@ ngOnInit() {
   }
 
   openSendFriendRequestModal(recipientId: number): void {
+    this.confirmModal.title = 'Loading...';
+    this.confirmModal.message = 'Fetching user info, please wait...';
+    this.confirmModal.confirmButtonText = '';
+    this.confirmModal.cancelButtonText = 'Cancel';
+    this.confirmModal.type = 'info';
+    this.confirmModal.openModal();
+
     const currentUser = this.tokenService.getUser();
   
     this.userService.getUserById(recipientId).subscribe({
@@ -88,7 +95,6 @@ ngOnInit() {
   
         this.friendRequestToSend = friend;
         this.prepareSendFriendRequestConfirmation(friend);
-        this.confirmModal.openModal();
       },
       error: (err) => {
         console.error('Error fetching recipient user:', err);
@@ -105,12 +111,12 @@ ngOnInit() {
   }
 
   onConfirmSendFriendRequest(): void {
-    console.log(JSON.stringify(this.friendRequestToSend, null, 2))
     if (this.friendRequestToSend) {
       this.friendService.sendFriendRequest(this.friendRequestToSend).subscribe({
         next: () => {
           console.log('Friend request sent successfully.');
           this.confirmModal.closeModal();
+          this.loadFriends();
         },
         error: (err) => {
           console.error('Error sending friend request:', err);
