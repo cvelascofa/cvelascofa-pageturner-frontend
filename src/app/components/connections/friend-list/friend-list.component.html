@@ -1,0 +1,52 @@
+<div class="mb-4">
+    <h6 class="text-muted mb-3">Friends</h6>
+    <div class="scroll-lg">
+      <table class="table" *ngIf="acceptedLoaded; else loadingAccepted">
+        <thead>
+          <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let friend of acceptedFriends">
+            <td>
+              {{ friend.senderId === currentUserId ? friend.recipientUsername : friend.senderUsername }}
+            </td>
+            <td>
+              {{ friend.senderId === currentUserId ? friend.recipientEmail : friend.senderEmail }}
+            </td>
+            <td>
+              <button 
+                class="btn btn-danger btn-sm"
+                (click)="confirmRemove(friend)">
+                Delete
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="acceptedFriends.length === 0">
+            <td colspan="3" class="text-muted">No friends added yet.</td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-template #loadingAccepted>
+        <p>Loading accepted friends...</p>
+      </ng-template>
+    </div>
+  
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+    {{ errorMessage }}
+  </div>
+</div>
+
+<app-modal
+  #deleteModal
+  [title]="deleteModal.title"
+  [message]="deleteModal.message"
+  [confirmButtonText]="deleteModal.confirmButtonText"
+  [cancelButtonText]="deleteModal.cancelButtonText"
+  [type]="deleteModal.type"
+  (confirm)="onConfirmRemove()"
+  (cancel)="onCancelRemove()"
+></app-modal>

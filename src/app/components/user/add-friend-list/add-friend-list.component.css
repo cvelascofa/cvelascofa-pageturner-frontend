@@ -1,0 +1,4 @@
+.scroll-lg {    
+    max-height: 475px;
+    overflow-y: auto;
+}

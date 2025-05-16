@@ -9,7 +9,8 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './admin-user-search.component.css'
 })
 export class AdminUserSearchComponent {
-  @Input() placeholder: string = 'Buscar por nombre de usuario';
+
+  @Input() placeholder: string = 'Search by Ussername';
   @Output() search = new EventEmitter<{ username: string }>();
 
   query: { username: string } = { username: '' };
@@ -22,4 +23,5 @@ export class AdminUserSearchComponent {
     this.query.username = '';
     this.search.emit(this.query);
   }
+
 }
