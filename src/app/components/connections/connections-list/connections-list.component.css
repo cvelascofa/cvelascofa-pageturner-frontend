@@ -1,0 +1,56 @@
+.nav-link {
+    color: black;
+}
+
+.nav-link:hover {
+    color: black;
+    border-bottom-color: black;
+  }
+
+.nav-link.active {
+    color: black;
+    border-bottom-color: black;
+} 
+
+.no-border-card {
+    border: none !important;
+}
+
+.highlight-user {
+    background-color: #a6c9f163;
+    font-weight: bold;
+    color: #030303a2;
+}
+
+/* TODO */
+.scroll-lg {    
+    max-height: 550px;
+    overflow-y: auto;
+}
+
+
+/* The styles below are extracted from Bootstrap version 5.3 */
+.nav-underline {
+    --bs-nav-underline-gap: 1rem;
+    --bs-nav-underline-border-width: 0.125rem;
+    --bs-nav-underline-link-active-color: var(--bs-emphasis-color);
+    gap: var(--bs-nav-underline-gap);
+}
+
+.nav-underline .nav-link {
+    padding-right: 0;
+    padding-left: 0;
+    border-bottom: var(--bs-nav-underline-border-width) solid transparent;
+}
+
+.nav-underline .nav-link:focus,
+.nav-underline .nav-link:hover {
+    border-bottom-color: currentColor;
+}
+
+.nav-underline .nav-link.active,
+.nav-underline .show>.nav-link {
+    font-weight: 700;
+    color: var(--bs-nav-underline-link-active-color);
+    border-bottom-color: currentColor;
+}

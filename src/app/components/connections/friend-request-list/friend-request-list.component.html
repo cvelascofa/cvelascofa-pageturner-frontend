@@ -1,0 +1,94 @@
+<div class="mb-4">
+    <h6 class="text-muted mb-3">Received</h6>
+    <div class="scroll-sm">
+      <table class="table" *ngIf="receivedLoaded; else loadingReceived">
+        <thead>
+          <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let request of receivedRequests">
+            <td>{{ request.senderUsername }}</td>
+            <td>{{ request.senderEmail }}</td>
+            <td>
+                <button
+                    class="btn btn-success btn-sm mr-2"
+                    (click)="openAcceptModal(request)">
+                    Accept
+                </button>
+                <button 
+                    class="btn btn-danger btn-sm" 
+                    (click)="confirmRemove(request, true)">
+                    Reject
+                </button>
+            </td>
+          </tr>
+          <tr *ngIf="receivedRequests.length === 0">
+            <td colspan="3" class="text-muted">No received requests.</td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-template #loadingReceived>
+        <p>Loading received requests...</p>
+      </ng-template>
+    </div>
+  </div>
+  
+  <div>
+    <h6 class="text-muted mb-3">Sent</h6>
+    <div class="scroll-sm">
+      <table class="table" *ngIf="sentLoaded; else loadingSent">
+        <thead>
+          <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let request of sentRequests">
+            <td>{{ request.recipientUsername }}</td>
+            <td>{{ request.recipientEmail }}</td>
+            <td>
+                <button 
+                    class="btn btn-danger btn-sm" 
+                    (click)="confirmRemove(request, false)">
+                    Delete
+                </button>
+            </td>
+          </tr>
+          <tr *ngIf="sentRequests.length === 0">
+            <td colspan="3" class="text-muted">No sent requests.</td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-template #loadingSent>
+        <p>Loading sent requests...</p>
+      </ng-template>
+    </div>
+  </div>
+
+  <app-modal
+    #deleteModal
+    [title]="deleteModal.title"
+    [message]="deleteModal.message"
+    [confirmButtonText]="deleteModal.confirmButtonText"
+    [cancelButtonText]="deleteModal.cancelButtonText"
+    [type]="deleteModal.type"
+    (confirm)="onConfirmRemove()"
+    (cancel)="onCancelRemove()"
+></app-modal>
+
+<app-modal
+  #acceptModal
+  [title]="acceptModal.title"
+  [message]="acceptModal.message"
+  [confirmButtonText]="acceptModal.confirmButtonText"
+  [cancelButtonText]="acceptModal.cancelButtonText"
+  [type]="acceptModal.type"
+  (confirm)="onConfirmAccept()"
+  (cancel)="onCancelAccept()"
+></app-modal>
