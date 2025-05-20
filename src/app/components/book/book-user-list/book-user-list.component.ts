@@ -49,7 +49,6 @@ export class BookUserListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
     this.loadFavouritesAndBooks();
   }
 
@@ -112,7 +111,7 @@ export class BookUserListComponent implements OnInit {
       userId: this.currentUser.id,
       bookId: bookId
     };
-  
+
     this.favouriteService.create(favourite).subscribe({
       next: () => {
         this.loadFavouritesAndBooks();
@@ -148,7 +147,7 @@ export class BookUserListComponent implements OnInit {
 
   toggleFavourite(bookId: number): void {
     const isFav = this.favourites.some(f => f.bookId === bookId);
-  
+
     if (isFav) {
       this.removeFromFavourites(bookId);
     } else {
@@ -162,16 +161,20 @@ export class BookUserListComponent implements OnInit {
         this.favourites = favourites;
         this.getAllBooks();
       },
-      error: (err) =>
-        {
-          console.error('Error loading favourites', err)
-          this.getAllBooks();
-        } 
+      error: (err) => {
+        console.error('Error loading favourites', err)
+        this.getAllBooks();
+      }
     });
   }
 
   isFavourite(bookId: number): boolean {
     return this.favourites.some(f => f.bookId === bookId);
   }
-  
+
+  onImageError(event: Event): void {
+    const element = event.target as HTMLImageElement;
+    element.src = 'https://placehold.co/150x220?text=No+Cover';
+  }
+
 }
