@@ -1,11 +1,11 @@
-<nav class="navbar navbar-expand-lg bg-magenta navbar-dark bg-dark sticky-top">
+<nav class="navbar navbar-expand-lg bg-magenta navbar-dark bg-dark sticky-top mb-3">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center nav-li" routerLink="/">
       <h2>PageTurner</h2>
     </a>
 
-    <button class="navbar-toggler bg-dark border-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler bg-dark border-dark" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -18,7 +18,8 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" data-bs-toggle="dropdown"
+            aria-expanded="false">
             <i class="bi fs-5 bi-person-gear"></i>
             Admin Configuration
           </a>
@@ -69,10 +70,10 @@
         </li>
 
         <li class="nav-item" *ngIf="isLoggedIn()">
-          <span class="nav-link">
-            <i class="bi fs-5 bi-person-circle"></i>
+          <a class="nav-link" [routerLink]="['/test', getLoggedUserId()]">
+            <img [src]="getAvatarUrl()" alt="Avatar" class="avatar-img"/>
             {{ getUsername() }}
-          </span>
+          </a>
         </li>
         <li class="nav-item" *ngIf="isLoggedIn()">
           <a class="nav-link" (click)="logout()" style="cursor: pointer;">

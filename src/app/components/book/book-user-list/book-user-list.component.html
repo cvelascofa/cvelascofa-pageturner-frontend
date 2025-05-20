@@ -1,42 +1,35 @@
 <div class="container">
-  
-    <app-book-search
-      (search)="onSearch($event)"
-      (clearSearch)="onClearSearch()">
-    </app-book-search>
-    
-    <div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-4 justify-content-center">
-      
-      <div *ngIf="books.length === 0" class="col-12">
-        <p class="lead mb-0 text-muted w-100 text-center mb-3">
-          There are no results for this book.
-        </p>
-      </div>
-      
-      <div *ngFor="let book of books" class="col mb-4 d-flex justify-content-between">
-        <div class="card h-100">
-          <img [src]="book.coverImage" class="card-img-top custom-card-img" alt="Book Image" />
+
+  <app-book-search (search)="onSearch($event)" (clearSearch)="onClearSearch()">
+  </app-book-search>
+
+  <div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-4 justify-content-center">
+    <div *ngIf="books.length === 0" class="col-12">
+      <p class="lead mb-0 text-muted w-100 text-center mb-3">
+        There are no results for this book.
+      </p>
+    </div>
+
+    <div *ngFor="let book of books" class="col mb-4 d-flex justify-content-between">
+
+      <button (click)="toggleFavourite(book.id)" type="button" class="btn btn-link favourite-btn">
+        <i class="bi" [ngClass]="book.isFavourite ? 'bi-heart-fill text-danger' : 'bi-heart'"></i>
+      </button>
+
+      <a [routerLink]="['/book/detail', book.id]" class="text-decoration-none text-dark w-100">
+        <div class="card h-100 border-0 shadow-none">
+          <img [src]="book.coverImage || 'https://placehold.co/150x220?text=No+Cover'" (error)="onImageError($event)"
+            class="card-img-top custom-card-img rounded shadow" alt="Book Image" />
           <div class="card-body text-center d-flex flex-column">
-            
-            <h5 class="card-title flex-grow-1">{{ book.title }}</h5>
-            
-            <button [routerLink]="['/book/detail', book.id]" type="button" class="btn btn-primary mt-2">
-              More
-            </button>
-            
-            <button (click)="toggleFavourite(book.id)" type="button" class="btn btn-link mt-2">
-              <i class="bi" [ngClass]="book.isFavourite ? 'bi-heart-fill text-danger' : 'bi-heart'"></i>
-            </button>
-            
+            <h6 class="flex-grow-1">{{ book.title }}</h6>
           </div>
         </div>
-      </div>
+      </a>
+
     </div>
-    
-    <app-pagination
-      [currentPage]="currentPage"
-      [totalPages]="totalPages"
-      (pageChange)="onPageChange($event)">
-    </app-pagination>
-    
+  </div>
+
+  <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)">
+  </app-pagination>
+
 </div>

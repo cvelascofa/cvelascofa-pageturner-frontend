@@ -1,0 +1,12 @@
+.bi-star-fill {
+  font-size: 23px;
+  margin: 0 4px;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+  color: gray;
+}
+
+.bi-star-fill.active {
+  color: gold;
+}

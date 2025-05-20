@@ -1,0 +1,47 @@
+.card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.custom-card-img {
+    width: 150px;
+    height: 220px;
+    object-fit: cover;
+    margin: 0 auto;
+}
+
+.card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-title {
+    position: relative;
+    width: 100%;
+}
+
+.favourite-btn {
+    background: transparent;
+    position: absolute;
+    right: 20px;
+    top: -15px;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 10;
+}
+
+.favourite-btn i {
+    font-size: 1.6rem;
+    color: black;
+}

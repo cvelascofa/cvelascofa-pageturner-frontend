@@ -8,3 +8,11 @@
     color: black;
     display: inline-block;
 }
+
+.avatar-img {
+    width: 26px;
+    height: 26px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 0.25rem;
+}
