@@ -11,6 +11,7 @@ import { LoginComponent } from './components/login/login.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { AdminUserListComponent } from './components/user/admin-user-list/admin-user-list.component';
 import { ConnectionsListComponent } from './components/connections/connections-list/connections-list.component';
+import { PublicUserDetailComponent } from './components/user/public-user-detail/public-user-detail.component';
 
 export const routes: Routes = [
     {
@@ -64,5 +65,9 @@ export const routes: Routes = [
     {
         path: 'connections',
         component: ConnectionsListComponent
+    },
+    {
+        path: 'test/:id',
+        component: PublicUserDetailComponent
     }
 ];

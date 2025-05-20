@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
 import { BookService } from '../../../_service/book/book.service';
 import { ReviewService } from '../../../_service/review/review.service';
 import { Review } from '../../../models/review/review.model';
@@ -8,16 +8,21 @@ import { CommonModule } from '@angular/common';
 import { TokenStorageService } from '../../../_service/token-storage/token-storage.service';
 import { ReadingProgressService } from '../../../_service/reading-progress/reading-progress.service';
 import { ReadingProgress } from '../../../models/reading-progress/reading-progress.model';
-import { ReadingStatusCode } from '../../../models/reading-status/reading-status.model';
+import { BookReviewFormComponent } from '../book-review-form/book-review-form.component';
 
 @Component({
   selector: 'app-book-user-detail',
-  imports: [FormsModule, ReactiveFormsModule, RouterLink, CommonModule],
+  imports: [FormsModule, ReactiveFormsModule, RouterLink, CommonModule, BookReviewFormComponent],
   templateUrl: './book-user-detail.component.html',
   styleUrl: './book-user-detail.component.css'
 })
+
 export class BookUserDetailComponent {
   @Input() book: any;
+  fallbackImage: string = 'https://placehold.co/150x220?text=No+Cover';
+
+  @ViewChild(BookReviewFormComponent) reviewFormModal!: BookReviewFormComponent;
+
   reviews: Review[] = [];
   form: FormGroup;
   progressForm: FormGroup;
@@ -31,6 +36,7 @@ export class BookUserDetailComponent {
   showReviewForm: boolean = true;
   userHasReviewed = false;
 
+  isLoading = true;
 
   rating = false;
   ratingToAdd = {
@@ -62,22 +68,24 @@ export class BookUserDetailComponent {
   ngOnInit() {
     this.userId = this.tokenService.getUser()?.id;
     const bookId = this.route.snapshot.paramMap.get('idBook');
-
+  
     if (bookId) {
       this.bookService.getById(Number(bookId)).subscribe(book => {
         this.book = book;
         this.totalPages = this.book.totalPages;
   
-        if (this.book && this.book.publishDate) {
+        if (this.book.publishDate) {
           const publishDate = new Date(this.book.publishDate);
           this.formattedPublishDate = publishDate.toLocaleDateString('es-ES');
         }
+  
         this.loadReviews(this.book.id);
         this.loadReadingProgress();
+  
+        this.isLoading = false;
       });
     }
   }
-  
 
   loadReviews(bookId: number) {
     this.reviewService.getByBookId(bookId).subscribe(reviews => {
@@ -153,4 +161,25 @@ export class BookUserDetailComponent {
       }
     });
   }
+
+  onImageError(event: Event) {
+    const target = event.target as HTMLImageElement;
+    target.src = this.fallbackImage;
+  }
+
+  openCreateReviewModal() {
+    this.reviewFormModal.openModal();
+  }
+
+  onReviewConfirm(newReview: Review) {
+    this.createReview(newReview);
+    this.reviewFormModal.closeModal();
+  }
+
+  createReview(newReview: Review) {
+    this.reviewService.create(newReview).subscribe(createdReview => {
+      this.reviews.push(createdReview);
+    });
+  }
+
 }

@@ -1,0 +1,43 @@
+<div class="modal fade" tabindex="-1" [ngClass]="{ 'show': isVisible }"
+    [ngStyle]="{ display: isVisible ? 'block' : 'none' }" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Leave a Review</h5>
+                <button type="button" class="close" aria-label="Close" (click)="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                    <div class="form-group mb-3">
+                        <label>Rating:</label>
+                        <div class="star-rating" (mouseleave)="hoverRating = 0">
+                            <ng-container *ngFor="let r of [1,2,3,4,5]">
+
+                                <input type="radio" [id]="'star' + r" formControlName="rating" [value]="r"
+                                    style="display:none" />
+                                <label [for]="'star' + r" class="bi bi-star-fill" [ngClass]="{
+                            'active': r <= ((hoverRating || form.get('rating')?.value) ?? 0)
+                        }" (mouseenter)="hoverRating = r" (mouseleave)="hoverRating = 0"
+                                    style="cursor:pointer; font-size: 28px; user-select:none;"></label>
+
+                            </ng-container>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <label for="comment">Comment:</label>
+                        <textarea id="comment" class="form-control" formControlName="comment" rows="3"></textarea>
+                    </div>
+
+                    <div class="modal-footer mt-3">
+                        <button class="btn btn-primary mr-2" type="submit" [disabled]="form.invalid">Submit
+                            Review</button>
+                        <button class="btn btn-outline-secondary" type="button" (click)="closeModal()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-backdrop fade show" *ngIf="isVisible"></div>
