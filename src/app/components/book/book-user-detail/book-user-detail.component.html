@@ -77,13 +77,43 @@
           </table>
         </div>
         <div class="mt-5">
-          <h4>Reviews</h4>
+          <h4 class="mb-3">Reviews</h4>
           <div *ngFor="let review of reviews" class="card mb-3">
-            <div class="card-body">
-              <h5 class="card-title">Rating: {{ review.rating }}/5</h5>
-              <p class="card-text">{{ review.comment }}</p>
-              <p class="card-subtitle text-muted">User ID: {{ review.userId }}</p>
+
+            <div class="card-body d-flex align-items-start gap-4">
+
+              
+              <div class="d-flex align-items-center flex-column mr-4">
+                <img 
+                  [src]="getAvatarUrl(review.user?.username)" 
+                  alt="{{ review.user?.username || 'User' }}"
+                  (error)="onImageError($event)" 
+                  class="mb-1 avatar-img"
+                  [ngClass]="{ 'blurred-avatar': !review.user }"
+                />
+                
+                <ng-container *ngIf="review.user; else loadingUsername">
+                  <span class="username-text">{{ review.user.username || 'Anonymous' }}</span>
+                </ng-container>
+              
+                <ng-template #loadingUsername>
+                  <span class="username-placeholder"></span>
+                </ng-template>
+              </div>
+              
+
+              <div class="">
+                <h5 class="card-title">
+                  <ng-container *ngFor="let star of [1,2,3,4,5]">
+                    <i class="bi bi-star-fill"
+                      [ngClass]="{'text-warning': star <= review.rating, 'text-muted': star > review.rating}"></i>
+                  </ng-container>
+                </h5>
+                <p class="card-text">{{ review.comment }}</p>
+              </div>
+
             </div>
+
           </div>
         </div>
       </div>
