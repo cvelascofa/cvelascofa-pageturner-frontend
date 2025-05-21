@@ -9,6 +9,8 @@ import { TokenStorageService } from '../../../_service/token-storage/token-stora
 import { ReadingProgressService } from '../../../_service/reading-progress/reading-progress.service';
 import { ReadingProgress } from '../../../models/reading-progress/reading-progress.model';
 import { BookReviewFormComponent } from '../book-review-form/book-review-form.component';
+import { UserService } from '../../../_service/user/user.service';
+import { ReviewWithUser } from '../../../models/review/review-with-user.model';
 
 @Component({
   selector: 'app-book-user-detail',
@@ -23,7 +25,7 @@ export class BookUserDetailComponent {
 
   @ViewChild(BookReviewFormComponent) reviewFormModal!: BookReviewFormComponent;
 
-  reviews: Review[] = [];
+  reviews: ReviewWithUser[] = [];
   form: FormGroup;
   progressForm: FormGroup;
   formattedPublishDate: string;
@@ -50,7 +52,8 @@ export class BookUserDetailComponent {
     private bookService: BookService,
     private reviewService: ReviewService,
     private readingProgressService: ReadingProgressService,
-    private tokenService: TokenStorageService
+    private tokenService: TokenStorageService,
+    private userService: UserService
   ) {
     this.form = this.fb.group({
       comment: '',
@@ -90,6 +93,13 @@ export class BookUserDetailComponent {
   loadReviews(bookId: number) {
     this.reviewService.getByBookId(bookId).subscribe(reviews => {
       this.reviews = reviews.filter(r => r.bookId === bookId);
+
+      this.reviews.forEach(review => {
+        this.userService.getUserById(review.userId).subscribe(user => {
+          review.user = user;
+        });
+      });
+
       this.checkIfUserHasReviewed();
     });
   }
@@ -180,6 +190,12 @@ export class BookUserDetailComponent {
     this.reviewService.create(newReview).subscribe(createdReview => {
       this.reviews.push(createdReview);
     });
+  }
+
+  getAvatarUrl(username: string): string {
+    const name = username || 'Anonymous';
+    const encodedName = encodeURIComponent(name);
+    return `https://ui-avatars.com/api/?background=random&name=${encodedName}`;
   }
 
 }
