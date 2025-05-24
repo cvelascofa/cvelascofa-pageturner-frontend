@@ -6,3 +6,7 @@
 .pagination button:hover:not(.active) {
     background-color: #e9ecef;
 }  
+
+.active {
+  font-weight: bold;
+}

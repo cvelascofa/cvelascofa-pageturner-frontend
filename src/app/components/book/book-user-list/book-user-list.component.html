@@ -12,24 +12,33 @@
 
     <div *ngFor="let book of books" class="col mb-4 d-flex justify-content-between">
 
-      <button (click)="toggleFavourite(book.id)" type="button" class="btn btn-link favourite-btn">
-        <i class="bi" [ngClass]="book.isFavourite ? 'bi-heart-fill text-danger' : 'bi-heart'"></i>
-      </button>
+      <div class="card h-100 border-0 d-flex flex-column align-items-center favourite-card">
 
-      <a [routerLink]="['/book/detail', book.id]" class="text-decoration-none text-dark w-100">
-        <div class="card h-100 border-0 shadow-none">
+        <div class="d-flex align-items-center p-2">
+          <button (click)="toggleFavourite(book.id); $event.stopPropagation()" type="button"
+            class="btn btn-link favourite-btn" aria-label="Mark as favourite">
+            <i class="bi bi-heart-fill" [ngClass]="book.isFavourite ? 'text-danger' : 'text-muted'"></i>
+          </button>
+        </div>
+
+        <a [routerLink]="['/book/detail', book.id]"
+          class="text-decoration-none text-dark flex-grow-1 d-flex flex-column">
           <img [src]="book.coverImage || 'https://placehold.co/150x220?text=No+Cover'" (error)="onImageError($event)"
             class="card-img-top custom-card-img rounded shadow" alt="Book Image" />
           <div class="card-body text-center d-flex flex-column">
             <h6 class="flex-grow-1">{{ book.title }}</h6>
           </div>
-        </div>
-      </a>
+        </a>
+
+      </div>
 
     </div>
+
   </div>
+
+</div>
+<div class="d-flex justify-content-center mt-4">
 
   <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)">
   </app-pagination>
-
 </div>
