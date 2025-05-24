@@ -30,18 +30,21 @@
     width: 100%;
 }
 
+.favourite-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .favourite-btn {
-    background: transparent;
-    position: absolute;
-    right: 20px;
-    top: -15px;
-    border: none;
-    cursor: pointer;
-    padding: 10px;
-    z-index: 10;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  margin-left: auto;
 }
 
 .favourite-btn i {
-    font-size: 1.6rem;
-    color: black;
+  font-size: 1.6rem;
+  transition: color 0.2s ease;
 }

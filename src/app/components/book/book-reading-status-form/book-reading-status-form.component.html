@@ -1,0 +1,68 @@
+<div class="modal fade" tabindex="-1" [ngClass]="{ 'show': isVisible }"
+    [ngStyle]="{ display: isVisible ? 'block' : 'none' }" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Reading Progress</h5>
+                <button type="button" class="close" aria-label="Close" (click)="closeModal()">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="mb-4">
+                    <h6 class="mb-3">Reading Progress History</h6>
+                    <div class="progress-history">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th class="soft-header">Date</th>
+                                    <th class="soft-header">Pages Read</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="!progressListPaginated || progressListPaginated.length === 0">
+                                    <td colspan="2" class="text-center text-muted">
+                                        No reading progress yet.
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let progress of progressListPaginated">
+                                    <td>{{ progress.progressDate | date: 'MMM d, yyyy' }}</td>
+                                    <td>{{ progress.pagesRead }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <app-pagination
+                            [currentPage]="currentPage"
+                            [totalPages]="totalPages"
+                            (pageChange)="onPageChange($event)">
+                        </app-pagination>
+                    </div>
+                </div>
+
+                <h6 class="mb-2">Add Progress</h6>
+
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="pagesRead">Pages Read:</label>
+                            <input type="number" id="pagesRead" class="form-control" formControlName="pagesRead"
+                                min="0" />
+                        </div>
+
+                        <div class="col-md-8 mb-3">
+                            <label for="progressDate">Progress Date:</label>
+                            <input type="date" id="progressDate" class="form-control" formControlName="progressDate" />
+                        </div>
+                    </div>
+
+                    <div class="modal-footer mt-3">
+                        <button class="btn btn-primary mr-2" type="submit" [disabled]="form.invalid">Save</button>
+                        <button class="btn btn-outline-secondary" type="button" (click)="closeModal()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-backdrop fade show" *ngIf="isVisible"></div>
