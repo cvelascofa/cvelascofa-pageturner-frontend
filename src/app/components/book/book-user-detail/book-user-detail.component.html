@@ -7,11 +7,28 @@
 <div *ngIf="!isLoading">
   <div class="container">
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-4 text-center">
         <div>
           <img [src]="book.coverImage || fallbackImage" alt="{{ book.title }}" class="card-img-top mb-4"
             style="width: 100%; height: 350px; object-fit: contain;" (error)="onImageError($event)" />
         </div>
+
+        <div class="d-flex justify-content-center mb-2">
+          <div class="progress w-75">
+            <div 
+              class="progress-bar" 
+              role="progressbar" 
+              [style.width.%]="progressPercentage" 
+              [attr.aria-valuenow]="progressPercentage" 
+              aria-valuemin="0" 
+              aria-valuemax="100">
+              {{ progressPercentage | number:'1.0-0' }}%
+            </div>
+          </div>
+        </div>
+
+        <p class="text-muted text-center mb-4">{{ totalPagesRead }} of {{ book?.pages }} pages read</p>
+
         <div class="mb-5">
           <div class="mb-3 text-center">
             <button class="btn btn-primary w-75" (click)="openReadingProgressModal()">
@@ -122,6 +139,8 @@
   [book]="book" 
   [userId]="userId" 
   [progress]="progressData"
+  [totalBookPages]="book?.pages"
+  [totalPagesRead]="totalPagesRead"
   (confirm)="onReadingProgressConfirm($event)" 
   (cancel)="handleReadingProgressCancel()">
 </app-book-reading-status-form>

@@ -36,6 +36,7 @@ export class BookUserDetailComponent {
   progressDataList: ReadingProgress[] = [];
   progressData: ReadingProgress;
   totalPages: number;
+  totalPagesRead: number = 0;
   progressPercentage: number = 0;
 
   canComment = true;
@@ -75,7 +76,7 @@ export class BookUserDetailComponent {
     if (bookId) {
       this.bookService.getById(Number(bookId)).subscribe(book => {
         this.book = book;
-        this.totalPages = this.book.totalPages;
+        this.totalPages = this.book.pages;
 
         if (this.book.publishDate) {
           const publishDate = new Date(this.book.publishDate);
@@ -91,6 +92,7 @@ export class BookUserDetailComponent {
   }
 
   openReadingProgressModal(): void {
+    this.loadReadingProgress();
     this.readingProgressModal.openModal(0, this.readingProgressModal.getCurrentDate());
   }
 
@@ -156,8 +158,10 @@ export class BookUserDetailComponent {
   }
 
   calculateProgressPercentage(pagesRead: number) {
-    if (this.totalPages && pagesRead !== undefined) {
-      this.progressPercentage = (pagesRead / this.totalPages) * 100;
+    if (this.book.pages && pagesRead !== undefined) {
+      this.progressPercentage = (pagesRead / this.book.pages) * 100;
+    } else {
+      this.progressPercentage = 0;
     }
   }
 
@@ -188,6 +192,8 @@ export class BookUserDetailComponent {
     this.readingProgressService.getProgress(this.userId, this.book.id).subscribe(progress => {
       if (progress) {
         this.progressDataList = progress;
+        this.totalPagesRead = this.getTotalPagesRead();
+        this.progressPercentage = this.totalPages ? (this.totalPagesRead / this.totalPages) * 100 : 0;
       }
     });
   }
@@ -228,8 +234,8 @@ export class BookUserDetailComponent {
   }
 
   getReadingStatusAutomatically(pagesRead: number): string {
-    if (!this.book || !this.book.totalPages) return 'READING';
-    if (pagesRead >= this.book.totalPages) {
+    if (!this.book || !this.book.pages) return 'READING';
+    if (pagesRead >= this.book.pages) {
       return 'COMPLETED';
     }
     return 'READING';

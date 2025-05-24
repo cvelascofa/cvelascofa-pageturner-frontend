@@ -20,6 +20,8 @@ export class BookReadingStatusFormComponent {
   @Input() userId!: number;
   @Input() progress: ReadingProgress | null = null;
   @Input() totalPages: number = 0;
+  @Input() totalBookPages: number = 0;
+  @Input() totalPagesRead: number = 0;
 
   @Output() cancel = new EventEmitter<void>();
   @Output() confirm = new EventEmitter<ReadingProgress>();
@@ -46,6 +48,13 @@ export class BookReadingStatusFormComponent {
       ]
     });
   }
+
+   isFormBlocked(): boolean {
+    console.log("pages total " + this.totalBookPages);
+    console.log("pages read " + this.totalPagesRead)
+    return this.form.value.pagesRead + this.totalPagesRead > this.totalBookPages || this.totalPagesRead >= this.totalBookPages;
+  }
+
 
   getCurrentDate(): string {
     const now = new Date();
