@@ -67,7 +67,7 @@ export const routes: Routes = [
         component: ConnectionsListComponent
     },
     {
-        path: 'test/:id',
+        path: 'user/:id',
         component: PublicUserDetailComponent
     }
 ];

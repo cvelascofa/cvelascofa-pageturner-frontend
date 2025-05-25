@@ -4,35 +4,27 @@
 
       <div class="col-md-3 d-flex flex-column">
         <div class="w-100 d-flex justify-content-center mb-2">
-          <img 
-            [src]="user.avatarUrl" 
-            alt="User Avatar" 
-            class="rounded-circle shadow mb-2" 
-            style="width: 100%; max-width: 225px; height: auto;"
-          />
+          <img [src]="userAvatarUrl" alt="User Avatar" class="rounded-circle shadow mb-2"
+            style="width: 100%; max-width: 225px; height: auto;" />
         </div>
-
         <h3 class="mb-1">{{ user.username }}</h3>
         <p class="text-muted mb-3">{{ user.email }}</p>
-
         <section class="mt-3">
           <h5 class="mb-3">Reading Summary</h5>
           <table class="table table-sm">
             <tbody>
               <tr>
                 <th>Total Pages Read</th>
-                <td>{{ user.totalPagesRead | number }}</td>
+                <td>{{ statistics?.totalPagesRead | number }}</td>
               </tr>
               <tr>
                 <th>Average Rating</th>
-                <td>{{ user.averageRating }}</td>
+                <td>{{ statistics?.averageRating }}</td>
               </tr>
             </tbody>
           </table>
         </section>
       </div>
-
-
 
       <div class="col-md-8">
         <div class="mb-5">
@@ -41,53 +33,59 @@
             <div class="col">
               <div class="border rounded p-3 shadow-sm h-100 d-flex flex-column justify-content-center">
                 <h6 class="text-muted">Books Read</h6>
-                <h4>{{ user.totalBooksRead | number }}</h4>
+                <h4>{{ statistics?.totalBooksRead | number }}</h4>
               </div>
             </div>
             <div class="col">
               <div class="border rounded p-3 shadow-sm h-100 d-flex flex-column justify-content-center">
                 <h6 class="text-muted">Most Books in a Month</h6>
-                <h4>{{ user.mostBooksInMonth }}</h4>
+                <h4>{{ statistics?.mostBooksInMonth }}</h4>
               </div>
             </div>
             <div class="col">
               <div class="border rounded p-3 shadow-sm h-100 d-flex flex-column justify-content-center">
                 <h6 class="text-muted">Longest Streak</h6>
-                <h4>{{ user.longestReadingStreak }}</h4>
+                <h4>{{ statistics?.longestReadingStreak }}</h4>
               </div>
             </div>
             <div class="col">
               <div class="border rounded p-3 shadow-sm h-100 d-flex flex-column justify-content-center">
                 <h6 class="text-muted">Current Streak</h6>
-                <h4>{{ user.currentReadingStreak }}</h4>
+                <h4>{{ statistics?.currentReadingStreak }}</h4>
               </div>
             </div>
           </div>
         </div>
 
-        <section>
-          <h3 class="mb-4">Favourite Books</h3>
-          <div class="row g-4">
-            <div *ngFor="let book of books" class="col-12 col-md-6 col-lg-4">
-              <div class="card h-100 shadow-sm">
-                <img
-                  [src]="book.coverImage || 'https://placehold.co/150x220?text=No+Cover'"
-                  alt="{{ book.title }}"
-                  class="card-img-top"
-                  style="width: 100%; height: auto; object-fit: contain;"
-                  (error)="onImageError($event)"
-                />
-                <div class="card-body d-flex flex-column">
-                  <h5 class="card-title">{{ book.title }}</h5>
-                  <p class="card-text mb-1"><em>by {{ book.author }}</em></p>
-                  <p class="card-text mb-1">Pages: {{ book.pages }}</p>
-                  <p class="card-text mb-1">Rating: {{ book.rating }}</p>
-                </div>
+        <div class="">
+          <h5 class="mb-3">Favourite Books</h5>
+          <div *ngIf="favouritesWithBooks.length === 0" class="col-12 d-flex align-items-center justify-content-center">
+            <p class="lead text-muted text-center w-100">
+              No favourite books found for this user.
+            </p>
+          </div>
+          <div class="d-flex justify-content-start ">
+            <div *ngFor="let favBook of favouritesWithBooks" class="col-6 col-md-4 col-xl-2 px-2 mr-4">
+              <div class="h-100 border-0 d-flex flex-column align-items-center w-100">
+                <a [routerLink]="['/book/detail', favBook.book.id]"
+                  class="text-decoration-none text-dark flex-grow-1 d-flex flex-column">
+                  <img [src]="favBook.book.coverImage || 'https://placehold.co/150x220?text=No+Cover'"
+                    (error)="onImageError($event)" class="card-img-top custom-card-img rounded shadow"
+                    [alt]="favBook.book.title + ' cover'" />
+                  <div class="card-body text-center d-flex flex-column">
+                    <h6 class="flex-grow-1">{{ favBook.book.title }}</h6>
+                  </div>
+                </a>
               </div>
             </div>
           </div>
-        </section>        
-
+        </div>
+        <div class="d-flex justify-content-center">
+          <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)">
+          </app-pagination>
+        </div>
       </div>
+
     </div>
+  </div>
 </div>

@@ -1,0 +1,10 @@
+.user-link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.user-link:hover {
+  text-decoration: underline;
+  color: #000;
+}

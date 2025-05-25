@@ -4,9 +4,7 @@
     <button class="btn btn-success" (click)="openCreateModal()">+ Create Book</button>
   </div>
 
-  <app-book-search
-    (search)="onSearch($event)"
-    (clearSearch)="onClearSearch()">
+  <app-book-search (search)="onSearch($event)" (clearSearch)="onClearSearch()">
   </app-book-search>
 
   <table class="table table-striped" style="table-layout: fixed; width: 100%;">
@@ -23,46 +21,38 @@
     <tbody>
       <tr *ngFor="let book of books">
         <td>{{ book.id }}</td>
-        <td>{{ book.title }}</td>
+        <td>
+          <a [routerLink]="['/book/detail', book.id]" class="book-link">
+            {{ book.title }}
+          </a>
+        </td>
+
         <td>{{ book.genre?.name }}</td>
         <td>{{ book.publicationDate }}</td>
         <td>{{ book.author?.name }}</td>
         <td>
-          <button [routerLink]="['/books', book.id]" class="btn btn-primary btn-sm mr-2">View</button>
           <button (click)="openEditModal(book)" class="btn btn-warning btn-sm mr-2">Edit</button>
           <button (click)="openDeleteModal(book.id)" class="btn btn-danger btn-sm">Delete</button>
         </td>
-      </tr>      
+      </tr>
     </tbody>
   </table>
 
   @if (books.length === 0) {
-    <div class="text-center mt-5">
-      <p class="lead mb-0 text-muted w-100 text-center mb-3">No books available.</p>
-    </div>
+  <div class="text-center mt-5">
+    <p class="lead mb-0 text-muted w-100 text-center mb-3">No books available.</p>
+  </div>
   }
 
-  <app-modal
-    #deleteModal
-    [title]="deleteModal.title"
-    [message]="deleteModal.message"
-    [confirmButtonText]="deleteModal.confirmButtonText"
-    [cancelButtonText]="deleteModal.cancelButtonText"
-    [type]="deleteModal.type"
-    (confirm)="onConfirmDelete()"
-    (cancel)="deleteModal.closeModal()">
+  <app-modal #deleteModal [title]="deleteModal.title" [message]="deleteModal.message"
+    [confirmButtonText]="deleteModal.confirmButtonText" [cancelButtonText]="deleteModal.cancelButtonText"
+    [type]="deleteModal.type" (confirm)="onConfirmDelete()" (cancel)="deleteModal.closeModal()">
   </app-modal>
 
-  <app-book-form
-    #updateModal
-    [book]="bookToUpdate"
-    (confirm)="onConfirmForm($event)"
+  <app-book-form #updateModal [book]="bookToUpdate" (confirm)="onConfirmForm($event)"
     (cancel)="updateModal.closeModal()">
   </app-book-form>
 
-  <app-pagination
-    [currentPage]="currentPage"
-    [totalPages]="totalPages"
-    (pageChange)="onPageChange($event)">
+  <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)">
   </app-pagination>
 </div>

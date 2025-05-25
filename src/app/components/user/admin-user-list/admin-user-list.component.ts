@@ -8,10 +8,11 @@ import { AdminUserSearchComponent } from '../admin-user-search/admin-user-search
 import { PaginationComponent } from '../../shared/pagination/pagination.component';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../../_service/user/user.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-admin-user-list',
-  imports: [AdminUserSearchComponent, AdminUserFormComponent, PaginationComponent, CommonModule],
+  imports: [AdminUserSearchComponent, AdminUserFormComponent, PaginationComponent, CommonModule, RouterLink],
   templateUrl: './admin-user-list.component.html',
   styleUrl: './admin-user-list.component.css'
 })

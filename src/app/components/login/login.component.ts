@@ -8,7 +8,7 @@ import { UserService } from '../../_service/user/user.service';
 
 @Component({
   selector: 'app-login',
-  imports: [RouterLink, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
