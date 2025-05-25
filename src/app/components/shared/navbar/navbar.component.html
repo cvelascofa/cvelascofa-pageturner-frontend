@@ -70,7 +70,7 @@
         </li>
 
         <li class="nav-item" *ngIf="isLoggedIn()">
-          <a class="nav-link" [routerLink]="['/test', getLoggedUserId()]">
+          <a class="nav-link" [routerLink]="['/user', getLoggedUserId()]">
             <img [src]="getAvatarUrl()" alt="Avatar" class="avatar-img"/>
             {{ getUsername() }}
           </a>

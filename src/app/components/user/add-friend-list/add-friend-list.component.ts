@@ -6,10 +6,11 @@ import { Friend } from '../../../models/friend/friend.model';
 import { TokenStorageService } from '../../../_service/token-storage/token-storage.service';
 import { FriendService } from '../../../_service/friend/friend.service';
 import { ModalComponent } from '../../shared/modal/modal.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-add-friend-list',
-  imports: [CommonModule, AdminUserSearchComponent, ModalComponent],
+  imports: [CommonModule, AdminUserSearchComponent, ModalComponent, RouterLink],
   templateUrl: './add-friend-list.component.html',
   styleUrl: './add-friend-list.component.css'
 })

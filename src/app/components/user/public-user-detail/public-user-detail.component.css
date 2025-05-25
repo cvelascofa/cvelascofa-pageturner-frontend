@@ -17,3 +17,28 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 }
+
+.custom-card-img {
+  height: 200px;
+  width: auto;
+  max-width: 150px;
+  object-fit: cover;
+  border-radius: 0.25rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.custom-card-img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.col-xl-5ths {
+  flex: 0 0 20%;
+  max-width: 20%;
+}
+
+.card-body {
+  padding: 0.85rem 0.5rem;
+}

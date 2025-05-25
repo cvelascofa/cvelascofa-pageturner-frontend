@@ -1,20 +1,25 @@
-.card {
-    height: 100%;
+.image-wrapper {
+    width: 200px;
+    height: 250px;
+    overflow: hidden;
+    border-radius: 0.25rem;
     display: flex;
-    flex-direction: column;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .custom-card-img {
-    width: 150px;
-    height: 220px;
+    height: 100%;
+    width: auto;
     object-fit: cover;
-    margin: 0 auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.image-wrapper:hover {
+    transform: scale(1.05);
+    cursor: pointer;
 }
 
 .card-body {
@@ -23,6 +28,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    padding: 0.85rem 0.5rem;
 }
 
 .card-title {
@@ -31,20 +37,20 @@
 }
 
 .favourite-card {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .favourite-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0.25rem 0.5rem;
-  margin-left: auto;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    margin-left: auto;
 }
 
 .favourite-btn i {
-  font-size: 1.6rem;
-  transition: color 0.2s ease;
+    font-size: 1.6rem;
+    transition: color 0.2s ease;
 }

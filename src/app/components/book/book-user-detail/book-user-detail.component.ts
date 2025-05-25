@@ -15,7 +15,7 @@ import { BookReadingStatusFormComponent } from '../book-reading-status-form/book
 
 @Component({
   selector: 'app-book-user-detail',
-  imports: [FormsModule, ReactiveFormsModule, RouterLink, CommonModule, BookReviewFormComponent, BookReadingStatusFormComponent],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule, BookReviewFormComponent, BookReadingStatusFormComponent],
   templateUrl: './book-user-detail.component.html',
   styleUrl: './book-user-detail.component.css'
 })

@@ -14,7 +14,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let user of users">
-        <td>{{ user.username }}</td>
+        <td [routerLink]="['/user', user.id]" class="user-link">{{ user.username }}</td>
         <td>{{ user.email }}</td>
         <td>
           <button *ngIf="!hasRelationWithUser(user.id) && user.id !== currentUserId" 

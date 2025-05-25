@@ -3,42 +3,37 @@
   <app-book-search (search)="onSearch($event)" (clearSearch)="onClearSearch()">
   </app-book-search>
 
-  <div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-4 justify-content-center">
-    <div *ngIf="books.length === 0" class="col-12">
-      <p class="lead mb-0 text-muted w-100 text-center mb-3">
-        There are no results for this book.
-      </p>
-    </div>
+  <div *ngIf="books.length === 0" class="col-12 mb-3">
+    <p class="lead text-muted w-100 text-center mb-3">
+      There are no results for this book.
+    </p>
+  </div>
 
-    <div *ngFor="let book of books" class="col mb-4 d-flex justify-content-between">
-
-      <div class="card h-100 border-0 d-flex flex-column align-items-center favourite-card">
-
+  <div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-4 justify-content-start mb-3">
+    <div *ngFor="let book of books" class="col d-flex justify-content-center">
+      <div class="h-100 border-0 d-flex flex-column align-items-center favourite-card">
         <div class="d-flex align-items-center p-2">
           <button (click)="toggleFavourite(book.id); $event.stopPropagation()" type="button"
             class="btn btn-link favourite-btn" aria-label="Mark as favourite">
             <i class="bi bi-heart-fill" [ngClass]="book.isFavourite ? 'text-danger' : 'text-muted'"></i>
           </button>
         </div>
-
         <a [routerLink]="['/book/detail', book.id]"
-          class="text-decoration-none text-dark flex-grow-1 d-flex flex-column">
-          <img [src]="book.coverImage || 'https://placehold.co/150x220?text=No+Cover'" (error)="onImageError($event)"
-            class="card-img-top custom-card-img rounded shadow" alt="Book Image" />
+          class="text-decoration-none text-dark flex-grow-1 d-flex flex-column ">
+          <div class="image-wrapper">
+            <img [src]="book.coverImage || 'https://placehold.co/150x220?text=No+Cover'" (error)="onImageError($event)"
+              class="custom-card-img rounded shadow card-img-top" alt="Book Image" />
+          </div>
           <div class="card-body text-center d-flex flex-column">
             <h6 class="flex-grow-1">{{ book.title }}</h6>
           </div>
         </a>
-
       </div>
-
     </div>
-
   </div>
 
 </div>
-<div class="d-flex justify-content-center mt-4">
-
+<div class="d-flex justify-content-center">
   <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)">
   </app-pagination>
 </div>
