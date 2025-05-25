@@ -1,0 +1,10 @@
+.book-link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.book-link:hover {
+  text-decoration: underline;
+  color: #000;
+}

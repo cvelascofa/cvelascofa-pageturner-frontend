@@ -32,7 +32,7 @@ export class BookUserListComponent implements OnInit {
 
   searchQuery: string = '';
 
-  pageSize: number = 9;
+  pageSize: number = 10;
   currentPage: number = 0;
   totalPages: number = 0;
   books: BookWithFavourite[] = [];

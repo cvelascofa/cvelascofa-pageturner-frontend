@@ -11,10 +11,11 @@ import { ReadingProgress } from '../../../models/reading-progress/reading-progre
 import { BookReviewFormComponent } from '../book-review-form/book-review-form.component';
 import { UserService } from '../../../_service/user/user.service';
 import { ReviewWithUser } from '../../../models/review/review-with-user.model';
+import { BookReadingStatusFormComponent } from '../book-reading-status-form/book-reading-status-form.component';
 
 @Component({
   selector: 'app-book-user-detail',
-  imports: [FormsModule, ReactiveFormsModule, RouterLink, CommonModule, BookReviewFormComponent],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule, BookReviewFormComponent, BookReadingStatusFormComponent],
   templateUrl: './book-user-detail.component.html',
   styleUrl: './book-user-detail.component.css'
 })
@@ -25,13 +26,17 @@ export class BookUserDetailComponent {
 
   @ViewChild(BookReviewFormComponent) reviewFormModal!: BookReviewFormComponent;
 
+  @ViewChild(BookReadingStatusFormComponent) readingProgressModal!: BookReadingStatusFormComponent;
+
   reviews: ReviewWithUser[] = [];
   form: FormGroup;
   progressForm: FormGroup;
   formattedPublishDate: string;
   userId: number;
+  progressDataList: ReadingProgress[] = [];
   progressData: ReadingProgress;
   totalPages: number;
+  totalPagesRead: number = 0;
   progressPercentage: number = 0;
 
   canComment = true;
@@ -60,10 +65,6 @@ export class BookUserDetailComponent {
       rating: 1
     });
     this.progressForm = this.fb.group({
-      progress: ['', Validators.required]
-    });
-
-    this.progressForm = this.fb.group({
       pagesRead: [0, [Validators.required, Validators.min(0), Validators.max(this.totalPages)]]
     });
   }
@@ -71,23 +72,47 @@ export class BookUserDetailComponent {
   ngOnInit() {
     this.userId = this.tokenService.getUser()?.id;
     const bookId = this.route.snapshot.paramMap.get('idBook');
-  
+
     if (bookId) {
       this.bookService.getById(Number(bookId)).subscribe(book => {
         this.book = book;
-        this.totalPages = this.book.totalPages;
-  
+        this.totalPages = this.book.pages;
+
         if (this.book.publishDate) {
           const publishDate = new Date(this.book.publishDate);
           this.formattedPublishDate = publishDate.toLocaleDateString('es-ES');
         }
-  
+
         this.loadReviews(this.book.id);
         this.loadReadingProgress();
-  
+
         this.isLoading = false;
       });
     }
+  }
+
+  openReadingProgressModal(): void {
+    this.loadReadingProgress();
+    this.readingProgressModal.openModal(0, this.readingProgressModal.getCurrentDate());
+  }
+
+  onReadingProgressConfirm(progress: ReadingProgress): void {
+    this.readingProgressService.create(progress).subscribe(created => {
+      this.progressData = created;
+      this.calculateProgressPercentage(created.pagesRead);
+      this.loadReadingProgress();
+
+      this.form.reset({
+        pagesRead: 0,
+        progressDate: this.getCurrentDate()
+      });
+    });
+  }
+
+  private getCurrentDate(): string {
+    const now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    return now.toISOString().slice(0, 10);
   }
 
   loadReviews(bookId: number) {
@@ -133,41 +158,43 @@ export class BookUserDetailComponent {
   }
 
   calculateProgressPercentage(pagesRead: number) {
-    if (this.totalPages && pagesRead !== undefined) {
-      this.progressPercentage = (pagesRead / this.totalPages) * 100;
+    if (this.book.pages && pagesRead !== undefined) {
+      this.progressPercentage = (pagesRead / this.book.pages) * 100;
+    } else {
+      this.progressPercentage = 0;
     }
   }
 
   submitProgress() {
     if (this.progressForm.valid) {
       const pagesRead = this.progressForm.value.pagesRead;
+      const progressDate = this.progressForm.value.progressDate;
+
+      const totalPagesReadSoFar = this.getTotalPagesRead() + pagesRead;
+      console.log("submitProgress")
 
       const readingProgress: ReadingProgress = {
         userId: this.userId,
         bookId: this.book.id,
+        readingStatus: this.getReadingStatusAutomatically(totalPagesReadSoFar),
         pagesRead: pagesRead,
-        //readingStatus: this.book.readingStatus,
+        progressDate: progressDate
       };
-      if (this.progressData) {
-        this.readingProgressService.update(this.userId, this.book.id, readingProgress).subscribe(updatedProgress => {
-          this.progressData = updatedProgress;
-          this.calculateProgressPercentage(updatedProgress.pagesRead);
-        });
-      } else {
-        this.readingProgressService.create(readingProgress).subscribe(newProgress => {
-          this.progressData = newProgress;
-          this.calculateProgressPercentage(newProgress.pagesRead);
-        });
-      }
+
+      this.readingProgressService.create(readingProgress).subscribe(newProgress => {
+        this.progressData = newProgress;
+        this.calculateProgressPercentage(newProgress.pagesRead);
+        this.progressForm.reset({ pagesRead: 0 });
+      });
     }
   }
 
   loadReadingProgress() {
     this.readingProgressService.getProgress(this.userId, this.book.id).subscribe(progress => {
       if (progress) {
-        this.progressData = progress;
-        this.progressForm.patchValue({ pagesRead: progress.pagesRead });
-        this.calculateProgressPercentage(progress.pagesRead);
+        this.progressDataList = progress;
+        this.totalPagesRead = this.getTotalPagesRead();
+        this.progressPercentage = this.totalPages ? (this.totalPagesRead / this.totalPages) * 100 : 0;
       }
     });
   }
@@ -189,6 +216,7 @@ export class BookUserDetailComponent {
   createReview(newReview: Review) {
     this.reviewService.create(newReview).subscribe(createdReview => {
       this.reviews.push(createdReview);
+      this.loadReadingProgress()
     });
   }
 
@@ -196,6 +224,20 @@ export class BookUserDetailComponent {
     const name = username || 'Anonymous';
     const encodedName = encodeURIComponent(name);
     return `https://ui-avatars.com/api/?background=random&name=${encodedName}`;
+  }
+
+  handleReadingProgressCancel(): void {
+    this.readingProgressModal.closeModal();
+  }
+
+  getTotalPagesRead(): number {
+    return this.progressDataList.reduce((acc, curr) => acc + curr.pagesRead, 0);
+  }
+
+  getReadingStatusAutomatically(totalPagesRead: number): string {
+    console.log(totalPagesRead)
+    if (!this.book || !this.book.pages) return 'READING';
+    return totalPagesRead >= this.book.pages ? 'COMPLETED' : 'READING';
   }
 
 }

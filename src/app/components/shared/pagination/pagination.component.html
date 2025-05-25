@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-center align-items-center mt-3 mb-5">
+<div class="d-flex justify-content-center align-items-center">
   <button 
     type="button" 
     class="btn me-2" 
@@ -11,7 +11,7 @@
     <button
       *ngIf="page !== '...'; else dots"
       type="button"
-      class="btn btn-outline-dark mr-2"
+      class="btn"
       (click)="goToPage(page)"
       [class.active]="currentPage === page">
       {{ getPageLabel(page) }}
