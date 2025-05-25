@@ -62,7 +62,6 @@ export class AuthService {
   }
 
   update(user: User): Observable<User> {
-    console.log(AUTH_API + 'users/' + user.id)
     return this.http.put<User>(AUTH_API + 'users/' + user.id, user, httpOptions);
   }
 }

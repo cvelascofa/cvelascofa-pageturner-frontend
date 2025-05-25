@@ -114,7 +114,6 @@ ngOnInit() {
     if (this.friendRequestToSend) {
       this.friendService.sendFriendRequest(this.friendRequestToSend).subscribe({
         next: () => {
-          console.log('Friend request sent successfully.');
           this.confirmModal.closeModal();
           this.loadFriends();
         },
@@ -127,7 +126,6 @@ ngOnInit() {
   }
 
   onCancelSendFriendRequest(): void {
-    console.log('Friend request canceled');
     this.confirmModal.closeModal();
   }
 

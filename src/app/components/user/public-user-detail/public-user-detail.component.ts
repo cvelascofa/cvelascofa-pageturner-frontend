@@ -30,14 +30,9 @@ export class PublicUserDetailComponent implements OnInit {
   loadUser(id: number): void {
     this.userService.getUserById(id).subscribe({
       next: (data) => {
-        //this.user = data;
-        // Generamos la URL avatar por defecto con el username si no tiene avatarUrl
         if (!this.user.avatarUrl) {
-          // Codificamos el username para URL
-          const nameForAvatar = encodeURIComponent(this.user.username || 'Usuario Anónimo');
-          console.log(nameForAvatar)
+          const nameForAvatar = encodeURIComponent(this.user.username || 'Anonymous User');
           this.user.avatarUrl = `${this.defaultAvatar}${nameForAvatar}`;
-          console.log(this.user.avatarUrl)
         }
       },
       error: (err) => {

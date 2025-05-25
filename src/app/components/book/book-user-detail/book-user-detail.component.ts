@@ -170,15 +170,16 @@ export class BookUserDetailComponent {
       const pagesRead = this.progressForm.value.pagesRead;
       const progressDate = this.progressForm.value.progressDate;
 
+      const totalPagesReadSoFar = this.getTotalPagesRead() + pagesRead;
+      console.log("submitProgress")
+
       const readingProgress: ReadingProgress = {
         userId: this.userId,
         bookId: this.book.id,
-        readingStatus: this.getReadingStatusAutomatically(pagesRead),
+        readingStatus: this.getReadingStatusAutomatically(totalPagesReadSoFar),
         pagesRead: pagesRead,
         progressDate: progressDate
       };
-
-      console.log(readingProgress);
 
       this.readingProgressService.create(readingProgress).subscribe(newProgress => {
         this.progressData = newProgress;
@@ -233,12 +234,10 @@ export class BookUserDetailComponent {
     return this.progressDataList.reduce((acc, curr) => acc + curr.pagesRead, 0);
   }
 
-  getReadingStatusAutomatically(pagesRead: number): string {
+  getReadingStatusAutomatically(totalPagesRead: number): string {
+    console.log(totalPagesRead)
     if (!this.book || !this.book.pages) return 'READING';
-    if (pagesRead >= this.book.pages) {
-      return 'COMPLETED';
-    }
-    return 'READING';
+    return totalPagesRead >= this.book.pages ? 'COMPLETED' : 'READING';
   }
 
 }

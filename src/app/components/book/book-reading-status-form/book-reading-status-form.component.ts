@@ -49,9 +49,7 @@ export class BookReadingStatusFormComponent {
     });
   }
 
-   isFormBlocked(): boolean {
-    console.log("pages total " + this.totalBookPages);
-    console.log("pages read " + this.totalPagesRead)
+  isFormBlocked(): boolean {
     return this.form.value.pagesRead + this.totalPagesRead > this.totalBookPages || this.totalPagesRead >= this.totalBookPages;
   }
 
@@ -83,10 +81,12 @@ export class BookReadingStatusFormComponent {
       const dateOnly: string = this.form.value.progressDate;
       const progressDateTime = dateOnly + 'T00:00:00';
 
+      const totalRead = this.totalPagesRead + this.form.value.pagesRead;
+      
       const progress: ReadingProgress = {
         userId: this.userId,
         bookId: this.book?.id,
-        readingStatus: this.getReadingStatusAutomatically(),
+        readingStatus: this.getReadingStatusAutomatically(totalRead),
         pagesRead: this.form.value.pagesRead,
         progressDate: progressDateTime
       };
@@ -104,12 +104,10 @@ export class BookReadingStatusFormComponent {
 
   }
 
-  getReadingStatusAutomatically(): string {
-    if (!this.book || !this.book.totalPages) return 'READING';
-    if (this.form.value.pagesRead >= this.book.totalPages) {
-      return 'COMPLETED';
-    }
-    return 'READING';
+  getReadingStatusAutomatically(totalPagesRead: number): string {
+    console.log(totalPagesRead)
+    if (!this.book || !this.book.pages) return 'READING';
+    return totalPagesRead >= this.book.pages ? 'COMPLETED' : 'READING';
   }
 
   loadProgressList(page: number = 0): void {
