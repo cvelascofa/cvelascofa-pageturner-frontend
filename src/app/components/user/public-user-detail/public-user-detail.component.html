@@ -1,0 +1,93 @@
+<div class="container my-4">
+  <div class="container my-4">
+    <div class="row align-items-start mb-4">
+
+      <div class="col-md-3 d-flex flex-column">
+        <div class="w-100 d-flex justify-content-center mb-2">
+          <img 
+            [src]="user.avatarUrl" 
+            alt="User Avatar" 
+            class="rounded-circle shadow mb-2" 
+            style="width: 100%; max-width: 225px; height: auto;"
+          />
+        </div>
+
+        <h3 class="mb-1">{{ user.username }}</h3>
+        <p class="text-muted mb-3">{{ user.email }}</p>
+
+        <section class="mt-3">
+          <h5 class="mb-3">Reading Summary</h5>
+          <table class="table table-sm">
+            <tbody>
+              <tr>
+                <th>Total Pages Read</th>
+                <td>{{ user.totalPagesRead | number }}</td>
+              </tr>
+              <tr>
+                <th>Average Rating</th>
+                <td>{{ user.averageRating }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+
+
+      <div class="col-md-8">
+        <div class="mb-5">
+          <h3 class="mb-4">Personal Records</h3>
+          <div class="row text-center">
+            <div class="col">
+              <div class="border rounded p-3 shadow-sm h-100 d-flex flex-column justify-content-center">
+                <h6 class="text-muted">Books Read</h6>
+                <h4>{{ user.totalBooksRead | number }}</h4>
+              </div>
+            </div>
+            <div class="col">
+              <div class="border rounded p-3 shadow-sm h-100 d-flex flex-column justify-content-center">
+                <h6 class="text-muted">Most Books in a Month</h6>
+                <h4>{{ user.mostBooksInMonth }}</h4>
+              </div>
+            </div>
+            <div class="col">
+              <div class="border rounded p-3 shadow-sm h-100 d-flex flex-column justify-content-center">
+                <h6 class="text-muted">Longest Streak</h6>
+                <h4>{{ user.longestReadingStreak }}</h4>
+              </div>
+            </div>
+            <div class="col">
+              <div class="border rounded p-3 shadow-sm h-100 d-flex flex-column justify-content-center">
+                <h6 class="text-muted">Current Streak</h6>
+                <h4>{{ user.currentReadingStreak }}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <section>
+          <h3 class="mb-4">Favourite Books</h3>
+          <div class="row g-4">
+            <div *ngFor="let book of books" class="col-12 col-md-6 col-lg-4">
+              <div class="card h-100 shadow-sm">
+                <img
+                  [src]="book.coverImage || 'https://placehold.co/150x220?text=No+Cover'"
+                  alt="{{ book.title }}"
+                  class="card-img-top"
+                  style="width: 100%; height: auto; object-fit: contain;"
+                  (error)="onImageError($event)"
+                />
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title">{{ book.title }}</h5>
+                  <p class="card-text mb-1"><em>by {{ book.author }}</em></p>
+                  <p class="card-text mb-1">Pages: {{ book.pages }}</p>
+                  <p class="card-text mb-1">Rating: {{ book.rating }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>        
+
+      </div>
+    </div>
+</div>

@@ -31,9 +31,7 @@
                             </tbody>
                         </table>
 
-                        <app-pagination
-                            [currentPage]="currentPage"
-                            [totalPages]="totalPages"
+                        <app-pagination [currentPage]="currentPage" [totalPages]="totalPages"
                             (pageChange)="onPageChange($event)">
                         </app-pagination>
                     </div>
@@ -43,20 +41,25 @@
 
                 <form [formGroup]="form" (ngSubmit)="onSubmit()">
                     <div class="row">
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-4 mb-1">
                             <label for="pagesRead">Pages Read:</label>
-                            <input type="number" id="pagesRead" class="form-control" formControlName="pagesRead"
-                                min="0" />
+                            <input type="number" id="pagesRead" class="form-control" formControlName="pagesRead" min="0"
+                                [disabled]="isFormBlocked()" />
                         </div>
 
-                        <div class="col-md-8 mb-3">
+                        <div class="col-md-8 mb-1">
                             <label for="progressDate">Progress Date:</label>
-                            <input type="date" id="progressDate" class="form-control" formControlName="progressDate" />
+                            <input type="date" id="progressDate" class="form-control" formControlName="progressDate"
+                                [disabled]="isFormBlocked()" />
                         </div>
                     </div>
+                    <small class="text-danger" *ngIf="isFormBlocked()">
+                        You have reached the limit of pages read.
+                    </small>
 
                     <div class="modal-footer mt-3">
-                        <button class="btn btn-primary mr-2" type="submit" [disabled]="form.invalid">Save</button>
+                        <button class="btn btn-primary mr-2" type="submit"
+                            [disabled]="form.invalid || isFormBlocked()">Save</button>
                         <button class="btn btn-outline-secondary" type="button" (click)="closeModal()">Cancel</button>
                     </div>
                 </form>
