@@ -7,19 +7,23 @@
           <img [src]="userAvatarUrl" alt="User Avatar" class="rounded-circle shadow mb-2"
             style="width: 100%; max-width: 225px; height: auto;" />
         </div>
-        <h3 class="mb-1">{{ user.username }}</h3>
+        <h4 class="mb-1">{{ user.username }}</h4>
         <p class="text-muted mb-3">{{ user.email }}</p>
         <section class="mt-3">
           <h5 class="mb-3">Reading Summary</h5>
           <table class="table table-sm">
             <tbody>
               <tr>
-                <th>Total Pages Read</th>
+                <th class="fw-normal">Total Pages Read</th>
                 <td>{{ statistics?.totalPagesRead | number }}</td>
               </tr>
               <tr>
-                <th>Average Rating</th>
-                <td>{{ statistics?.averageRating }}</td>
+                <th class="fw-normal">Average Rating</th>
+                <td>{{ statistics?.averageRating | number:'1.2-2' }}</td>
+              </tr>
+              <tr>
+                <th class="fw-normal">Total Ratings</th>
+                <td>{{ statistics?.totalRatings }}</td>
               </tr>
             </tbody>
           </table>
@@ -28,7 +32,7 @@
 
       <div class="col-md-8">
         <div class="mb-5">
-          <h3 class="mb-4">Personal Records</h3>
+          <h5 class="mb-4">Personal Records</h5>
           <div class="row text-center">
             <div class="col">
               <div class="border rounded p-3 shadow-sm h-100 d-flex flex-column justify-content-center">
@@ -61,7 +65,7 @@
           <h5 class="mb-3">Favourite Books</h5>
           <div *ngIf="favouritesWithBooks.length === 0" class="col-12 d-flex align-items-center justify-content-center">
             <p class="lead text-muted text-center w-100">
-              No favourite books found for this user.
+              This user has no favorite books yet.
             </p>
           </div>
           <div class="d-flex justify-content-start ">
@@ -80,7 +84,7 @@
             </div>
           </div>
         </div>
-        <div class="d-flex justify-content-center">
+        <div *ngIf="favouritesWithBooks.length > 0" class="d-flex justify-content-center">
           <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)">
           </app-pagination>
         </div>

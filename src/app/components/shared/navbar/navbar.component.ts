@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { TokenStorageService } from '../../../_service/token-storage/token-storage.service';
 import { CommonModule } from '@angular/common';
+import { RoleService } from '../../../_service/role/role.service';
 
 @Component({
   selector: 'app-navbar',
@@ -13,9 +14,12 @@ import { CommonModule } from '@angular/common';
 
 export class NavbarComponent {
 
+  userRoleName: string;
+
   constructor(
     private tokenStorage: TokenStorageService,
-    private router: Router
+    private router: Router,
+    private roleService: RoleService
   ) { }
 
   isLoggedIn(): boolean {
@@ -42,4 +46,23 @@ export class NavbarComponent {
     const encodedName = encodeURIComponent(username);
     return `https://ui-avatars.com/api/?background=random&name=${encodedName}`;
   }
+
+ hasRole(role: string): boolean {
+    const user = this.tokenStorage.getUser();
+    console.log(user)
+    return true;
+    if (!user?.role?.id) {
+      return false;
+    }
+    return true
+  }
+
+/*
+  isAdmin(): boolean {
+    return this.hasRole('ADMIN');
+  }
+
+  isLibrarian(): boolean {
+    return this.hasRole('LIBRARIAN');
+  }*/
 }
