@@ -5,7 +5,8 @@ export class UserStatistics {
     mostBooksInMonth: number;
     longestReadingStreak: number;
     currentReadingStreak: number;
-    totalPagesRead: number;
+    totalPagesRead: number;  
+    totalRatings: number;
     averageRating: number;
     lastReadingSession: string;
     booksLastYear: number;

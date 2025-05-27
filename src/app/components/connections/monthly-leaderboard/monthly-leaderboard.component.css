@@ -1,0 +1,25 @@
+.scroll-lg {    
+    max-height: 550px;
+    overflow-y: auto;
+}
+
+.no-border-card {
+    border: none !important;
+}
+
+.user-link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  color: #000;
+}
+
+.user-link:hover {
+  text-decoration: underline;
+  color: #000;
+}
+
+.highlight-user {
+    background-color: #a6c9f163;
+    color: #030303a2;
+}

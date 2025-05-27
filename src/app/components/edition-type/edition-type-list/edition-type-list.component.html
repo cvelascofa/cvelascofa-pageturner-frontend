@@ -29,7 +29,7 @@
       </tbody>
     </table>
   
-    <div *ngIf="editionTypes.length === 0" class="text-center mt-5">
+    <div *ngIf="editionTypes.length === 0" class="text-center mt-4">
       <p class="lead mb-0 text-muted w-100 text-center mb-3">No edition types available.</p>
     </div>
 
@@ -51,10 +51,12 @@
       (cancel)="formModal.closeModal()">
     </app-edition-type-form>
 
-    <app-pagination
-      [currentPage]="currentPage"
-      [totalPages]="totalPages"
-      (pageChange)="onPageChange($event)">
-    </app-pagination>
+    <div *ngIf="editionTypes.length > 0">
+      <app-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChange($event)">
+      </app-pagination>
+    </div>
 </div>
   

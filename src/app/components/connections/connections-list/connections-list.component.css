@@ -12,23 +12,6 @@
     border-bottom-color: black;
 } 
 
-.no-border-card {
-    border: none !important;
-}
-
-.highlight-user {
-    background-color: #a6c9f163;
-    font-weight: bold;
-    color: #030303a2;
-}
-
-/* TODO */
-.scroll-lg {    
-    max-height: 550px;
-    overflow-y: auto;
-}
-
-
 /* The styles below are extracted from Bootstrap version 5.3 */
 .nav-underline {
     --bs-nav-underline-gap: 1rem;

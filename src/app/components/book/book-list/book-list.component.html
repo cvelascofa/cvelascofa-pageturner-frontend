@@ -39,7 +39,7 @@
   </table>
 
   @if (books.length === 0) {
-  <div class="text-center mt-5">
+  <div class="text-center mt-4">
     <p class="lead mb-0 text-muted w-100 text-center mb-3">No books available.</p>
   </div>
   }
@@ -53,6 +53,8 @@
     (cancel)="updateModal.closeModal()">
   </app-book-form>
 
-  <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)">
-  </app-pagination>
+  @if (books.length > 0) {
+    <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)">
+    </app-pagination>
+  }
 </div>
