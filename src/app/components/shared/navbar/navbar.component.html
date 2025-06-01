@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-magenta navbar-dark bg-dark sticky-top mb-5">
+<nav class="navbar navbar-expand-lg bg-magenta navbar-dark bg-dark sticky-top mb-4">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center nav-li" routerLink="/">
       <h2>PageTurner</h2>
@@ -11,12 +11,51 @@
 
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav custom-dropdown">
-        <li class="nav-item">
+
+        <li class="nav-item" *ngIf="isLoggedIn()">
           <a class="nav-link" routerLink="/connections">
             <i class="bi fs-5 bi-person-heart"></i>
             Connections
           </a>
         </li>
+
+        <li class="nav-item" *ngIf="isLoggedIn()">
+          <a class="nav-link" [routerLink]="['/challenges', getLoggedUserId()]">
+            <i class="bi bi-lightning-charge-fill fs-5"></i>
+            Challenges
+          </a>
+        </li>
+
+
+        <!--  *ngIf="isLibrarian()"-->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="librarianDropdown" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <i class="bi fs-5 bi-journal-bookmark"></i>
+            Librarian Configuration
+          </a>
+          <ul class="dropdown-menu custom-bg-light" aria-labelledby="librarianDropdown">
+            <li class="dropdown-list-item">
+              <a class="dropdown-item" [routerLink]="['/admin/books']">
+                <i class="bi bi-book"></i>
+                Books
+              </a>
+            </li>
+            <li class="dropdown-list-item">
+              <a class="dropdown-item" [routerLink]="['/admin/publishers']">
+                <i class="bi bi-building"></i>
+                Publisher
+              </a>
+            </li>
+            <li class="dropdown-list-item">
+              <a class="dropdown-item" [routerLink]="['/admin/authors']">
+                <i class="bi bi-person"></i>
+                Author
+              </a>
+            </li>
+          </ul>
+        </li>
+
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" data-bs-toggle="dropdown"
             aria-expanded="false">
@@ -71,7 +110,7 @@
 
         <li class="nav-item" *ngIf="isLoggedIn()">
           <a class="nav-link" [routerLink]="['/user', getLoggedUserId()]">
-            <img [src]="getAvatarUrl()" alt="Avatar" class="avatar-img"/>
+            <img [src]="getAvatarUrl()" alt="Avatar" class="avatar-img" />
             {{ getUsername() }}
           </a>
         </li>

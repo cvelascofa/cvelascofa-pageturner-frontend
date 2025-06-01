@@ -32,7 +32,7 @@
     </table>
   
     @if (genres.length === 0) {
-        <div class="text-center mt-5">
+        <div class="text-center mt-4">
             <p class="lead mb-0 text-muted w-100 text-center mb-3">No genres available.</p>
         </div>
     }
@@ -55,9 +55,11 @@
         (cancel)="updateModal.closeModal()">
     </app-genre-form>
 
-    <app-pagination
-        [currentPage]="currentPage"
-        [totalPages]="totalPages"
-        (pageChange)="onPageChange($event)">
-    </app-pagination>
+    <div *ngIf="genres.length > 0">
+        <app-pagination
+            [currentPage]="currentPage"
+            [totalPages]="totalPages"
+            (pageChange)="onPageChange($event)">
+        </app-pagination>
+    </div>
 </div>

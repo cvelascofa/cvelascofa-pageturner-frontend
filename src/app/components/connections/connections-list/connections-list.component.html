@@ -1,122 +1,42 @@
-<div class="container mt-4">
-    <h2>Connections</h2>
-    <div class="row">
-      <div class="col-12 col-md-7">
-        <ul class="nav nav-underline mb-3" id="myTabs" role="tablist">
-          <li class="nav-item" role="presentation">
-            <a class="nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">
-              Requests
-            </a>
-          </li>
-          <li class="nav-item" role="presentation">
-            <a class="nav-link" id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">
-              Connections
-            </a>
-          </li>
-          <li class="nav-item" role="presentation">
-            <a class="nav-link" id="tab3-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">
-              Add Friends
-            </a>
-          </li>
-        </ul>
-        <div class="tab-content mt-4" id="myTabContent">
-          <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-            <app-friend-request-list></app-friend-request-list>
-          </div>
-          <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-            <app-friend-list></app-friend-list>
-          </div>
-          <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
-            <app-add-friend-list></app-add-friend-list>
-          </div>
-
-
-          
+<div class="container mt-3">
+  <h2>Connections</h2>
+  <div class="row">
+    <div class="col-12 col-md-7">
+      <ul class="nav nav-underline mb-3" id="myTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <a class="nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab1" role="tab" aria-controls="tab1"
+            aria-selected="true">
+            Requests
+          </a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2"
+            aria-selected="false">
+            Connections
+          </a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="tab3-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab3"
+            aria-selected="false">
+            Add Friends
+          </a>
+        </li>
+      </ul>
+      <div class="tab-content mt-4" id="myTabContent">
+        <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+          <app-friend-request-list></app-friend-request-list>
         </div>
-      </div>
-      <div class="col-12 col-md-5">
-        <div class="card no-border-card">
-            <div class="card-header d-flex align-items-center bg-white" style="font-weight: 600; font-size: 1.25rem;">
-                🏆 Monthly Leaderboard
-            </div>
-              
-            <div class="card-body p-0">
-                <div class="scroll-lg">
-                    <table class="table mb-0">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Username</th>
-                          <th scope="col">Pages</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <th scope="row">🥇</th>
-                          <td>ana_lopez</td>
-                          <td>2130</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">🥈</th>
-                          <td>marco_d</td>
-                          <td>1984</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">🥉</th>
-                          <td>lucia_ortega</td>
-                          <td>1765</td>
-                        </tr>
-                        <tr class="highlight-user">
-                          <th scope="row">4</th>
-                          <td>cmendez</td>
-                          <td>1620</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">5</th>
-                          <td>sof_romero</td>
-                          <td>1512</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">6</th>
-                          <td>alvaro_p</td>
-                          <td>1408</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">7</th>
-                          <td>natalia_c</td>
-                          <td>1386</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">8</th>
-                          <td>gonzalo_m</td>
-                          <td>1273</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">9</th>
-                          <td>veronica_r</td>
-                          <td>1204</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">10</th>
-                          <td>hugo_s</td>
-                          <td>1167</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">10</th>
-                          <td>hugo_s</td>
-                          <td>1167</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">10</th>
-                          <td>hugo_s</td>
-                          <td>1167</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                </div>
-              </div>
-
+        <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+          <app-friend-list></app-friend-list>
         </div>
+        <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+          <app-add-friend-list></app-add-friend-list>
+        </div>
+
       </div>
+    </div>
+    <div class="col-12 col-md-5">
+      <app-monthly-leaderboard></app-monthly-leaderboard>
+    </div>
   </div>
-  
+</div>

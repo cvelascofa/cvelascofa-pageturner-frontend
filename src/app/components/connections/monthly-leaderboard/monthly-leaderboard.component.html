@@ -1,0 +1,30 @@
+<div class="card no-border-card">
+    <div class="card-header d-flex align-items-center bg-white" style="font-weight: 600; font-size: 1.25rem;">
+        🏆 Monthly Leaderboard
+    </div>
+    <div class="card-body p-0">
+        <div class="scroll-lg">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Pages</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let entry of leaderboard; let i = index"
+                        [class.highlight-user]="entry.userData?.id === currentUserId">
+                        <th scope="row">{{ getMedalEmoji(i) || (i + 1) }}</th>
+                        <td>
+                            <a [routerLink]="['/user', entry.userData?.id]" class="user-link">
+                                {{ entry.userData?.username || 'Loading...' }}
+                            </a>
+                        </td>
+                        <td>{{ entry.pagesRead }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

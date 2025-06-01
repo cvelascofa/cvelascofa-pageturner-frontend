@@ -33,7 +33,7 @@
         </tbody>
     </table>
 
-    <div *ngIf="publishers.length === 0" class="text-center mt-5">
+    <div *ngIf="publishers.length === 0" class="text-center mt-4">
         <p class="lead mb-0 text-muted w-100 text-center mb-3">No publishers available.</p>
     </div>
 
@@ -55,10 +55,11 @@
         (cancel)="updateModal.closeModal()">
     </app-publisher-form>
 
-    <app-pagination
-        [currentPage]="currentPage"
-        [totalPages]="totalPages"
-        (pageChange)="onPageChange($event)">
-    </app-pagination>
-
+    <div *ngIf="publishers.length > 0">
+        <app-pagination
+            [currentPage]="currentPage"
+            [totalPages]="totalPages"
+            (pageChange)="onPageChange($event)">
+        </app-pagination>
+    </div>
 </div>

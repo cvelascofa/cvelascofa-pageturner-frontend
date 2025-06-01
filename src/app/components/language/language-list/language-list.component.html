@@ -31,7 +31,7 @@
             </tr>
         </tbody>
     </table>
-        <div *ngIf="languages.length === 0" class="text-center mt-5">
+        <div *ngIf="languages.length === 0" class="text-center mt-4">
             <p class="lead mb-0 text-muted w-100 text-center mb-3">No languages available.</p>
         </div>
 
@@ -53,11 +53,12 @@
         (cancel)="updateModal.closeModal()">
     </app-language-form>
 
-
-    <app-pagination
-        [currentPage]="currentPage"
-        [totalPages]="totalPages"
-        (pageChange)="onPageChange($event)">
-    </app-pagination>
+    <div *ngIf="languages.length > 0">
+        <app-pagination
+            [currentPage]="currentPage"
+            [totalPages]="totalPages"
+            (pageChange)="onPageChange($event)">
+        </app-pagination>
+    </div>
     
 </div>

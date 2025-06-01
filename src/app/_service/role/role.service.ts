@@ -19,4 +19,12 @@ export class RoleService {
     const options = this.authHeaderService.getAuthHeaders();
     return this.http.get<Role[]>(`${AUTH_API}roles`, options);
   }
+
+  getRoleNameById(id: number): Observable<string> {
+    const options = this.authHeaderService.getAuthHeaders();
+    return this.http.get<string>(`${AUTH_API}roles/name`, {
+      ...options,
+      params: { id }
+    });
+  }
 }
