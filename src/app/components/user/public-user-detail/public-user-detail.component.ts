@@ -10,6 +10,7 @@ import { forkJoin } from 'rxjs';
 import { BookService } from '../../../_service/book/book.service';
 import { PaginationComponent } from '../../shared/pagination/pagination.component';
 import { User } from '../../../models/user/user.model';
+import { UserChallengeService } from '../../../_service/challenge/user-challenge.service';
 
 
 @Component({
@@ -30,8 +31,16 @@ export class PublicUserDetailComponent implements OnInit {
   currentPage: number = 0;
   pageSize: number = 5;
   totalPages: number = 0;
-  user: User;
+  user: User | null = null;
   userAvatarUrl: string = '';
+
+  // Badges
+  badges: any[] = [];
+  badgesWithData: any[] = [];
+
+  badgePageSize: number = 4;
+  currentBadgePage: number = 0;
+  totalBadgePages: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -39,6 +48,7 @@ export class PublicUserDetailComponent implements OnInit {
     private userStatisticsService: UserStatisticsService,
     private favouriteService: FavouriteService,
     private bookService: BookService,
+    private userChallengeService: UserChallengeService,
   ) { }
 
   ngOnInit(): void {
@@ -56,36 +66,13 @@ export class PublicUserDetailComponent implements OnInit {
         this.user = data;
         this.userAvatarUrl = this.getAvatarUrl(this.user.username);
         this.loadFavourites();
+        this.loadBadges();
       },
       error: (err) => {
         console.error('Error loading user:', err);
       }
     });
   }
-  /*
-    user = {
-      id: 1,
-      name: 'Marcos D.B',
-      username: 'Marcos D.B',
-      email: 'user123@example.com',
-      avatarUrl: 'https://ui-avatars.com/api/?background=random&name=Marcos+D.B',
-      totalBooksRead: 467,
-      mostBooksInMonth: 10,
-      longestReadingStreak: 9,
-      currentReadingStreak: 1,
-      totalPagesRead: 112348,
-      totalReadingTime: '329:08:27 hrs',
-      averageRating: 4.3,
-      dailyReadingGoal: 30,
-      monthlyBooksGoal: 3,
-      currentGoalStreak: 14,
-      device: 'Kindle Paperwhite',
-      lastReadingSession: new Date('2025-05-16'),
-      booksLastYear: 84,
-      pagesLastYear: 12833,
-      readingTimeLastYear: '107 hrs',
-    };
-  */
 
   onImageError(event: Event) {
     const element = event.target as HTMLImageElement;
@@ -97,11 +84,14 @@ export class PublicUserDetailComponent implements OnInit {
       next: (data) => {
         this.statistics = data;
         this.statisticsError = null;
+
       },
       error: () => {
         this.statisticsError = 'Failed to load user statistics. Please try again later.';
       }
     });
+
+
   }
 
   loadFavourites(): void {
@@ -146,6 +136,28 @@ export class PublicUserDetailComponent implements OnInit {
   getAvatarUrl(username: string): string {
     const encodedName = encodeURIComponent(username || 'Anonymous');
     return `https://ui-avatars.com/api/?background=random&name=${encodedName}`;
+  }
+
+  loadBadges(): void {
+    this.userChallengeService.getUserChallengesWithBadges(this.user.id, this.currentBadgePage, this.badgePageSize, 'desc')
+      .subscribe({
+        next: (data) => {
+          console.log("User ID:", this.user.id, "Badges:", data);
+          this.badgesWithData = data.content;
+          this.totalBadgePages = data.totalPages;
+        },
+        error: () => {
+          this.badgesWithData = [];
+          this.totalBadgePages = 0;
+        }
+      });
+  }
+
+  onBadgePageChange(newPage: number): void {
+    if (newPage >= 0 && newPage < this.totalBadgePages) {
+      this.currentBadgePage = newPage;
+      this.loadBadges();
+    }
   }
 
 }
