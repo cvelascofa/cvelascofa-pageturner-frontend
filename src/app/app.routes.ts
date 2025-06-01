@@ -12,6 +12,7 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { AdminUserListComponent } from './components/user/admin-user-list/admin-user-list.component';
 import { ConnectionsListComponent } from './components/connections/connections-list/connections-list.component';
 import { PublicUserDetailComponent } from './components/user/public-user-detail/public-user-detail.component';
+import { ChallengeListComponent } from './components/challenge/challenge-list/challenge-list.component';
 
 export const routes: Routes = [
     {
@@ -69,5 +70,9 @@ export const routes: Routes = [
     {
         path: 'user/:id',
         component: PublicUserDetailComponent
+    },
+    {
+        path: 'challenges/:id',
+        component: ChallengeListComponent
     }
 ];
