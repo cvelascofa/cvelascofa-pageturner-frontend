@@ -3,6 +3,7 @@ import { AUTH_API, USER_KEY } from '../../api-constants';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { AuthHeaderService } from '../auth-header/auth-header.service';
+import { User } from '../../models/user/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -55,4 +56,5 @@ export class UserService {
     const headers = this.authHeaderService.getAuthHeaders().headers;
     return this.http.get(`${AUTH_API}users/${id}`, { headers });
   }
+
 }

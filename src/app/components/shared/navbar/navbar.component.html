@@ -1,10 +1,10 @@
-<nav class="navbar navbar-expand-lg bg-magenta navbar-dark bg-dark sticky-top mb-4">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top mb-4">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center nav-li" routerLink="/">
-      <h2>PageTurner</h2>
+      <img src="PageTurner.png" alt="" srcset="/PageTurner.png">
     </a>
 
-    <button class="navbar-toggler bg-dark border-dark" type="button" data-bs-toggle="collapse"
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
       data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -27,18 +27,35 @@
         </li>
 
 
-        <!--  *ngIf="isLibrarian()"-->
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown" *ngIf="isLoggedIn() && isLibrarian()">
           <a class="nav-link dropdown-toggle" href="#" id="librarianDropdown" data-bs-toggle="dropdown"
             aria-expanded="false">
             <i class="bi fs-5 bi-journal-bookmark"></i>
             Librarian Configuration
           </a>
-          <ul class="dropdown-menu custom-bg-light" aria-labelledby="librarianDropdown">
+          <ul class="dropdown-menu custom-bg-light" aria-labelledby="adminDropdown">
             <li class="dropdown-list-item">
-              <a class="dropdown-item" [routerLink]="['/admin/books']">
-                <i class="bi bi-book"></i>
-                Books
+              <a class="dropdown-item" [routerLink]="['/admin/authors']">
+                <i class="bi bi-person"></i>
+                Author
+              </a>
+            </li>
+            <li class="dropdown-list-item">
+              <a class="dropdown-item" [routerLink]="['/admin/genres']">
+                <i class="bi bi-tags"></i>
+                Genres
+              </a>
+            </li>
+            <li class="dropdown-list-item">
+              <a class="dropdown-item" [routerLink]="['/admin/languages']">
+                <i class="bi bi-translate"></i>
+                Languages
+              </a>
+            </li>
+            <li class="dropdown-list-item">
+              <a class="dropdown-item" [routerLink]="['/admin/edition-types']">
+                <i class="bi bi-bookmark"></i>
+                Edition Type
               </a>
             </li>
             <li class="dropdown-list-item">
@@ -48,15 +65,15 @@
               </a>
             </li>
             <li class="dropdown-list-item">
-              <a class="dropdown-item" [routerLink]="['/admin/authors']">
-                <i class="bi bi-person"></i>
-                Author
+              <a class="dropdown-item" [routerLink]="['/admin/books']">
+                <i class="bi bi-book"></i>
+                Books
               </a>
             </li>
           </ul>
         </li>
 
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown" *ngIf="isLoggedIn() && isAdmin()">
           <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" data-bs-toggle="dropdown"
             aria-expanded="false">
             <i class="bi fs-5 bi-person-gear"></i>

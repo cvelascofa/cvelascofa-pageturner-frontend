@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { TokenStorageService } from '../../../_service/token-storage/token-storage.service';
 import { CommonModule } from '@angular/common';
 import { RoleService } from '../../../_service/role/role.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -12,15 +13,29 @@ import { RoleService } from '../../../_service/role/role.service';
   styleUrl: './navbar.component.css'
 })
 
-export class NavbarComponent {
+export class NavbarComponent implements OnInit, OnDestroy {
 
   userRoleName: string;
+  roles: string[] = [];
+  private rolesSub: Subscription;
 
   constructor(
     private tokenStorage: TokenStorageService,
     private router: Router,
     private roleService: RoleService
   ) { }
+
+  ngOnInit(): void {
+    this.refreshRoles();
+
+    this.rolesSub = this.tokenStorage.rolesChanged$.subscribe(() => {
+      this.refreshRoles();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.rolesSub?.unsubscribe();
+  }
 
   isLoggedIn(): boolean {
     return !!this.tokenStorage.getToken();
@@ -47,22 +62,21 @@ export class NavbarComponent {
     return `https://ui-avatars.com/api/?background=random&name=${encodedName}`;
   }
 
- hasRole(role: string): boolean {
-    const user = this.tokenStorage.getUser();
-    console.log(user)
-    return true;
-    if (!user?.role?.id) {
-      return false;
-    }
-    return true
+  hasRole(role: string): boolean {
+    return this.roles.includes(role);
   }
 
-/*
-  isAdmin(): boolean {
-    return this.hasRole('ADMIN');
+  refreshRoles(): void {
+    this.roles = this.tokenStorage.getParsedRoles();
+    console.log('Roles refreshed:', this.roles);
   }
 
   isLibrarian(): boolean {
     return this.hasRole('LIBRARIAN');
-  }*/
+  }
+
+  isAdmin(): boolean {
+    return this.hasRole('ADMIN');
+  }
+
 }

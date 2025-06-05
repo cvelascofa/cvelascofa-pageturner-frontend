@@ -1,11 +1,10 @@
 .navbar {
-    background-color: #a6c9f1 !important;
     height: 60px;
     text-align: center;
 }
 
 .navbar .nav-link {
-    color: black;
+    color: rgb(235, 232, 232);
     display: inline-block;
 }
 
