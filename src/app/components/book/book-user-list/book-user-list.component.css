@@ -36,18 +36,29 @@
     width: 100%;
 }
 
+.image-wrapper {
+    position: relative;
+    margin: 0 auto;
+}
+
 .favourite-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     height: 100%;
 }
 
 .favourite-btn {
+    position: absolute;
+    top: 17px;
+    right: 22px;
     background: transparent;
     border: none;
     cursor: pointer;
     padding: 0.25rem 0.5rem;
     margin-left: auto;
+    margin: 0;
+    z-index: 10;
 }
 
 .favourite-btn i {

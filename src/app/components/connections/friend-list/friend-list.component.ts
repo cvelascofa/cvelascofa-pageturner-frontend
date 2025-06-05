@@ -4,10 +4,11 @@ import { FriendService } from '../../../_service/friend/friend.service';
 import { CommonModule } from '@angular/common';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { RouterLink } from '@angular/router';
+import { MonthlyLeaderboardComponent } from '../monthly-leaderboard/monthly-leaderboard.component';
 
 @Component({
   selector: 'app-friend-list',
-  imports: [CommonModule, ModalComponent, RouterLink],
+  imports: [CommonModule, ModalComponent, RouterLink, MonthlyLeaderboardComponent],
   templateUrl: './friend-list.component.html',
   styleUrl: './friend-list.component.css'
 })
