@@ -1,46 +1,58 @@
-<div class="sign-up-wrapper d-flex justify-content-center align-items-center">
-    <div class="card p-4 shadow" style="width: 100%; max-width: 400px;">
-      <h3 class="text-center mb-4">Sign Up</h3>
-  
-      <form [formGroup]="signUpForm" (ngSubmit)="onSubmitSignUp()">
-  
-        <div class="form-group">
-          <label for="username">Username:</label>
-          <input formControlName="username" type="text" class="form-control" id="username" placeholder="Enter your username" />
-          <div *ngIf="username.invalid && username.touched" class="text-danger">
-            <small *ngIf="username.errors?.['required']">Username is required.</small>
-          </div>
+<div class="sign-up-wrapper d-flex flex-column justify-content-center align-items-center">
+
+  <div class="card p-4 shadow" style="width: 100%; max-width: 400px;">
+    <h3 class="text-center mb-4">Sign Up</h3>
+
+    <form [formGroup]="signUpForm" (ngSubmit)="onSubmitSignUp()">
+
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input formControlName="username" type="text" class="form-control" id="username"
+          placeholder="Enter your username" />
+        <div *ngIf="username.invalid && formSubmitted" class="text-danger">
+          <small *ngIf="username.errors?.['required']">Username is required.</small>
         </div>
-  
-        <div class="form-group">
-          <label for="email">Email:</label>
-          <input formControlName="email" type="email" class="form-control" id="email" placeholder="Enter your email" />
-          <div *ngIf="email.invalid && email.touched" class="text-danger">
-            <small *ngIf="email.errors?.['required']">Email is required.</small>
-            <small *ngIf="email.errors?.['email']">Invalid email format.</small>
-          </div>
-        </div>
-  
-        <div class="form-group">
-          <label for="password">Password:</label>
-          <input formControlName="password" type="password" class="form-control" id="password" placeholder="Enter your password" />
-          <div *ngIf="password.invalid && password.touched" class="text-danger">
-            <small *ngIf="password.errors?.['required']">Password is required.</small>
-          </div>
-        </div>
-  
-        <button type="submit" class="btn btn-primary w-100 mt-3" [disabled]="signUpForm.invalid">
-          Register
-        </button>
-      </form>
-  
-      <div *ngIf="errorMessage" class="alert alert-danger mt-3">
-        {{ errorMessage }}
       </div>
-  
-      <div *ngIf="successMessage" class="alert alert-success mt-3">
-        {{ successMessage }}
+
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input formControlName="email" type="email" class="form-control" id="email" placeholder="Enter your email" />
+        <div *ngIf="email.invalid && formSubmitted" class="text-danger">
+          <small *ngIf="email.errors?.['required']">Email is required.</small>
+          <small *ngIf="email.errors?.['email']">Invalid email format.</small>
+        </div>
       </div>
-    </div>
+
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input formControlName="password" type="password" class="form-control" id="password"
+          placeholder="Enter your password" />
+        <div *ngIf="password.invalid && formSubmitted" class="text-danger">
+          <small *ngIf="password.errors?.['required']" class="d-block">Password is required.</small>
+          <small *ngIf="password.errors?.['minlength']" class="d-block">Password must be at least 8 characters
+            long.</small>
+          <small *ngIf="password.errors?.['pattern']" class="d-block">Password must contain at least one letter and one
+            number.</small>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 mt-3">
+        Register
+      </button>
+      <div *ngIf="errorMessage" class="text-danger mt-2">
+        <small>{{ errorMessage }}</small>
+      </div>
+            
+      <div *ngIf="usernameTaken" class="text-danger">
+        <small>This username is already taken.</small>
+      </div>
+
+      <div *ngIf="emailTaken" class="text-danger">
+        <small>This email is already registered.</small>
+      </div>
+
+      <div *ngIf="successMessage" class="text-success mt-2">
+        <small>{{ successMessage }}</small>
+      </div>
+    </form>
   </div>
-  

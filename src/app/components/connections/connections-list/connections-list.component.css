@@ -5,12 +5,50 @@
 .nav-link:hover {
     color: black;
     border-bottom-color: black;
-  }
+}
 
 .nav-link.active {
     color: black;
     border-bottom-color: black;
-} 
+}
+
+#myTabs {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+#myTabs::-webkit-scrollbar {
+  display: none;
+}
+
+#myTabs .nav-item {
+  flex: 0 0 auto;
+}
+
+.nav-link {
+  padding: 0.4rem 0.6rem;
+  font-size: 0.9rem;
+  color: black;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+  color: black;
+  border-bottom-color: black;
+}
+
+.nav-link.active {
+  font-weight: 700;
+  color: black;
+  border-bottom-color: black;
+}
+
 
 /* The styles below are extracted from Bootstrap version 5.3 */
 .nav-underline {

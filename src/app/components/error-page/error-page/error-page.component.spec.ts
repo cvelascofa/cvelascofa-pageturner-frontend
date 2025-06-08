@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditorPanelComponent } from './editor-panel.component';
+import { ErrorPageComponent } from './error-page.component';
 
-describe('EditorPanelComponent', () => {
-  let component: EditorPanelComponent;
-  let fixture: ComponentFixture<EditorPanelComponent>;
+describe('ErrorPageComponent', () => {
+  let component: ErrorPageComponent;
+  let fixture: ComponentFixture<ErrorPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EditorPanelComponent]
+      imports: [ErrorPageComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EditorPanelComponent);
+    fixture = TestBed.createComponent(ErrorPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

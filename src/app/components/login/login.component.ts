@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private fb: FormBuilder
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const token = this.tokenStorage.getToken();
@@ -63,9 +63,12 @@ export class LoginComponent implements OnInit {
       const data: any = await this.authService.login(email, password).toPromise();
       this.tokenStorage.saveToken(data);
       await this.userService.save(email);
-
-      this.roles = this.tokenStorage.getUser().role;
-      this.tokenStorage.saveRoles(this.roles);
+      const currentUser = this.tokenStorage.getUser();
+      if (currentUser && currentUser.role && currentUser.role.name) {
+        this.tokenStorage.saveRoles([currentUser.role.name]);
+      } else {
+        this.tokenStorage.saveRoles([]);
+      }
 
       this.isLoggedIn = true;
       this.isLoginFailed = false;

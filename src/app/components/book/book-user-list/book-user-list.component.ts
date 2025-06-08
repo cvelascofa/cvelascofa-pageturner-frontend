@@ -41,15 +41,19 @@ export class BookUserListComponent implements OnInit {
 
   constructor(
     private bookService: BookService,
-    private tokenService: TokenStorageService,
+    private tokenStorage: TokenStorageService,
     private favouriteService: FavouriteService,
     private cdr: ChangeDetectorRef
   ) {
-    this.currentUser = this.tokenService.getUser();
+    this.currentUser = this.tokenStorage.getUser();
   }
 
   ngOnInit(): void {
     this.loadFavouritesAndBooks();
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.tokenStorage.getToken();
   }
 
   onSubmit() {
@@ -156,16 +160,21 @@ export class BookUserListComponent implements OnInit {
   }
 
   loadFavouritesAndBooks(): void {
-    this.favouriteService.getAllByUserId(this.currentUser.id).subscribe({
-      next: (favourites) => {
-        this.favourites = favourites;
-        this.getAllBooks();
-      },
-      error: (err) => {
-        console.error('Error loading favourites', err)
-        this.getAllBooks();
-      }
-    });
+    if (this.isLoggedIn()) {
+      this.favouriteService.getAllByUserId(this.currentUser.id).subscribe({
+        next: (favourites) => {
+          this.favourites = favourites;
+          this.getAllBooks(this.currentPage);
+        },
+        error: (err) => {
+          console.error('Error loading favourites', err)
+          this.getAllBooks();
+        }
+      });
+    } else {
+      this.favourites = [];
+      this.getAllBooks(this.currentPage);
+    }
   }
 
   isFavourite(bookId: number): boolean {

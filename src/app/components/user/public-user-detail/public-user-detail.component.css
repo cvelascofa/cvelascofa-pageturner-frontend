@@ -46,3 +46,9 @@
 .fw-normal {
 font-weight: normal;
 }
+
+  @media (min-width: 1200px) {
+    .book-gap-xl {
+      gap: 1.5rem !important;
+    }
+  }

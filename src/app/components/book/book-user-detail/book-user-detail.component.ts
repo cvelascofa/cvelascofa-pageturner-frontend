@@ -57,7 +57,7 @@ export class BookUserDetailComponent {
     private bookService: BookService,
     private reviewService: ReviewService,
     private readingProgressService: ReadingProgressService,
-    private tokenService: TokenStorageService,
+    private tokenStorage: TokenStorageService,
     private userService: UserService
   ) {
     this.form = this.fb.group({
@@ -70,7 +70,7 @@ export class BookUserDetailComponent {
   }
 
   ngOnInit() {
-    this.userId = this.tokenService.getUser()?.id;
+    this.userId = this.tokenStorage.getUser()?.id;
     const bookId = this.route.snapshot.paramMap.get('idBook');
 
     if (bookId) {
@@ -89,6 +89,10 @@ export class BookUserDetailComponent {
         this.isLoading = false;
       });
     }
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.tokenStorage.getToken();
   }
 
   openReadingProgressModal(): void {

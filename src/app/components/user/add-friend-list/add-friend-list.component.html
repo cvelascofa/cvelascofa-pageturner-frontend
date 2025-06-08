@@ -1,10 +1,11 @@
-<app-admin-user-search
-  [placeholder]="'Search for users to add as friends...'"
-  (search)="onSearch($event)">
+<app-admin-user-search [placeholder]="'Search for users to add as friends...'" (search)="onSearch($event)">
 </app-admin-user-search>
 
+
+
 <div *ngIf="users.length > 0; else noResults" class="mt-4 scroll-lg">
-  <table class="table ">
+
+  <table class="table d-none d-md-table">
     <thead>
       <tr>
         <th>Username</th>
@@ -17,28 +18,39 @@
         <td [routerLink]="['/user', user.id]" class="user-link">{{ user.username }}</td>
         <td>{{ user.email }}</td>
         <td>
-          <button *ngIf="!hasRelationWithUser(user.id) && user.id !== currentUserId" 
-                  (click)="openSendFriendRequestModal(user.id)" 
-                  class="btn btn-success btn-sm">
+          <button *ngIf="!hasRelationWithUser(user.id) && user.id !== currentUserId"
+            (click)="openSendFriendRequestModal(user.id)" class="btn btn-success btn-sm">
             Send Friend Request
           </button>
         </td>
       </tr>
     </tbody>
   </table>
+
+  <div class="d-block d-md-none">
+    <div *ngFor="let user of users" class="card mb-3 p-3">
+      <div>
+        <strong>Username:</strong>
+        <a [routerLink]="['/user', user.id]" class="user-link">{{ user.username }}</a>
+      </div>
+      <div>
+        <strong>Email:</strong> {{ user.email }}
+      </div>
+      <div class="mt-2">
+        <button *ngIf="!hasRelationWithUser(user.id) && user.id !== currentUserId"
+          (click)="openSendFriendRequestModal(user.id)" class="btn btn-success btn-sm">
+          Send Friend Request
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <ng-template #noResults>
   <p class="mt-3">No users found.</p>
 </ng-template>
 
-<app-modal
-  #confirmModal
-  [title]="confirmModal.title"
-  [message]="confirmModal.message"
-  [confirmButtonText]="confirmModal.confirmButtonText"
-  [cancelButtonText]="confirmModal.cancelButtonText"
-  [type]="confirmModal.type"
-  (confirm)="onConfirmSendFriendRequest()"
-  (cancel)="onCancelSendFriendRequest()">
+<app-modal #confirmModal [title]="confirmModal.title" [message]="confirmModal.message"
+  [confirmButtonText]="confirmModal.confirmButtonText" [cancelButtonText]="confirmModal.cancelButtonText"
+  [type]="confirmModal.type" (confirm)="onConfirmSendFriendRequest()" (cancel)="onCancelSendFriendRequest()">
 </app-modal>

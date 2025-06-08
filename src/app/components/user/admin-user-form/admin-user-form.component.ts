@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Role } from '../../../models/role/role.model';
 import { RoleService } from '../../../_service/role/role.service';
+import { TokenStorageService } from '../../../_service/token-storage/token-storage.service';
 
 @Component({
   selector: 'app-admin-user-form',
@@ -36,7 +37,8 @@ export class AdminUserFormComponent {
 
   constructor(
     private userService: AuthService,
-    private roleService: RoleService
+    private roleService: RoleService,
+    private tokenStorage: TokenStorageService
   ) { }
 
   openModal(user: User): void {
@@ -59,6 +61,11 @@ export class AdminUserFormComponent {
   update(): void {
     this.userService.update(this.user).subscribe({
       next: (updatedUser) => {
+        const currentUser = this.tokenStorage.getUser();
+        if (currentUser && currentUser.id === updatedUser.id) {
+          this.tokenStorage.saveUser(updatedUser);
+          this.tokenStorage.saveRoles([updatedUser.role.name]);
+        }
         this.confirm.emit(updatedUser);
         this.closeModal();
       },
@@ -85,7 +92,7 @@ export class AdminUserFormComponent {
     this.roleService.getAll().subscribe({
       next: (roles: Role[]) => {
         this.roles = roles;
-  
+
         const matchingRole = this.roles.find(r => r.id === this.user.role?.id);
         if (matchingRole) {
           this.user.role = matchingRole;
@@ -98,5 +105,5 @@ export class AdminUserFormComponent {
       }
     });
   }
-  
+
 }

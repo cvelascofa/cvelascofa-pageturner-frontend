@@ -1,65 +1,51 @@
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h3 class="mb-0">Authors</h3>
-      <button class="btn btn-success" (click)="openCreateModal()">+ Create Author</button>
-    </div>
-  
-    <app-author-search
-      (search)="onSearch($event)"
-      (clearSearch)="onClearSearch()">
-    </app-author-search>
-  
-    <table class="table table-striped" style="table-layout: fixed; width: 100%;">
-      <thead>
-        <tr>
-          <th style="width: 10%;">ID</th>
-          <th style="width: 60%;">Name</th>
-          <th style="width: 30%;">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (author of authors; track $index) {
-          <tr>
-            <td>{{ author.id }}</td>
-            <td>{{ author.name }}</td>
-            <td>
-              <button (click)="openEditModal(author)" class="btn btn-warning btn-sm mr-2">Edit</button>
-              <button (click)="openDeleteModal(author.id)" class="btn btn-danger btn-sm">Delete</button>
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  
-    @if (authors.length === 0) {
-      <div class="text-center mt-4">
-        <p class="lead mb-0 text-muted w-100 text-center mb-2">No authors available.</p>
-      </div>
-    }
-  
-    <app-modal
-      #deleteModal
-      [title]="deleteModal.title"
-      [message]="deleteModal.message"
-      [confirmButtonText]="deleteModal.confirmButtonText"
-      [cancelButtonText]="deleteModal.cancelButtonText"
-      [type]="deleteModal.type"
-      (confirm)="onConfirmDelete()"
-      (cancel)="deleteModal.closeModal()">
-    </app-modal>
-  
-    <app-author-form
-      #updateModal
-      [author]="authorToUpdate"
-      (confirm)="onConfirmForm($event)"
-      (cancel)="updateModal.closeModal()">
-    </app-author-form>
+<div class="container main-container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="mb-0">Authors</h3>
+    <button class="btn btn-success" (click)="openCreateModal()">+ Create Author</button>
+  </div>
+
+  <app-author-search (search)="onSearch($event)" (clearSearch)="onClearSearch()">
+  </app-author-search>
+
+  <table class="table table-striped" style="table-layout: fixed; width: 100%;">
+    <thead>
+      <tr>
+        <th style="width: 10%;">ID</th>
+        <th style="width: 60%;">Name</th>
+        <th style="width: 30%;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (author of authors; track $index) {
+      <tr>
+        <td>{{ author.id }}</td>
+        <td>{{ author.name }}</td>
+        <td>
+          <button (click)="openEditModal(author)" class="btn btn-warning btn-sm mr-2">Edit</button>
+          <button (click)="openDeleteModal(author.id)" class="btn btn-danger btn-sm">Delete</button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+
+  @if (authors.length === 0) {
+  <div class="text-center mt-4">
+    <p class="lead mb-0 text-muted w-100 text-center mb-2">No authors available.</p>
+  </div>
+  }
+
+  <app-modal #deleteModal [title]="deleteModal.title" [message]="deleteModal.message"
+    [confirmButtonText]="deleteModal.confirmButtonText" [cancelButtonText]="deleteModal.cancelButtonText"
+    [type]="deleteModal.type" (confirm)="onConfirmDelete()" (cancel)="deleteModal.closeModal()">
+  </app-modal>
+
+  <app-author-form #updateModal [author]="authorToUpdate" (confirm)="onConfirmForm($event)"
+    (cancel)="updateModal.closeModal()">
+  </app-author-form>
 
   @if (authors.length > 0) {
-    <app-pagination
-      [currentPage]="currentPage"
-      [totalPages]="totalPages"
-      (pageChange)="onPageChange($event)">
-    </app-pagination>
+  <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)">
+  </app-pagination>
   }
-  </div>
+</div>

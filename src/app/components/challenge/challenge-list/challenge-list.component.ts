@@ -43,7 +43,6 @@ export class ChallengeListComponent implements OnInit {
 
         this.userStatsService.getStatisticsByUserId(this.userId).subscribe(stats => {
           this.userStats = stats;
-          console.log(this.userStats)
           this.loadChallenges();
         });
       } else {
@@ -55,7 +54,6 @@ export class ChallengeListComponent implements OnInit {
   private loadChallenges(): void {
     this.challengeService.getAll().subscribe(challenges => {
       const grouped = this.groupByCategory(challenges);
-      console.log(challenges)
       this.groupedCategories = this.chunkCategories(grouped, 3);
     });
   }
@@ -91,7 +89,6 @@ export class ChallengeListComponent implements OnInit {
     const name = challenge.name.toLowerCase();
     const max = challenge.targetQuantity || 1;
 
-
     if (name.includes('rank')) {
       const cached = this.rankCompletionCache[challenge.id];
       if (cached !== undefined) {
@@ -103,7 +100,6 @@ export class ChallengeListComponent implements OnInit {
         return 0;
       }
     }
-
 
     let value = 0;
 

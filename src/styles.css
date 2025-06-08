@@ -1,1 +1,62 @@
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+
+.btn-primary {
+    color: #1b1a1a;
+    background-color: #d0cece;
+    border-color: #d0cece;
+}
+
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus,
+.btn-primary.focus,
+.btn-primary.disabled,
+.btn-primary:disabled {
+    color: #1b1a1a !important;
+    background-color: #e7e7e7 !important;
+    border-color: #e7e7e7 !important;
+    box-shadow: none !important;
+    outline: none !important;
+
+}
+
+.btn-danger {
+    color: #fff;
+    background-color: #aa2c39;
+    border-color: #aa2c39;
+}
+
+.btn-secondary {
+    color: #fff;
+    background-color: #555658;
+    border-color: #555658;
+}
+
+.btn-success {
+    color: #fff;
+    background-color: #188331;
+    border-color: #188331;
+}
+
+.btn-warning {
+    color: #212529;
+    background-color: #f6951f;
+    border-color: #f6951f;
+}
+
+.bg-dark {
+    background-color: #181c1e !important;
+}
+
+@media (max-width: 767.98px) {
+    .main-container {
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .row>[class*="col-"] {
+        margin-bottom: 1.5rem;
+    }
+}
