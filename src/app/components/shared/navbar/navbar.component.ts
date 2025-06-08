@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, Renderer2 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { TokenStorageService } from '../../../_service/token-storage/token-storage.service';
 import { CommonModule } from '@angular/common';
@@ -19,10 +19,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   roles: string[] = [];
   private rolesSub: Subscription;
 
+  @ViewChild('navbarCollapse') navbarCollapse!: ElementRef;
+
   constructor(
     private tokenStorage: TokenStorageService,
     private router: Router,
-    private roleService: RoleService
+    private roleService: RoleService,
+    private renderer: Renderer2
   ) { }
 
   ngOnInit(): void {
@@ -39,6 +42,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   isLoggedIn(): boolean {
     return !!this.tokenStorage.getToken();
+  }
+
+  closeNavbar(): void {
+    if (this.navbarCollapse) {
+      this.renderer.removeClass(this.navbarCollapse.nativeElement, 'show');
+    }
   }
 
   getUsername(): string {
@@ -68,7 +77,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   refreshRoles(): void {
     this.roles = this.tokenStorage.getParsedRoles();
-    console.log('Roles refreshed:', this.roles);
   }
 
   isLibrarian(): boolean {

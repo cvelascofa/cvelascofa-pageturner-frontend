@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { TOKEN_KEY, USER_KEY, USER_ROLES_KEY } from '../../api-constants';
-import { Subject } from 'rxjs'; 
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenStorageService {
-  constructor(
-  ) { }
 
   private rolesChanged = new Subject<void>();
   rolesChanged$ = this.rolesChanged.asObservable();
+
+  constructor(
+  ) { }
 
   signOut(): void {
     window.sessionStorage.clear();
@@ -50,19 +51,19 @@ export class TokenStorageService {
   }
 
   public getParsedRoles(): string[] {
-  const rolesString = window.sessionStorage.getItem(USER_ROLES_KEY);
-  if (!rolesString) return [];
-  try {
-    const roles = JSON.parse(rolesString);
-    if (Array.isArray(roles) && typeof roles[0] === 'string') {
-      return roles;
+    const rolesString = window.sessionStorage.getItem(USER_ROLES_KEY);
+    if (!rolesString) return [];
+    try {
+      const roles = JSON.parse(rolesString);
+      if (Array.isArray(roles) && typeof roles[0] === 'string') {
+        return roles;
+      }
+      if (Array.isArray(roles) && roles[0]?.name) {
+        return roles.map(r => r.name);
+      }
+      return [];
+    } catch {
+      return [];
     }
-    if (Array.isArray(roles) && roles[0]?.name) {
-      return roles.map(r => r.name);
-    }
-    return [];
-  } catch {
-    return [];
   }
-}
 }

@@ -13,43 +13,60 @@ import { AdminUserListComponent } from './components/user/admin-user-list/admin-
 import { ConnectionsListComponent } from './components/connections/connections-list/connections-list.component';
 import { PublicUserDetailComponent } from './components/user/public-user-detail/public-user-detail.component';
 import { ChallengeListComponent } from './components/challenge/challenge-list/challenge-list.component';
+import { ErrorPageComponent } from './components/error-page/error-page/error-page.component';
+import { authGuard } from './guards/auth.guard';
+import { roleGuard } from './guards/role.guard';
 
 export const routes: Routes = [
     {
         path: 'admin/books',
-        component: BookListComponent
+        component: BookListComponent,
+        canActivate: [authGuard, roleGuard],
+        data: { roles: ['ADMIN', 'LIBRARIAN'] }
     },
     {
         path: '',
-        component: BookUserListComponent
+        component: BookUserListComponent,
     },
     {
         path: 'admin/genres',
-        component: GenreListComponent
+        component: GenreListComponent,
+        canActivate: [authGuard, roleGuard],
+        data: { roles: ['ADMIN', 'LIBRARIAN'] }
     },
     {
         path: 'admin/languages',
-        component: LanguageListComponent
+        component: LanguageListComponent,
+        canActivate: [authGuard, roleGuard],
+        data: { roles: ['ADMIN', 'LIBRARIAN'] }
     },
     {
         path: 'admin/edition-types',
-        component: EditionTypeListComponent
+        component: EditionTypeListComponent,
+        canActivate: [authGuard, roleGuard],
+        data: { roles: ['ADMIN', 'LIBRARIAN'] }
     },
     {
         path: 'admin/publishers',
-        component: PublisherListComponent
+        component: PublisherListComponent,
+        canActivate: [authGuard, roleGuard],
+        data: { roles: ['ADMIN', 'LIBRARIAN'] }
     },
     {
         path: 'admin/authors',
-        component: AuthorListComponent
+        component: AuthorListComponent,
+        canActivate: [authGuard, roleGuard],
+        data: { roles: ['ADMIN', 'LIBRARIAN'] }
     },
     {
         path: 'books',
-        component: BookUserListComponent
+        component: BookUserListComponent,
+        canActivate: [authGuard]
     },
     {
         path: 'book/detail/:idBook',
-        component: BookUserDetailComponent
+        component: BookUserDetailComponent,
+        canActivate: [authGuard]
     },
     {
         path: 'login',
@@ -61,18 +78,27 @@ export const routes: Routes = [
     },
     {
         path: 'admin/users',
-        component: AdminUserListComponent
+        component: AdminUserListComponent,
+        canActivate: [authGuard, roleGuard],
+        data: { roles: ['ADMIN'] }
     },
     {
         path: 'connections',
-        component: ConnectionsListComponent
+        component: ConnectionsListComponent,
+        canActivate: [authGuard]
     },
     {
         path: 'user/:id',
-        component: PublicUserDetailComponent
+        component: PublicUserDetailComponent,
+        canActivate: [authGuard]
     },
     {
         path: 'challenges/:id',
-        component: ChallengeListComponent
+        component: ChallengeListComponent,
+        canActivate: [authGuard]
+    },
+    {
+        path: '**',
+        component: ErrorPageComponent
     }
 ];

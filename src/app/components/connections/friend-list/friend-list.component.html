@@ -1,7 +1,8 @@
 <div class="mb-4">
   <h6 class="text-muted mb-3">Friends</h6>
+
   <div class="scroll-lg">
-    <table class="table" *ngIf="acceptedLoaded; else loadingAccepted">
+    <table class="table d-none d-md-table" *ngIf="acceptedLoaded; else loadingAccepted">
       <thead>
         <tr>
           <th scope="col">Username</th>
@@ -11,9 +12,12 @@
       </thead>
       <tbody>
         <tr *ngFor="let friend of acceptedFriends">
-          <a [routerLink]="['/user', friend.senderId === currentUserId ? friend.recipientId : friend.senderId]" class="user-link">
-            {{ friend.senderId === currentUserId ? friend.recipientUsername : friend.senderUsername }}
-          </a>
+          <td>
+            <a [routerLink]="['/user', friend.senderId === currentUserId ? friend.recipientId : friend.senderId]"
+              class="user-link">
+              {{ friend.senderId === currentUserId ? friend.recipientUsername : friend.senderUsername }}
+            </a>
+          </td>
           <td>
             {{ friend.senderId === currentUserId ? friend.recipientEmail : friend.senderEmail }}
           </td>
@@ -28,10 +32,35 @@
         </tr>
       </tbody>
     </table>
-    <ng-template #loadingAccepted>
-      <p>Loading accepted friends...</p>
-    </ng-template>
   </div>
+
+  <div class="d-md-none">
+    <div *ngIf="acceptedLoaded; else loadingAccepted">
+      <div *ngFor="let friend of acceptedFriends" class="card mb-2">
+        <div class="card-body p-3">
+          <p class="mb-1">
+            <strong>Username:</strong>
+            <a [routerLink]="['/user', friend.senderId === currentUserId ? friend.recipientId : friend.senderId]"
+              class="user-link">
+              {{ friend.senderId === currentUserId ? friend.recipientUsername : friend.senderUsername }}
+            </a>
+          </p>
+          <p class="mb-2">
+            <strong>Email:</strong>
+            {{ friend.senderId === currentUserId ? friend.recipientEmail : friend.senderEmail }}
+          </p>
+          <button class="btn btn-danger btn-sm" (click)="confirmRemove(friend)">Delete</button>
+        </div>
+      </div>
+      <div *ngIf="acceptedFriends.length === 0" class="text-muted">
+        No friends added yet.
+      </div>
+    </div>
+  </div>
+
+  <ng-template #loadingAccepted>
+    <p>Loading accepted friends...</p>
+  </ng-template>
 
   <div *ngIf="errorMessage" class="alert alert-danger mt-3">
     {{ errorMessage }}
@@ -40,4 +69,5 @@
 
 <app-modal #deleteModal [title]="deleteModal.title" [message]="deleteModal.message"
   [confirmButtonText]="deleteModal.confirmButtonText" [cancelButtonText]="deleteModal.cancelButtonText"
-  [type]="deleteModal.type" (confirm)="onConfirmRemove()" (cancel)="onCancelRemove()"></app-modal>
+  [type]="deleteModal.type" (confirm)="onConfirmRemove()" (cancel)="onCancelRemove()">
+</app-modal>

@@ -47,3 +47,16 @@
 .bg-dark {
     background-color: #181c1e !important;
 }
+
+@media (max-width: 767.98px) {
+    .main-container {
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .row>[class*="col-"] {
+        margin-bottom: 1.5rem;
+    }
+}

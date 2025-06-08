@@ -65,3 +65,23 @@
     font-size: 1.6rem;
     transition: color 0.2s ease;
 }
+
+.card-body h6 {
+    word-break: break-word;
+    white-space: normal;
+    max-width: 200px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.mobile-dropdown {
+    background-color: black;
+    color: white;
+}
+
+@media (max-width: 767px) {
+    .mobile-dropdown {
+        background-color: white !important;
+        color: black !important;
+    }
+}

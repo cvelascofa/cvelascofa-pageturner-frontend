@@ -51,7 +51,13 @@ export class PublicUserDetailComponent implements OnInit {
     private userChallengeService: UserChallengeService,
   ) { }
 
+  isMobile(): boolean {
+    return window.innerWidth <= 768;
+  }
+
   ngOnInit(): void {
+    this.badgePageSize = this.isMobile() ? 2 : 4;
+    this.pageSize = this.isMobile() ? 6 : 5;
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
       const id = +idParam;

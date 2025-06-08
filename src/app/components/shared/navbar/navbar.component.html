@@ -9,18 +9,18 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+    <div #navbarCollapse class="collapse navbar-collapse mobile-dropdown justify-content-end" id="navbarNav">
       <ul class="navbar-nav custom-dropdown">
 
         <li class="nav-item" *ngIf="isLoggedIn()">
-          <a class="nav-link" routerLink="/connections">
+          <a (click)="closeNavbar()" class="nav-link" routerLink="/connections">
             <i class="bi fs-5 bi-person-heart"></i>
             Connections
           </a>
         </li>
 
         <li class="nav-item" *ngIf="isLoggedIn()">
-          <a class="nav-link" [routerLink]="['/challenges', getLoggedUserId()]">
+          <a (click)="closeNavbar()" class="nav-link" [routerLink]="['/challenges', getLoggedUserId()]">
             <i class="bi bi-lightning-charge-fill fs-5"></i>
             Challenges
           </a>
@@ -35,37 +35,37 @@
           </a>
           <ul class="dropdown-menu custom-bg-light" aria-labelledby="adminDropdown">
             <li class="dropdown-list-item">
-              <a class="dropdown-item" [routerLink]="['/admin/authors']">
+              <a (click)="closeNavbar()" class="dropdown-item" [routerLink]="['/admin/authors']">
                 <i class="bi bi-person"></i>
                 Author
               </a>
             </li>
             <li class="dropdown-list-item">
-              <a class="dropdown-item" [routerLink]="['/admin/genres']">
+              <a (click)="closeNavbar()" class="dropdown-item" [routerLink]="['/admin/genres']">
                 <i class="bi bi-tags"></i>
                 Genres
               </a>
             </li>
             <li class="dropdown-list-item">
-              <a class="dropdown-item" [routerLink]="['/admin/languages']">
+              <a (click)="closeNavbar()" class="dropdown-item" [routerLink]="['/admin/languages']">
                 <i class="bi bi-translate"></i>
                 Languages
               </a>
             </li>
             <li class="dropdown-list-item">
-              <a class="dropdown-item" [routerLink]="['/admin/edition-types']">
+              <a (click)="closeNavbar()" class="dropdown-item" [routerLink]="['/admin/edition-types']">
                 <i class="bi bi-bookmark"></i>
                 Edition Type
               </a>
             </li>
             <li class="dropdown-list-item">
-              <a class="dropdown-item" [routerLink]="['/admin/publishers']">
+              <a (click)="closeNavbar()" class="dropdown-item" [routerLink]="['/admin/publishers']">
                 <i class="bi bi-building"></i>
                 Publisher
               </a>
             </li>
             <li class="dropdown-list-item">
-              <a class="dropdown-item" [routerLink]="['/admin/books']">
+              <a (click)="closeNavbar()" class="dropdown-item" [routerLink]="['/admin/books']">
                 <i class="bi bi-book"></i>
                 Books
               </a>
@@ -79,45 +79,45 @@
             <i class="bi fs-5 bi-person-gear"></i>
             Admin Configuration
           </a>
-          <ul class="dropdown-menu custom-bg-light" aria-labelledby="adminDropdown">
+          <ul class="dropdown-menu bg-light" aria-labelledby="adminDropdown">
             <li class="dropdown-list-item">
-              <a class="dropdown-item" [routerLink]="['/admin/users']">
+              <a (click)="closeNavbar()" class="dropdown-item" [routerLink]="['/admin/users']">
                 <i class="bi bi-people"></i>
                 Users
               </a>
             </li>
             <li class="dropdown-list-item">
-              <a class="dropdown-item" [routerLink]="['/admin/authors']">
+              <a (click)="closeNavbar()" class="dropdown-item" [routerLink]="['/admin/authors']">
                 <i class="bi bi-person"></i>
                 Author
               </a>
             </li>
             <li class="dropdown-list-item">
-              <a class="dropdown-item" [routerLink]="['/admin/genres']">
+              <a (click)="closeNavbar()" class="dropdown-item" [routerLink]="['/admin/genres']">
                 <i class="bi bi-tags"></i>
                 Genres
               </a>
             </li>
             <li class="dropdown-list-item">
-              <a class="dropdown-item" [routerLink]="['/admin/languages']">
+              <a (click)="closeNavbar()" class="dropdown-item" [routerLink]="['/admin/languages']">
                 <i class="bi bi-translate"></i>
                 Languages
               </a>
             </li>
             <li class="dropdown-list-item">
-              <a class="dropdown-item" [routerLink]="['/admin/edition-types']">
+              <a (click)="closeNavbar()" class="dropdown-item" [routerLink]="['/admin/edition-types']">
                 <i class="bi bi-bookmark"></i>
                 Edition Type
               </a>
             </li>
             <li class="dropdown-list-item">
-              <a class="dropdown-item" [routerLink]="['/admin/publishers']">
+              <a (click)="closeNavbar()" class="dropdown-item" [routerLink]="['/admin/publishers']">
                 <i class="bi bi-building"></i>
                 Publisher
               </a>
             </li>
             <li class="dropdown-list-item">
-              <a class="dropdown-item" [routerLink]="['/admin/books']">
+              <a (click)="closeNavbar()" class="dropdown-item" [routerLink]="['/admin/books']">
                 <i class="bi bi-book"></i>
                 Books
               </a>
@@ -126,27 +126,27 @@
         </li>
 
         <li class="nav-item" *ngIf="isLoggedIn()">
-          <a class="nav-link" [routerLink]="['/user', getLoggedUserId()]">
+          <a (click)="closeNavbar()" class="nav-link" [routerLink]="['/user', getLoggedUserId()]">
             <img [src]="getAvatarUrl()" alt="Avatar" class="avatar-img" />
             {{ getUsername() }}
           </a>
         </li>
         <li class="nav-item" *ngIf="isLoggedIn()">
-          <a class="nav-link" (click)="logout()" style="cursor: pointer;">
+          <a (click)="closeNavbar()" class="nav-link" (click)="logout()" style="cursor: pointer;">
             <i class="bi fs-5 bi-door-closed-fill"></i>
             Logout
           </a>
         </li>
 
         <li class="nav-item" *ngIf="!isLoggedIn()">
-          <a class="nav-link" routerLink="/login">
+          <a (click)="closeNavbar()" class="nav-link" routerLink="/login">
             <i class="bi fs-5 bi-door-open-fill"></i>
             Login
           </a>
         </li>
 
         <li class="nav-item" *ngIf="!isLoggedIn()">
-          <a class="nav-link" routerLink="/sign-up">
+          <a (click)="closeNavbar()" class="nav-link" routerLink="/sign-up">
             <i class="bi fs-5 bi-person-plus-fill"></i>
             Sign Up
           </a>

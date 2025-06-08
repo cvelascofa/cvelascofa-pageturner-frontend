@@ -1,7 +1,42 @@
 <div class="mb-4">
   <h6 class="text-muted mb-3">Received</h6>
   <div class="scroll-sm">
-    <table class="table" *ngIf="receivedLoaded; else loadingReceived">
+
+    <div class="table-responsive d-md-none">
+      <table class="table">
+        <tbody>
+          <tr *ngFor="let request of receivedRequests">
+            <td>
+              <div class="mb-1">
+                <strong>Username: </strong>
+                <a [routerLink]="['/user', request.senderId]" class="user-link">
+                  {{ request.senderUsername }}
+                </a>
+              </div>
+              <div class="mb-2">
+                <strong>Email: </strong>
+                {{ request.senderEmail }}
+              </div>
+              <div class="d-flex gap-2 flex-wrap">
+                <button class="btn btn-success btn-sm" (click)="openAcceptModal(request)">
+                  Accept
+                </button>
+                <button class="btn btn-danger btn-sm" (click)="confirmRemove(request, true)">
+                  Ignore
+                </button>
+              </div>
+              <hr />
+            </td>
+
+          </tr>
+          <tr *ngIf="receivedRequests.length === 0">
+            <td class="text-muted">No received requests.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <table class="table d-none d-md-table" *ngIf="receivedLoaded; else loadingReceived">
       <thead>
         <tr>
           <th scope="col">Username</th>
@@ -12,11 +47,14 @@
       <tbody>
         <tr *ngFor="let request of receivedRequests">
           <td>
-            <a [routerLink]="['/user', request.senderId]" class="user-link">
+            <strong>Username:</strong>
+            <a [routerLink]="['/user', request.senderId]" class="user-link d-inline">
               {{ request.senderUsername }}
             </a>
+            <br />
+            <strong>Email:</strong>
+            <span class="ms-1">{{ request.senderEmail }}</span>
           </td>
-          <td>{{ request.senderEmail }}</td>
           <td>
             <button class="btn btn-success btn-sm mr-2" (click)="openAcceptModal(request)">
               Accept
@@ -25,6 +63,7 @@
               Ignore
             </button>
           </td>
+
         </tr>
         <tr *ngIf="receivedRequests.length === 0">
           <td colspan="3" class="text-muted">No received requests.</td>
@@ -40,7 +79,36 @@
 <div>
   <h6 class="text-muted mb-3">Sent</h6>
   <div class="scroll-sm">
-    <table class="table" *ngIf="sentLoaded; else loadingSent">
+
+    <div class="table-responsive d-md-none">
+      <table class="table">
+        <tbody>
+          <tr *ngFor="let request of sentRequests">
+            <td>
+              <strong>Username: </strong>
+              <a [routerLink]="['/user', request.recipientId]" class="user-link d-inline">
+                {{ request.recipientUsername }}
+              </a>
+              <br />
+              <strong>Email: </strong>
+              <span class="mb-2 d-inline-block ms-1">
+                {{ request.recipientEmail }}
+              </span>
+              <br />
+              <button class="btn btn-danger btn-sm" (click)="confirmRemove(request, false)">
+                Delete
+              </button>
+              <hr />
+            </td>
+          </tr>
+          <tr *ngIf="sentRequests.length === 0">
+            <td class="text-muted">No sent requests.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <table class="table d-none d-md-table" *ngIf="sentLoaded; else loadingSent">
       <thead>
         <tr>
           <th scope="col">Username</th>
